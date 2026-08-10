@@ -1,0 +1,13 @@
+minimumReleaseAgeExclude:
+  - shadcn@4.16.2
+
+overrides:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.8
+
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vite-plus
+  allowedVersions:
+    vite: "*"
+    vite-plus: "*"

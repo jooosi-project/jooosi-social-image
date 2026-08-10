@@ -1,0 +1,25 @@
+.wp-admin.toplevel_page_jooosi-egami #wpcontent {
+  padding-left: 0 !important;
+}
+
+.wp-admin.toplevel_page_jooosi-egami #wpbody-content {
+  padding-bottom: 0;
+}
+
+.wp-admin.toplevel_page_jooosi-egami #wpfooter {
+  display: none;
+}
+
+.wp-admin.toplevel_page_jooosi-egami:has(.egami-studio) #wpbody-content {
+  height: calc(100vh - 32px);
+  overflow: hidden;
+}
+
+.wp-admin.toplevel_page_jooosi-egami .wrap {
+  margin: 0;
+}
+
+.wp-admin.toplevel_page_jooosi-egami .notice:not(.egami-notice),
+.wp-admin.toplevel_page_jooosi-egami .update-nag {
+  display: none;
+}

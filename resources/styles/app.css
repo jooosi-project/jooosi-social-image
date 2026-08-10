@@ -1,0 +1,430 @@
+@layer wp-admin, theme, base, components, utilities;
+
+@import "./wp-admin.css" layer(wp-admin);
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-invert-foreground: var(--invert-foreground);
+  --color-invert: var(--invert);
+}
+
+:root {
+  --background: oklch(0.985 0.002 247.839);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.971 0.013 17.38);
+  --success: oklch(0.696 0.17 162.48);
+  --success-foreground: oklch(0.262 0.051 172.552);
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.279 0.077 45.635);
+  --info: oklch(0.585 0.233 277.117);
+  --info-foreground: oklch(0.257 0.09 281.288);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  --invert: var(--color-zinc-900);
+  --invert-foreground: var(--color-zinc-50);
+}
+
+@layer base {
+  .egami-ui,
+  .egami-ui *,
+  .egami-portal,
+  .egami-portal * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+
+  .egami-ui,
+  .egami-portal {
+    color: var(--foreground);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: normal;
+  }
+
+  .egami-ui {
+    min-height: calc(100vh - 32px);
+    background: var(--background);
+  }
+
+  .egami-ui button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+#egami-admin {
+  isolation: isolate;
+}
+
+.egami-color-hue {
+  height: 14px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  box-shadow: none;
+}
+
+.egami-color-hue::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.egami-color-hue::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.egami-studio {
+  display: flex;
+  min-height: 620px;
+  height: calc(100vh - 32px);
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.egami-command-bar {
+  display: flex;
+  height: 48px;
+  min-height: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.egami-design-workspace {
+  display: grid;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: 220px minmax(0, 1fr) 280px;
+  overflow: hidden;
+}
+
+.egami-structure-panel,
+.egami-element-inspector {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  background: var(--card);
+}
+
+.egami-structure-panel {
+  border-right: 1px solid var(--border);
+}
+
+.egami-element-inspector {
+  border-left: 1px solid var(--border);
+}
+
+/*
+ * The inspector is embedded in WP Admin, whose form rules use selectors such
+ * as input[type=number], select, and textarea. Slot-scoped rules keep every
+ * Component-panel control deterministic even if an admin stylesheet loads
+ * after the general isolation pass.
+ */
+#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  background-color: var(--background);
+  background-image: none;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  vertical-align: middle;
+  box-shadow: none;
+  outline: none;
+}
+
+#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"]) {
+  height: 2rem;
+  min-height: 0;
+  padding: 0.25rem 0.5rem;
+}
+
+#egami-admin .egami-component-form [data-slot="native-select"] {
+  appearance: none;
+  padding-right: 1.75rem;
+}
+
+#egami-admin .egami-component-form [data-slot="input"][data-suffix="percent"] {
+  padding-right: 1.25rem;
+}
+
+#egami-admin .egami-component-form [data-slot="textarea"] {
+  min-height: 5rem;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]):focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+#egami-admin .egami-component-form [data-slot="color-control"] {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+}
+
+#egami-admin .egami-component-form [data-slot="color-value-input"] {
+  box-sizing: border-box;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  box-shadow: none;
+  outline: none;
+}
+
+#egami-admin .egami-component-form [data-slot="checkbox-input"] {
+  position: absolute !important;
+  width: 1px !important;
+  min-width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  appearance: none !important;
+}
+
+.egami-canvas-viewport {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 36px;
+  background-color: #f7f7f7;
+  background-image: radial-gradient(circle, rgb(0 0 0 / 0.06) 0.7px, transparent 0.7px);
+  background-size: 16px 16px;
+}
+
+.egami-locations-workspace,
+.egami-designs-workspace,
+.egami-templates-workspace {
+  height: 100%;
+  overflow-y: auto;
+  background: #f7f7f7;
+}
+
+.egami-resize-handle {
+  position: absolute;
+  z-index: 5;
+  pointer-events: auto;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #3b82f6;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.24);
+}
+
+.egami-resize-nw {
+  top: -7px;
+  left: -7px;
+  cursor: nwse-resize;
+}
+
+.egami-resize-ne {
+  top: -7px;
+  right: -7px;
+  cursor: nesw-resize;
+}
+
+.egami-resize-n {
+  top: -7px;
+  left: calc(50% - 6px);
+  cursor: ns-resize;
+}
+
+.egami-resize-e {
+  top: calc(50% - 6px);
+  right: -7px;
+  cursor: ew-resize;
+}
+
+.egami-resize-sw {
+  bottom: -7px;
+  left: -7px;
+  cursor: nesw-resize;
+}
+
+.egami-resize-se {
+  right: -7px;
+  bottom: -7px;
+  cursor: nwse-resize;
+}
+
+.egami-resize-s {
+  bottom: -7px;
+  left: calc(50% - 6px);
+  cursor: ns-resize;
+}
+
+.egami-resize-w {
+  top: calc(50% - 6px);
+  left: -7px;
+  cursor: ew-resize;
+}
+
+.egami-rotation-line {
+  position: absolute;
+  z-index: 4;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  width: 1px;
+  height: 24px;
+  background: #3b82f6;
+  transform: translateX(-50%);
+}
+
+.egami-rotation-handle {
+  position: absolute;
+  z-index: 6;
+  pointer-events: auto;
+  bottom: calc(100% + 24px);
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid #3b82f6;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.24);
+  cursor: grab;
+  transform: translate(-50%, 50%);
+}
+
+.egami-rotation-handle:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 1100px) {
+  .egami-design-workspace {
+    grid-template-columns: 210px minmax(0, 1fr) 250px;
+  }
+}
+
+@media (max-width: 820px) {
+  .egami-design-workspace {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  .egami-element-inspector {
+    display: none;
+  }
+}
+
+.dark {
+  --destructive-foreground: var(--color-red-600);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-600);
+  --info: var(--color-violet-500);
+  --info-foreground: var(--color-violet-600);
+  --warning: var(--color-yellow-500);
+  --warning-foreground: var(--color-yellow-600);
+  --invert: var(--color-zinc-700);
+  --invert-foreground: var(--color-zinc-50);
+}

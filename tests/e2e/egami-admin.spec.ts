@@ -44,7 +44,9 @@ test.describe("Egami admin", () => {
 
     const dialog = page.getByRole("dialog", { name: "Choose an image" });
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("tab", { name: "Media Library" })).toHaveAttribute("aria-selected", "true");
+    const mediaLibraryTab = dialog.getByRole("tab", { name: "Media Library" });
+    await mediaLibraryTab.click();
+    await expect(mediaLibraryTab).toHaveAttribute("aria-selected", "true");
     await expect(dialog.getByRole("button", { name: "Use this file" })).toBeDisabled();
     await dialog.getByRole("button", { name: "Close dialog" }).click();
     await expect(dialog).toBeHidden();

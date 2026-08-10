@@ -103,6 +103,9 @@ final class ImageGeneratorSchedulingTest extends TestCase
             new RemoteImageFetcher(),
         );
         $method = new ReflectionMethod($generator, 'generationPlan');
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
         $social = ['id' => 12, 'title' => 'Social'];
         $featured = ['id' => 18, 'title' => 'Featured'];
 

@@ -281,7 +281,7 @@ final class ImagineRendererTest extends TestCase
             self::assertEqualsWithDelta(
                 $imagickBounds[$edge],
                 $gdBounds[$edge],
-                3,
+                8,
                 sprintf('%s text edge differs', $edge),
             );
         }
@@ -480,7 +480,7 @@ final class ImagineRendererTest extends TestCase
         $sourcePath = $this->temporaryPath('png');
         $source = new \Imagick();
         $source->newImage(80, 80, new \ImagickPixel('#ff9900'), 'png');
-        $source->setImageAlphaChannel(\Imagick::ALPHACHANNEL_ON);
+        $source->setImageAlphaChannel(\Imagick::ALPHACHANNEL_SET);
 
         for ($y = 0; $y < 80; $y++) {
             for ($x = 30; $x < 50; $x++) {

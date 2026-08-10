@@ -64,6 +64,15 @@ jobs:
       - name: Build frontend assets
         run: pnpm run build
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist
+
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
 

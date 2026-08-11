@@ -481,14 +481,16 @@ final class ImagineRendererTest extends TestCase
         $source = new \Imagick();
         $source->newImage(80, 80, new \ImagickPixel('#ff9900'), 'png');
         $source->setImageAlphaChannel(\Imagick::ALPHACHANNEL_SET);
+        $pixels = $source->getPixelIterator();
 
-        for ($y = 0; $y < 80; $y++) {
+        foreach ($pixels as $row) {
             for ($x = 30; $x < 50; $x++) {
-                $source->setImagePixelColor($x, $y, new \ImagickPixel('rgba(255, 153, 0, 0)'));
+                $row[$x]->setColor('rgba(255, 153, 0, 0)');
             }
 
-            $source->setImagePixelColor(29, $y, new \ImagickPixel('rgba(255, 153, 0, 0.5)'));
-            $source->setImagePixelColor(50, $y, new \ImagickPixel('rgba(255, 153, 0, 0.5)'));
+            $row[29]->setColor('rgba(255, 153, 0, 0.5)');
+            $row[50]->setColor('rgba(255, 153, 0, 0.5)');
+            $pixels->syncIterator();
         }
 
         $source->writeImage($sourcePath);

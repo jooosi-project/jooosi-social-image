@@ -31,7 +31,7 @@
     "extra": {
         "wordpress-plugin": {
             "name": "Jooosi Egami",
-            "version": "0.1.0",
+            "version": "1.0.0",
             "requires-wp": "7.0",
             "tested-wp": "7.0",
             "requires-php": "8.0"

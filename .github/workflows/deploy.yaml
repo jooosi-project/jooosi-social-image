@@ -70,14 +70,14 @@ jobs:
       - name: Apply distribution filter
         run: |
           mkdir -p jooosi-egami-final
-          rsync -a --exclude-from=.distignore jooosi-egami-prefixed/ jooosi-egami-final/
+          rsync -a --exclude='.*' --exclude-from=.distignore jooosi-egami-prefixed/ jooosi-egami-final/
           rm -rf jooosi-egami-prefixed
           mv jooosi-egami-final jooosi-egami-prefixed
 
       - name: Create plugin archive
         run: |
           mkdir -p jooosi-egami-zip/jooosi-egami
-          cp -a jooosi-egami-prefixed/. jooosi-egami-zip/jooosi-egami/
+          cp -a jooosi-egami-prefixed/* jooosi-egami-zip/jooosi-egami/
           cd jooosi-egami-zip
           zip -qr "../jooosi-egami-${GITHUB_REF_NAME}.zip" . -x "*.git*" "*.DS_Store*"
 
@@ -86,6 +86,28 @@ jobs:
         with:
           name: jooosi-egami-${{ github.ref_name }}
           path: jooosi-egami-${{ github.ref_name }}.zip
+
+      - name: Publish scoped build to dist branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" dist-branch
+          cd dist-branch
+          git fetch origin dist || true
+          git checkout dist 2>/dev/null || git checkout --orphan dist
+          git rm -rf . 2>/dev/null || true
+          git clean -fxd
+          cp -a ../jooosi-egami-prefixed/* .
+          git add --all
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --cached --quiet; then
+            echo "The dist branch already matches ${GITHUB_REF_NAME}."
+          else
+            git commit -m "Build ${GITHUB_REF_NAME}"
+            git push origin dist
+          fi
 
       - name: Publish WordPress.org release
         if: vars.WORDPRESS_ORG_DEPLOY == 'true'

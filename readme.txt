@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/Q5Q75XSF7
 Tags: open graph, featured image, social image, image generator, automation
 Requires at least: 7.0
 Tested up to: 7.0
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -87,6 +87,8 @@ Open a Design, choose **More actions → Rendering settings**, and review System
 
 == Changelog ==
 
-= 0.1.0 =
+= 1.0.0 - 2026-08-11 =
 
 * 🐣 Initial release
+
+[See changelog for all versions.](https://github.com/jooosi-project/jooosi-egami/blob/main/CHANGELOG.md)

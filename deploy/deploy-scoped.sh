@@ -31,4 +31,5 @@ php -d memory_limit=-1 php-scoper.phar add-prefix \
 
 rm -f php-scoper.phar "$result_directory/php-scoper.phar"
 composer dump-autoload --working-dir "$result_directory" --ansi --no-dev --classmap-authoritative
+php deploy/patch-scoper-autoload.php "$result_directory/vendor/scoper-autoload.php"
 rm -rf "$deploy_directory"

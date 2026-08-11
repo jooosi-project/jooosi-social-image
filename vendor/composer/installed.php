@@ -1,0 +1,5 @@
+<?php
+
+namespace JooosiEgamiDeps;
+
+return array('root' => array('name' => 'jooosi/egami', 'pretty_version' => 'dev-main', 'version' => 'dev-main', 'reference' => null, 'type' => 'wordpress-plugin', 'install_path' => __DIR__ . '/../../', 'aliases' => array(), 'dev' => \false), 'versions' => array('imagine/imagine' => array('pretty_version' => '1.5.4', 'version' => '1.5.4.0', 'reference' => 'dd57a4c290ff4d223d17bcd219dac9ac8bf1cc16', 'type' => 'library', 'install_path' => __DIR__ . '/../imagine/imagine', 'aliases' => array(), 'dev_requirement' => \false), 'jooosi/egami' => array('pretty_version' => 'dev-main', 'version' => 'dev-main', 'reference' => null, 'type' => 'wordpress-plugin', 'install_path' => __DIR__ . '/../../', 'aliases' => array(), 'dev_requirement' => \false), 'nabasa/vp-wp' => array('pretty_version' => 'v0.3.2', 'version' => '0.3.2.0', 'reference' => '6bac3a284c43206075c0c833e35f35d2aeda3e92', 'type' => 'library', 'install_path' => __DIR__ . '/../nabasa/vp-wp', 'aliases' => array(), 'dev_requirement' => \false)));

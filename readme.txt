@@ -1,5 +1,5 @@
 === Jooosi Egami ===
-Contributors: suabahasa
+Contributors: suasgn, suabahasa
 Donate link: https://ko-fi.com/Q5Q75XSF7
 Tags: open graph, featured image, social image, image generator, automation
 Requires at least: 7.0

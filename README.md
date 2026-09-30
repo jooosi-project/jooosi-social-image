@@ -15,7 +15,7 @@
     </picture>
   </a>
   <a href="https://github.com/jooosi-project/jooosi-social-image"><img src="https://img.shields.io/github/license/jooosi-project/jooosi-social-image.svg" alt="GPL-3.0-or-later license" /></a>
-  <a href="https://github.com/jooosi-project/jooosi-social-image/actions"><img src="https://img.shields.io/github/actions/workflow/status/jooosi-project/jooosi-social-image/ci.yaml?branch=main" alt="Build status" /></a>
+  <a href="https://github.com/jooosi-project/jooosi-social-image/actions/workflows/deploy.yaml"><img src="https://img.shields.io/github/actions/workflow/status/jooosi-project/jooosi-social-image/deploy.yaml" alt="Release workflow status" /></a>
   <br />
   <a aria-label="GitHub Sponsors" href="https://github.com/sponsors/suasgn">
     <picture>

@@ -2,18 +2,25 @@
 /.git
 /.github
 /.wordpress-org
+/.agents
+/.codex
+/.vscode
 /node_modules
 /vendor/bin
 /tests
+/build
 /artifacts
 /playwright.config.ts
 /.wp-env.json
+/.wp-env.test.json
 /deploy
 /examples
 /resources
 /scripts
 /.distignore
 /.env*
+/.editorconfig
+/.gitattributes
 /.gitignore
 /.php-version
 /.phpunit.result.cache
@@ -22,19 +29,36 @@
 /AGENTS.md
 /CHANGELOG.md
 /README.md
+/DEVELOPMENT.md
+/CLAUDE.md
+/components.d.ts
 /components.json
 /composer.lock
-/mise.toml
 /package.json
+/package-lock.json
 /pnpm-lock.yaml
 /pnpm-workspace.yaml
+/deno.lock
+/mise.toml
+/opencode.json
+/phpcs.xml
+/.phpcs.xml.dist
+/phpunit.xml
 /phpunit.xml.dist
+/tsconfig.app.json
 /tsconfig.json
 /tsconfig.e2e.json
+/vitest.config.ts
+/vite.config.js
 /vite.config.ts
+/*.tsbuildinfo
+/assets/dist/vite-dev-server.json
 
 # Vendor development files
 /vendor/bin
+/vendor/symfony/error-handler/Resources/bin
+/vendor/symfony/var-dumper/Resources/bin
+/vendor/symfony/error-handler/Resources/assets/images/favicon.png.base64
 /vendor/*/tests
 /vendor/*/*/tests
 /vendor/*/Tests
@@ -46,6 +70,9 @@
 /vendor/**/.*
 /vendor/*/src/PHPUnit
 /vendor/*/*/src/PHPUnit
+/vendor/paragonie/random_compat/build-phar.sh
+/vendor/paragonie/random_compat/dist/random_compat.phar.pubkey
+/vendor/paragonie/random_compat/dist/random_compat.phar.pubkey.asc
 
 # Operating-system and temporary files
 .DS_Store

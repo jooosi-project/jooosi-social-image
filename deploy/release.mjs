@@ -31,8 +31,18 @@ function update(relativePath, replacements) {
 update("readme.txt", [[/Stable tag: \d+\.\d+\.\d+/, `Stable tag: ${version}`]]);
 update("constant.php", [[/define\('JOOOSI_SOCIAL_IMAGE_VERSION', '\d+\.\d+\.\d+'\);/, `define('JOOOSI_SOCIAL_IMAGE_VERSION', '${version}');`]]);
 update("jooosi-social-image.php", [[/( \* Version:\s+)\d+\.\d+\.\d+/, `$1${version}`]]);
-update("composer.json", [[/("version": ")\d+\.\d+\.\d+("\s*,)/, `$1${version}$2`]]);
 update("package.json", [[/("version": ")\d+\.\d+\.\d+("\s*,)/, `$1${version}$2`]]);
+
+const composerPath = `${root}/composer.json`;
+const composer = JSON.parse(readFileSync(composerPath, "utf8"));
+const wordpressPlugin = composer.extra?.["wordpress-plugin"];
+
+if (!wordpressPlugin || typeof wordpressPlugin.version !== "string" || !/^\d+\.\d+\.\d+$/.test(wordpressPlugin.version)) {
+  throw new Error('Could not find a semantic version in composer.json at extra.wordpress-plugin.version.');
+}
+
+wordpressPlugin.version = version;
+writeFileSync(composerPath, `${JSON.stringify(composer, null, 4)}\n`, "utf8");
 
 const changelogPath = `${root}/CHANGELOG.md`;
 let changelog = readFileSync(changelogPath, "utf8");
@@ -60,8 +70,9 @@ if (comparisonLink) {
 writeFileSync(changelogPath, changelog, "utf8");
 
 execFileSync("node", ["deploy/update-readme-changelog.mjs"], { cwd: root, stdio: "inherit" });
+execFileSync("composer", ["update", "--lock", "--no-install", "--no-interaction", "--ansi"], { cwd: root, stdio: "inherit" });
 
-const releaseFiles = ["CHANGELOG.md", "composer.json", "constant.php", "jooosi-social-image.php", "package.json", "readme.txt"];
+const releaseFiles = ["CHANGELOG.md", "composer.json", "composer.lock", "constant.php", "jooosi-social-image.php", "package.json", "readme.txt"];
 execFileSync("git", ["add", "--", ...releaseFiles], { cwd: root, stdio: "inherit" });
 execFileSync("git", ["commit", "-m", `Prepare ${version}`], { cwd: root, stdio: "inherit" });
 execFileSync("git", ["tag", version], { cwd: root, stdio: "inherit" });

@@ -1,9 +1,10 @@
-name: Deploy the plugin
+name: Deploy Free Jooosi Social Image
 
 on:
   push:
     tags:
-      - "*"
+      - "v[0-9]*"
+      - "[0-9]*"
 
 permissions:
   contents: write
@@ -13,21 +14,35 @@ env:
 
 jobs:
   release:
-    if: github.repository == 'jooosi-project/jooosi-social-image'
+    if: github.repository == 'jooosi-project/jooosi-egami' || github.repository == 'jooosi-project/jooosi-social-image'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
+      - uses: pnpm/setup@v2
         with:
-          node-version: 24
-          cache: pnpm
+          version: '^12.6.0'
+          runtime: node@26
+          cache: true
+          install: false
+
+      - name: Resolve Free release version
+        id: versions
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "The release tag must be a semantic version such as 1.0.0 or v1.0.0." >&2
+            exit 1
+          fi
+
+          echo "free=${version}" >> "$GITHUB_OUTPUT"
+          echo "FREE_VERSION=${version}" >> "$GITHUB_ENV"
 
       - name: Install JavaScript dependencies
         run: pnpm install --frozen-lockfile
@@ -41,90 +56,148 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Extract release notes
+      - name: Extract Free release notes
         id: changelog
         shell: bash
         run: |
-          version="${GITHUB_REF_NAME#v}"
           {
             echo "content<<EOF"
-            node deploy/extract-changelog.mjs "$version"
+            node deploy/extract-changelog.mjs "$FREE_VERSION"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
       - name: Update WordPress.org changelog
         run: node deploy/update-readme-changelog.mjs
 
-      - name: Install PHP dependencies
-        run: composer install --no-interaction --prefer-dist --ansi
-
       - name: Prepare production source
+        shell: bash
         run: |
           mkdir -p jooosi-social-image-deploy
-          rsync -a --exclude jooosi-social-image-deploy --exclude .git ./ jooosi-social-image-deploy/
-          composer install --working-dir=jooosi-social-image-deploy --no-dev --classmap-authoritative --no-interaction --prefer-dist --ansi
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.*' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='vendor' \
+            --exclude='artifacts' \
+            --exclude='jooosi-social-image-deploy' \
+            --exclude='jooosi-social-image-prefixed' \
+            --exclude='jooosi-social-image-final' \
+            --exclude='jooosi-social-image-zip' \
+            --exclude='dist-branch' \
+            --exclude='dist-free-branch' \
+            ./ jooosi-social-image-deploy/
 
-      - name: Scope production dependencies
+          composer validate \
+            --working-dir=jooosi-social-image-deploy \
+            --no-check-publish
+
+          composer install \
+            --working-dir=jooosi-social-image-deploy \
+            --no-dev \
+            --classmap-authoritative \
+            --no-interaction \
+            --prefer-dist \
+            --ansi
+
+      - name: Scope Free production dependencies
         run: bash deploy/deploy-scoped.sh jooosi-social-image-deploy jooosi-social-image-prefixed
 
       - name: Apply distribution filter
+        shell: bash
         run: |
           mkdir -p jooosi-social-image-final
-          rsync -a --exclude='.*' --exclude-from=.distignore jooosi-social-image-prefixed/ jooosi-social-image-final/
+          rsync -a \
+            --exclude='.*' \
+            --exclude-from=.distignore \
+            jooosi-social-image-prefixed/ \
+            jooosi-social-image-final/
           rm -rf jooosi-social-image-prefixed
           mv jooosi-social-image-final jooosi-social-image-prefixed
 
-      - name: Create plugin archive
+      - name: Verify Free release artifact
+        shell: bash
+        run: |
+          release=jooosi-social-image-prefixed
+
+          grep -Fq "* Version:             ${FREE_VERSION}" "$release/jooosi-social-image.php"
+          grep -Fq "define('JOOOSI_SOCIAL_IMAGE_VERSION', '${FREE_VERSION}');" "$release/constant.php"
+          grep -Fq "Stable tag: ${FREE_VERSION}" "$release/readme.txt"
+          grep -Fq "\"version\": \"${FREE_VERSION}\"" "$release/composer.json"
+          test -f "$release/assets/dist/manifest.json"
+          test -f "$release/vendor/scoper-autoload.php"
+
+          if [[ -f "$release/assets/dist/vite-dev-server.json" ]]; then
+            echo "The release artifact contains the Vite development manifest." >&2
+            exit 1
+          fi
+
+          if [[ -d "$release/tests" ]]; then
+            echo "The release artifact contains the test suite." >&2
+            exit 1
+          fi
+
+          if grep -Fq 'JooosiSocialImageDeps\dbDelta' "$release/vendor/scoper-autoload.php"; then
+            echo "The scoped autoloader contains a broken dbDelta() proxy." >&2
+            exit 1
+          fi
+
+      - name: Create Free plugin archive
+        shell: bash
         run: |
           mkdir -p jooosi-social-image-zip/jooosi-social-image
-          cp -a jooosi-social-image-prefixed/* jooosi-social-image-zip/jooosi-social-image/
+          cp -a jooosi-social-image-prefixed/. jooosi-social-image-zip/jooosi-social-image/
           cd jooosi-social-image-zip
-          zip -qr "../jooosi-social-image-${GITHUB_REF_NAME}.zip" . -x "*.git*" "*.DS_Store*"
+          zip -qr "../jooosi-social-image-${FREE_VERSION}-free.zip" . -x "*.git*" "*.DS_Store*"
 
-      - name: Upload plugin artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Free plugin artifact
+        uses: actions/upload-artifact@v7
         with:
-          name: jooosi-social-image-${{ github.ref_name }}
-          path: jooosi-social-image-${{ github.ref_name }}.zip
+          name: jooosi-social-image-${{ steps.versions.outputs.free }}-free
+          path: jooosi-social-image-${{ steps.versions.outputs.free }}-free.zip
+          if-no-files-found: error
 
-      - name: Publish scoped build to dist branch
+      - name: Publish Free build to dist-free branch
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
-          git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" dist-branch
-          cd dist-branch
-          git fetch origin dist || true
-          git checkout dist 2>/dev/null || git checkout --orphan dist
+          git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" dist-free-branch
+          cd dist-free-branch
+          git fetch origin dist-free || true
+          git checkout dist-free 2>/dev/null || git checkout --orphan dist-free
           git rm -rf . 2>/dev/null || true
           git clean -fxd
-          cp -a ../jooosi-social-image-prefixed/* .
+          cp -a ../jooosi-social-image-prefixed/. .
           git add --all
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if git diff --cached --quiet; then
-            echo "The dist branch already matches ${GITHUB_REF_NAME}."
+            echo "The dist-free branch already matches Free ${FREE_VERSION}."
           else
-            git commit -m "Build ${GITHUB_REF_NAME}"
-            git push origin dist
+            git commit -m "Build Free Jooosi Social Image ${FREE_VERSION}"
+            git push origin dist-free
           fi
 
-      - name: Publish WordPress.org release
+      - name: Publish Free edition to WordPress.org
         if: vars.WORDPRESS_ORG_DEPLOY == 'true'
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.WORDPRESS_ORG_SVN_USERNAME || secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.WORDPRESS_ORG_SVN_PASSWORD || secrets.SVN_PASSWORD }}
           SLUG: jooosi-social-image
           BUILD_DIR: jooosi-social-image-prefixed
-          VERSION: ${{ github.ref_name }}
+          VERSION: ${{ steps.versions.outputs.free }}
           ASSETS_DIR: .wordpress-org
 
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+      - name: Create Free GitHub release
+        uses: softprops/action-gh-release@v3
         with:
           name: ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.content }}
-          files: jooosi-social-image-${{ github.ref_name }}.zip
+          files: jooosi-social-image-${{ steps.versions.outputs.free }}-free.zip
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

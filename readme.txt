@@ -86,9 +86,3 @@ Data is preserved by default. Enable **Delete plugin data on uninstall** in Soci
 Open a Design, choose **More actions → Rendering settings**, and review System status. Administrators can also open **Tools → Site Health → Status** for separate renderer, SVG, font, filesystem, and background-generation checks. Social Image records the last WP-Cron scheduling error and the last per-post generation error so host-specific failures are not silent.
 
 == Changelog ==
-
-= 1.0.0 - 2026-08-11 =
-
-* 🐣 Initial release
-
-[See changelog for all versions.](https://github.com/jooosi-project/jooosi-social-image/blob/main/CHANGELOG.md)

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration\CustomFields;
+namespace JooosiSocialImage\Integration\CustomFields;
 
-use JooosiEgami\Content\PlaceholderProviderInterface;
+use JooosiSocialImage\Content\PlaceholderProviderInterface;
 use Throwable;
 
 defined('ABSPATH') || exit;
@@ -30,7 +30,7 @@ final class ToolsetPlaceholderProvider implements PlaceholderProviderInterface
             }
             $result[$slug] = [
                 'label' => method_exists($definition, 'get_name') ? (string) $definition->get_name() : $slug,
-                'group' => __('Toolset', 'jooosi-egami'),
+                'group' => __('Toolset', 'jooosi-social-image'),
             ];
         }
         return $result;

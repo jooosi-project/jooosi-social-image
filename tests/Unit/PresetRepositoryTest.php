@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Preset\PresetRepositoryManager;
-use JooosiEgami\Preset\PresetSchema;
+use JooosiSocialImage\Preset\PresetRepositoryManager;
+use JooosiSocialImage\Preset\PresetSchema;
 use PHPUnit\Framework\TestCase;
 use WP_Error;
 
@@ -16,7 +16,7 @@ final class PresetRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['egami_test_options'] = [];
+        $GLOBALS['social_image_test_options'] = [];
         $this->repositoryFile = dirname(__DIR__, 2) . '/presets/repository.json';
     }
 
@@ -28,8 +28,8 @@ final class PresetRepositoryTest extends TestCase
         self::assertNotInstanceOf(WP_Error::class, $catalog);
         self::assertCount(65, $catalog['presets']);
         self::assertCount(1, $catalog['repositories']);
-        self::assertSame('egami-essentials/editorial-gradient', $catalog['presets'][0]['key']);
-        self::assertSame('egami-essentials', $catalog['presets'][0]['source']['repositoryId']);
+        self::assertSame('social-image-essentials/editorial-gradient', $catalog['presets'][0]['key']);
+        self::assertSame('social-image-essentials', $catalog['presets'][0]['source']['repositoryId']);
         self::assertTrue($catalog['presets'][0]['source']['bundled']);
         self::assertSame('https://example.test/schemas/repository.schema.json', $catalog['schemas']['repository']);
     }
@@ -41,7 +41,7 @@ final class PresetRepositoryTest extends TestCase
         $result = PresetSchema::repository($repository);
 
         self::assertInstanceOf(WP_Error::class, $result);
-        self::assertSame('egami_preset_duplicate_preset', $result->get_error_code());
+        self::assertSame('social_image_preset_duplicate_preset', $result->get_error_code());
         self::assertSame(422, $result->get_error_data()['status']);
     }
 
@@ -52,7 +52,7 @@ final class PresetRepositoryTest extends TestCase
         $result = PresetSchema::preset($preset);
 
         self::assertInstanceOf(WP_Error::class, $result);
-        self::assertSame('egami_preset_document', $result->get_error_code());
+        self::assertSame('social_image_preset_document', $result->get_error_code());
     }
 
     public function testUnsupportedRectElementIsRejected(): void
@@ -62,29 +62,29 @@ final class PresetRepositoryTest extends TestCase
         $result = PresetSchema::preset($preset);
 
         self::assertInstanceOf(WP_Error::class, $result);
-        self::assertSame('egami_preset_document', $result->get_error_code());
+        self::assertSame('social_image_preset_document', $result->get_error_code());
     }
 
     public function testBundledRepositoryCanBeDisabledButNotDeleted(): void
     {
         $manager = new PresetRepositoryManager($this->repositoryFile, 'https://example.test/schemas');
-        $disabled = $manager->setEnabled('egami-essentials', false);
+        $disabled = $manager->setEnabled('social-image-essentials', false);
 
         self::assertNotInstanceOf(WP_Error::class, $disabled);
         self::assertCount(0, $disabled['presets']);
         self::assertFalse($disabled['repositories'][0]['enabled']);
-        self::assertSame('0', $GLOBALS['egami_test_options'][PresetRepositoryManager::OPTION_BUNDLED_ENABLED]);
+        self::assertSame('0', $GLOBALS['social_image_test_options'][PresetRepositoryManager::OPTION_BUNDLED_ENABLED]);
         self::assertTrue($disabled['repositories'][0]['capabilities']['toggle']);
         self::assertFalse($disabled['repositories'][0]['capabilities']['delete']);
 
-        $deleted = $manager->remove('egami-essentials');
+        $deleted = $manager->remove('social-image-essentials');
         self::assertInstanceOf(WP_Error::class, $deleted);
-        self::assertSame('egami_bundled_repository_protected', $deleted->get_error_code());
+        self::assertSame('social_image_bundled_repository_protected', $deleted->get_error_code());
 
-        $enabled = $manager->setEnabled('egami-essentials', true);
+        $enabled = $manager->setEnabled('social-image-essentials', true);
         self::assertNotInstanceOf(WP_Error::class, $enabled);
         self::assertCount(65, $enabled['presets']);
-        self::assertSame('1', $GLOBALS['egami_test_options'][PresetRepositoryManager::OPTION_BUNDLED_ENABLED]);
+        self::assertSame('1', $GLOBALS['social_image_test_options'][PresetRepositoryManager::OPTION_BUNDLED_ENABLED]);
     }
 
     public function testBundledRealWorldRepositoryConformsToTheApplicationSchema(): void
@@ -93,7 +93,7 @@ final class PresetRepositoryTest extends TestCase
         $result = PresetSchema::repository($repository);
 
         self::assertNotInstanceOf(WP_Error::class, $result);
-        self::assertSame('egami-essentials', $result['id']);
+        self::assertSame('social-image-essentials', $result['id']);
         self::assertCount(65, $result['presets']);
     }
 
@@ -106,7 +106,7 @@ final class PresetRepositoryTest extends TestCase
         $external['presets'] = [$external['presets'][0]];
         $external['presets'][0]['id'] = 'remote-editorial';
 
-        $GLOBALS['egami_test_options'][PresetRepositoryManager::OPTION_REPOSITORIES] = [
+        $GLOBALS['social_image_test_options'][PresetRepositoryManager::OPTION_REPOSITORIES] = [
             'remote-studio' => [
                 'id' => 'remote-studio',
                 'url' => 'https://example.test/repository.json',
@@ -115,7 +115,7 @@ final class PresetRepositoryTest extends TestCase
                 'lastError' => '',
             ],
         ];
-        $GLOBALS['egami_test_options'][PresetRepositoryManager::OPTION_CACHE] = [
+        $GLOBALS['social_image_test_options'][PresetRepositoryManager::OPTION_CACHE] = [
             'remote-studio' => [
                 'repository' => $external,
                 'syncedAt' => '2026-08-07T01:00:00Z',
@@ -140,7 +140,7 @@ final class PresetRepositoryTest extends TestCase
         $removed = $manager->remove('remote-studio');
         self::assertNotInstanceOf(WP_Error::class, $removed);
         self::assertCount(1, $removed['repositories']);
-        self::assertSame([], $GLOBALS['egami_test_options'][PresetRepositoryManager::OPTION_CACHE]);
+        self::assertSame([], $GLOBALS['social_image_test_options'][PresetRepositoryManager::OPTION_CACHE]);
     }
 
     private function fixture(): array

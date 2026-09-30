@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Template\TemplateSchema;
+use JooosiSocialImage\Template\TemplateSchema;
 use PHPUnit\Framework\TestCase;
 
 final class TemplateSchemaTest extends TestCase
@@ -195,7 +195,7 @@ final class TemplateSchemaTest extends TestCase
         self::assertSame(['post', 'page'], array_column($rules['query']['children'][0]['children'], 'id'));
     }
 
-    public function testSvgElementsKeepOnlyAValidOmniIconNameAndColor(): void
+    public function testSvgElementsKeepOnlyAValidIconNameAndColor(): void
     {
         $document = TemplateSchema::normalizeDocument([
             'elements' => [

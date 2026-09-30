@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
 use Imagine\Driver\Info;
 use Imagine\Gd\DriverInfo as GdDriverInfo;
@@ -24,12 +24,12 @@ use WP_Error;
 defined('ABSPATH') || exit;
 
 /**
- * Renders Egami documents through PHP Imagine.
+ * Renders Social Image documents through PHP Imagine.
  *
  * Imagick is preferred for output quality and GD is the portable fallback.
  * Imagine's Gmagick adapter is intentionally not selected because it cannot
  * reliably create transparent layers or composite them with partial opacity,
- * both of which are required by Egami's document model.
+ * both of which are required by Social Image's document model.
  *
  * @since 0.1.0
  */
@@ -163,8 +163,8 @@ final class ImagineRenderer implements RendererInterface
 
         if (! $this->imagine instanceof ImagineInterface) {
             return new WP_Error(
-                'egami_renderer_unavailable',
-                __('Egami requires either the PHP Imagick extension or PHP GD with FreeType support.', 'jooosi-egami'),
+                'social_image_renderer_unavailable',
+                __('Social Image requires either the PHP Imagick extension or PHP GD with FreeType support.', 'jooosi-social-image'),
             );
         }
 
@@ -174,10 +174,10 @@ final class ImagineRenderer implements RendererInterface
 
         if (! in_array($format, $capabilities['formats'], true)) {
             return new WP_Error(
-                'egami_format_unavailable',
+                'social_image_format_unavailable',
                 sprintf(
                     /* translators: 1: Active image driver, 2: Requested output format. */
-                    __('The active %1$s image driver cannot create %2$s images.', 'jooosi-egami'),
+                    __('The active %1$s image driver cannot create %2$s images.', 'jooosi-social-image'),
                     $this->activeDriver,
                     strtoupper($format),
                 ),
@@ -214,10 +214,10 @@ final class ImagineRenderer implements RendererInterface
             ]);
         } catch (Throwable $exception) {
             return new WP_Error(
-                'egami_render_failed',
+                'social_image_render_failed',
                 sprintf(
                     /* translators: 1: Active image driver, 2: Renderer error message. */
-                    __('The %1$s image renderer failed: %2$s', 'jooosi-egami'),
+                    __('The %1$s image renderer failed: %2$s', 'jooosi-social-image'),
                     $this->activeDriver,
                     $exception->getMessage(),
                 ),
@@ -227,7 +227,7 @@ final class ImagineRenderer implements RendererInterface
         }
 
         if (! is_file($destination) || filesize($destination) < 1) {
-            return new WP_Error('egami_write_failed', __('The generated image could not be written.', 'jooosi-egami'));
+            return new WP_Error('social_image_write_failed', __('The generated image could not be written.', 'jooosi-social-image'));
         }
 
         return [
@@ -691,7 +691,7 @@ final class ImagineRenderer implements RendererInterface
         $svg = isset($element['_svg']) && is_string($element['_svg']) ? $element['_svg'] : '';
 
         if ($svg === '') {
-            $this->warnings[] = sprintf('SVG layer %s has no Omni Icon source.', $element['id'] ?? 'unknown');
+            $this->warnings[] = sprintf('SVG layer %s has no Jooosi Icon source.', $element['id'] ?? 'unknown');
 
             return;
         }

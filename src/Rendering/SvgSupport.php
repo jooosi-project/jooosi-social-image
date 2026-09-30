@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
-use JooosiEgami\Integration\OmniIcon;
+use JooosiSocialImage\Integration\JooosiIcon;
 
 defined('ABSPATH') || exit;
 
 final class SvgSupport
 {
     public function __construct(
-        private OmniIcon $icons,
+        private JooosiIcon $icons,
         private SvgRasterizer $rasterizer,
     ) {
     }
@@ -24,11 +24,11 @@ final class SvgSupport
     public function capabilities(): array
     {
         $capabilities = $this->rasterizer->capabilities();
-        $capabilities['omni_icon'] = $this->icons->available();
-        $capabilities['available'] = $capabilities['available'] && $capabilities['omni_icon'];
+        $capabilities['jooosi_icon'] = $this->icons->available();
+        $capabilities['available'] = $capabilities['available'] && $capabilities['jooosi_icon'];
 
-        if (! $capabilities['omni_icon']) {
-            $capabilities['reason'] = __('Install and activate Omni Icon to use SVG elements.', 'jooosi-egami');
+        if (! $capabilities['jooosi_icon']) {
+            $capabilities['reason'] = __('Install and activate Jooosi Icon to use SVG elements.', 'jooosi-social-image');
             $capabilities['notice'] = '';
         }
 

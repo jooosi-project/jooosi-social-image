@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Content\PlaceholderProviderInterface;
-use JooosiEgami\Content\PlaceholderRegistry;
+use JooosiSocialImage\Content\PlaceholderProviderInterface;
+use JooosiSocialImage\Content\PlaceholderRegistry;
 use PHPUnit\Framework\TestCase;
 
 final class PlaceholderRegistryTest extends TestCase
 {
     protected function tearDown(): void
     {
-        remove_all_filters('jooosi-egami/content:placeholder_definitions');
-        remove_all_filters('jooosi-egami/content:placeholder_values');
+        remove_all_filters('jooosi-social-image/content:placeholder_definitions');
+        remove_all_filters('jooosi-social-image/content:placeholder_values');
         parent::tearDown();
     }
 
@@ -33,11 +33,11 @@ final class PlaceholderRegistryTest extends TestCase
 
     public function testThirdPartiesCanRegisterDefinitionsAndValuesWithFilters(): void
     {
-        add_filter('jooosi-egami/content:placeholder_definitions', static function (array $definitions): array {
+        add_filter('jooosi-social-image/content:placeholder_definitions', static function (array $definitions): array {
             $definitions['company.slogan'] = ['label' => 'Slogan', 'group' => 'Company'];
             return $definitions;
         });
-        add_filter('jooosi-egami/content:placeholder_values', static function (array $values): array {
+        add_filter('jooosi-social-image/content:placeholder_values', static function (array $values): array {
             $values['company']['slogan'] = 'Build something memorable';
             return $values;
         });

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
 defined('ABSPATH') || exit;
 
 /**
- * Creates Egami's renderer without exposing dependency-specific objects.
+ * Creates Social Image's renderer without exposing dependency-specific objects.
  *
  * @since 0.1.0
  */
@@ -15,9 +15,9 @@ final class RendererFactory
 {
     public static function create(?SvgRasterizer $svgRasterizer = null): RendererInterface
     {
-        $preferredDriver = apply_filters('jooosi-egami/rendering:driver', 'auto');
+        $preferredDriver = apply_filters('jooosi-social-image/rendering:driver', 'auto');
         $renderer = ImagineRenderer::create(is_string($preferredDriver) ? $preferredDriver : 'auto', $svgRasterizer);
-        $filtered = apply_filters('jooosi-egami/rendering:renderer', $renderer, $preferredDriver);
+        $filtered = apply_filters('jooosi-social-image/rendering:renderer', $renderer, $preferredDriver);
 
         return $filtered instanceof RendererInterface ? $filtered : $renderer;
     }

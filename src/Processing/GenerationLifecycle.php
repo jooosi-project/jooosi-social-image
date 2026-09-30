@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Processing;
+namespace JooosiSocialImage\Processing;
 
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Template\TemplateRepository;
 use WP_Post;
 
 /**
@@ -82,7 +82,7 @@ final class GenerationLifecycle
             return false;
         }
 
-        $cacheRoot = trailingslashit(wp_normalize_path($uploads['basedir'])) . 'egami/';
+        $cacheRoot = trailingslashit(wp_normalize_path($uploads['basedir'])) . 'social-image/';
         $metaKeys = [
             'og' => ImageGenerator::META_OG,
             'twitter' => ImageGenerator::META_TWITTER,

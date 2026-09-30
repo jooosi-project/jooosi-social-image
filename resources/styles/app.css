@@ -95,16 +95,16 @@
 }
 
 @layer base {
-  .egami-ui,
-  .egami-ui *,
-  .egami-portal,
-  .egami-portal * {
+  .social-image-ui,
+  .social-image-ui *,
+  .social-image-portal,
+  .social-image-portal * {
     border-color: var(--border);
     outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
-  .egami-ui,
-  .egami-portal {
+  .social-image-ui,
+  .social-image-portal {
     color: var(--foreground);
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 1rem;
@@ -113,21 +113,21 @@
     letter-spacing: normal;
   }
 
-  .egami-ui {
+  .social-image-ui {
     min-height: calc(100vh - 32px);
     background: var(--background);
   }
 
-  .egami-ui button:not(:disabled) {
+  .social-image-ui button:not(:disabled) {
     cursor: pointer;
   }
 }
 
-#egami-admin {
+#social-image-admin {
   isolation: isolate;
 }
 
-.egami-color-hue {
+.social-image-color-hue {
   height: 14px;
   border: 0;
   border-radius: 999px;
@@ -135,7 +135,7 @@
   box-shadow: none;
 }
 
-.egami-color-hue::-webkit-slider-thumb {
+.social-image-color-hue::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
   appearance: none;
@@ -145,7 +145,7 @@
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.18);
 }
 
-.egami-color-hue::-moz-range-thumb {
+.social-image-color-hue::-moz-range-thumb {
   width: 10px;
   height: 10px;
   border: 2px solid #fff;
@@ -154,7 +154,7 @@
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.18);
 }
 
-.egami-studio {
+.social-image-studio {
   display: flex;
   min-height: 620px;
   height: calc(100vh - 32px);
@@ -163,7 +163,7 @@
   background: var(--background);
 }
 
-.egami-command-bar {
+.social-image-command-bar {
   display: flex;
   height: 48px;
   min-height: 48px;
@@ -172,7 +172,7 @@
   background: var(--card);
 }
 
-.egami-design-workspace {
+.social-image-design-workspace {
   display: grid;
   height: 100%;
   min-height: 0;
@@ -180,19 +180,19 @@
   overflow: hidden;
 }
 
-.egami-structure-panel,
-.egami-element-inspector {
+.social-image-structure-panel,
+.social-image-element-inspector {
   display: flex;
   min-height: 0;
   flex-direction: column;
   background: var(--card);
 }
 
-.egami-structure-panel {
+.social-image-structure-panel {
   border-right: 1px solid var(--border);
 }
 
-.egami-element-inspector {
+.social-image-element-inspector {
   border-left: 1px solid var(--border);
 }
 
@@ -202,7 +202,7 @@
  * Component-panel control deterministic even if an admin stylesheet loads
  * after the general isolation pass.
  */
-#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]) {
+#social-image-admin .social-image-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]) {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -221,39 +221,39 @@
   outline: none;
 }
 
-#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"]) {
+#social-image-admin .social-image-component-form :is([data-slot="input"], [data-slot="native-select"]) {
   height: 2rem;
   min-height: 0;
   padding: 0.25rem 0.5rem;
 }
 
-#egami-admin .egami-component-form [data-slot="native-select"] {
+#social-image-admin .social-image-component-form [data-slot="native-select"] {
   appearance: none;
   padding-right: 1.75rem;
 }
 
-#egami-admin .egami-component-form [data-slot="input"][data-suffix="percent"] {
+#social-image-admin .social-image-component-form [data-slot="input"][data-suffix="percent"] {
   padding-right: 1.25rem;
 }
 
-#egami-admin .egami-component-form [data-slot="textarea"] {
+#social-image-admin .social-image-component-form [data-slot="textarea"] {
   min-height: 5rem;
   padding: 0.5rem;
   resize: vertical;
 }
 
-#egami-admin .egami-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]):focus-visible {
+#social-image-admin .social-image-component-form :is([data-slot="input"], [data-slot="native-select"], [data-slot="textarea"]):focus-visible {
   border-color: var(--ring);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
 }
 
-#egami-admin .egami-component-form [data-slot="color-control"] {
+#social-image-admin .social-image-component-form [data-slot="color-control"] {
   box-sizing: border-box;
   min-width: 0;
   margin: 0;
 }
 
-#egami-admin .egami-component-form [data-slot="color-value-input"] {
+#social-image-admin .social-image-component-form [data-slot="color-value-input"] {
   box-sizing: border-box;
   width: auto;
   min-width: 0;
@@ -271,7 +271,7 @@
   outline: none;
 }
 
-#egami-admin .egami-component-form [data-slot="checkbox-input"] {
+#social-image-admin .social-image-component-form [data-slot="checkbox-input"] {
   position: absolute !important;
   width: 1px !important;
   min-width: 1px !important;
@@ -286,7 +286,7 @@
   appearance: none !important;
 }
 
-.egami-canvas-viewport {
+.social-image-canvas-viewport {
   position: relative;
   display: flex;
   min-width: 0;
@@ -300,15 +300,15 @@
   background-size: 16px 16px;
 }
 
-.egami-locations-workspace,
-.egami-designs-workspace,
-.egami-templates-workspace {
+.social-image-locations-workspace,
+.social-image-designs-workspace,
+.social-image-templates-workspace {
   height: 100%;
   overflow-y: auto;
   background: #f7f7f7;
 }
 
-.egami-resize-handle {
+.social-image-resize-handle {
   position: absolute;
   z-index: 5;
   pointer-events: auto;
@@ -320,55 +320,55 @@
   box-shadow: 0 1px 3px rgb(15 23 42 / 0.24);
 }
 
-.egami-resize-nw {
+.social-image-resize-nw {
   top: -7px;
   left: -7px;
   cursor: nwse-resize;
 }
 
-.egami-resize-ne {
+.social-image-resize-ne {
   top: -7px;
   right: -7px;
   cursor: nesw-resize;
 }
 
-.egami-resize-n {
+.social-image-resize-n {
   top: -7px;
   left: calc(50% - 6px);
   cursor: ns-resize;
 }
 
-.egami-resize-e {
+.social-image-resize-e {
   top: calc(50% - 6px);
   right: -7px;
   cursor: ew-resize;
 }
 
-.egami-resize-sw {
+.social-image-resize-sw {
   bottom: -7px;
   left: -7px;
   cursor: nesw-resize;
 }
 
-.egami-resize-se {
+.social-image-resize-se {
   right: -7px;
   bottom: -7px;
   cursor: nwse-resize;
 }
 
-.egami-resize-s {
+.social-image-resize-s {
   bottom: -7px;
   left: calc(50% - 6px);
   cursor: ns-resize;
 }
 
-.egami-resize-w {
+.social-image-resize-w {
   top: calc(50% - 6px);
   left: -7px;
   cursor: ew-resize;
 }
 
-.egami-rotation-line {
+.social-image-rotation-line {
   position: absolute;
   z-index: 4;
   bottom: calc(100% + 2px);
@@ -379,7 +379,7 @@
   transform: translateX(-50%);
 }
 
-.egami-rotation-handle {
+.social-image-rotation-handle {
   position: absolute;
   z-index: 6;
   pointer-events: auto;
@@ -397,22 +397,22 @@
   transform: translate(-50%, 50%);
 }
 
-.egami-rotation-handle:active {
+.social-image-rotation-handle:active {
   cursor: grabbing;
 }
 
 @media (max-width: 1100px) {
-  .egami-design-workspace {
+  .social-image-design-workspace {
     grid-template-columns: 210px minmax(0, 1fr) 250px;
   }
 }
 
 @media (max-width: 820px) {
-  .egami-design-workspace {
+  .social-image-design-workspace {
     grid-template-columns: 190px minmax(0, 1fr);
   }
 
-  .egami-element-inspector {
+  .social-image-element-inspector {
     display: none;
   }
 }

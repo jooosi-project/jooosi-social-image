@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Cli;
+namespace JooosiSocialImage\Cli;
 
-use JooosiEgami\Processing\TemplateInvalidator;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Processing\TemplateInvalidator;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Template\TemplateRepository;
 use WP_CLI;
 
 /**
- * Registers the Egami WP-CLI surface.
+ * Registers the Social Image WP-CLI surface.
  *
  * @since 0.1.0
  */
@@ -26,13 +26,13 @@ final class CommandRegistrar
         $designs = new TemplateCommand($templateRepository, $templateInvalidator);
         $settings = new SettingsCommand();
 
-        WP_CLI::add_command('egami render', [$render, 'run']);
-        WP_CLI::add_command('egami cache warm', [$cache, 'warm']);
-        WP_CLI::add_command('egami cache flush', [$cache, 'flush']);
-        WP_CLI::add_command('egami design list', [$designs, 'list']);
-        WP_CLI::add_command('egami design get', [$designs, 'get']);
-        WP_CLI::add_command('egami design delete', [$designs, 'delete']);
-        WP_CLI::add_command('egami settings get', [$settings, 'get']);
-        WP_CLI::add_command('egami settings set', [$settings, 'set']);
+        WP_CLI::add_command('social-image render', [$render, 'run']);
+        WP_CLI::add_command('social-image cache warm', [$cache, 'warm']);
+        WP_CLI::add_command('social-image cache flush', [$cache, 'flush']);
+        WP_CLI::add_command('social-image design list', [$designs, 'list']);
+        WP_CLI::add_command('social-image design get', [$designs, 'get']);
+        WP_CLI::add_command('social-image design delete', [$designs, 'delete']);
+        WP_CLI::add_command('social-image settings get', [$settings, 'get']);
+        WP_CLI::add_command('social-image settings set', [$settings, 'set']);
     }
 }

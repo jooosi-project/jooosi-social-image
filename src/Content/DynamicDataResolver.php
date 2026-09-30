@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Content;
+namespace JooosiSocialImage\Content;
 
 use WP_Post;
 
@@ -50,8 +50,8 @@ final class DynamicDataResolver
 		} else {
 			$post_data = array(
 				'id'                => 0,
-				'title'             => __( 'A dynamic title that fits your design', 'jooosi-egami' ),
-				'excerpt'           => __( 'Preview your design with any WordPress post.', 'jooosi-egami' ),
+				'title'             => __( 'A dynamic title that fits your design', 'jooosi-social-image' ),
+				'excerpt'           => __( 'Preview your design with any WordPress post.', 'jooosi-social-image' ),
 				'content'           => '',
 				'url'               => home_url( '/' ),
 				'date'              => wp_date( get_option( 'date_format' ) ),
@@ -75,7 +75,7 @@ final class DynamicDataResolver
 		$data = array_replace_recursive($data, $this->placeholders->values($post_id));
 
 		$data = array_replace_recursive( $data, $overrides );
-		return apply_filters( 'jooosi-egami/content:data', $data, array( 'post_id' => $post_id, 'post' => $post ) );
+		return apply_filters( 'jooosi-social-image/content:data', $data, array( 'post_id' => $post_id, 'post' => $post ) );
 	}
 
 	public function replace(string $value, array $data): string {
@@ -116,7 +116,7 @@ final class DynamicDataResolver
 		$all = get_post_meta( $post_id );
 		$out = array();
 		foreach ( $all as $key => $values ) {
-			if ( is_protected_meta( $key, 'post' ) && ! apply_filters( 'jooosi-egami/content:allow_protected_meta', false, $key, $post_id ) ) {
+			if ( is_protected_meta( $key, 'post' ) && ! apply_filters( 'jooosi-social-image/content:allow_protected_meta', false, $key, $post_id ) ) {
 				continue;
 			}
 			$values = array_map( 'maybe_unserialize', (array) $values );

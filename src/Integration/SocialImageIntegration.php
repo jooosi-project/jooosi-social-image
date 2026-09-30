@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration;
+namespace JooosiSocialImage\Integration;
 
-use JooosiEgami\Api\Image;
-use JooosiEgami\Rendering\ImageGenerator;
+use JooosiSocialImage\Api\Image;
+use JooosiSocialImage\Rendering\ImageGenerator;
 
 /**
  * Connects rendered images to WordPress output and popular SEO plugins.
@@ -16,7 +16,7 @@ final class SocialImageIntegration
 {
     public function registerHooks(): void
     {
-        add_shortcode('egami', [$this, 'shortcode']);
+        add_shortcode('social-image', [$this, 'shortcode']);
         add_action('wp_head', [$this, 'renderStandaloneMeta'], 4);
 
         add_filter('wpseo_opengraph_image', [$this, 'filterOgUrl'], 99);
@@ -45,9 +45,9 @@ final class SocialImageIntegration
             'post_id' => 0,
             'key' => '',
             'data' => '',
-            'class' => 'egami-image',
+            'class' => 'social-image-image',
             'alt' => '',
-        ], is_array($attributes) ? $attributes : [], 'egami');
+        ], is_array($attributes) ? $attributes : [], 'social-image');
 
         $templateId = absint($attributes['id']);
 

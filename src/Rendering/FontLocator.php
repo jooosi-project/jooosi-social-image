@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
-use JooosiEgami\Integration\YabeWebfont;
+use JooosiSocialImage\Integration\JooosiFon;
 
 defined( 'ABSPATH' ) || exit;
 
 final class FontLocator
 {
-	public function __construct(private YabeWebfont $webfonts) {
+	public function __construct(private JooosiFon $fon) {
 	}
 
 	public function locateForElement(array $element): string {
@@ -25,7 +25,7 @@ final class FontLocator
 		}
 
 		if ( ! $this->isBundledFamily( $family ) ) {
-			$path = $this->webfonts->locate(
+			$path = $this->fon->locate(
 				$family,
 				$weight,
 				'normal',
@@ -37,7 +37,7 @@ final class FontLocator
 		}
 
 		$candidates = apply_filters(
-			'jooosi-egami/rendering:system_font_paths',
+			'jooosi-social-image/rendering:system_font_paths',
 			$this->systemCandidates( $family, $weight ),
 			$family,
 			$weight,
@@ -75,12 +75,12 @@ final class FontLocator
 		$available = (bool) ( $families[0]['regular'] ?? false );
 		$reason = $available
 			? ''
-			: __( 'No readable Arial-compatible TTF or OTF fallback was found. Install Liberation Sans or DejaVu Sans, or provide a local font through Yabe Webfont.', 'jooosi-egami' );
+			: __( 'No readable Arial-compatible TTF or OTF fallback was found. Install Liberation Sans or DejaVu Sans, or provide a local font through Jooosi Fon.', 'jooosi-social-image' );
 		$notice = '';
 
 		if ( $available && $missing ) {
 			/* translators: %s: Comma-separated list of missing fallback font families. */
-			$notice = sprintf( __( 'Some fallback font families are unavailable: %s. Their text layers will use no server-rendered glyphs until compatible local fonts are installed.', 'jooosi-egami' ), implode( ', ', $missing ) );
+			$notice = sprintf( __( 'Some fallback font families are unavailable: %s. Their text layers will use no server-rendered glyphs until compatible local fonts are installed.', 'jooosi-social-image' ), implode( ', ', $missing ) );
 		}
 
 		return array(

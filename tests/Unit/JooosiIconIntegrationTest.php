@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OmniIcon\Services {
+namespace JooosiIcon\Services {
     final class IconService
     {
         /** @var list<array<string, string>> */
@@ -34,7 +34,7 @@ namespace OmniIcon\Services {
     }
 }
 
-namespace OmniIcon {
+namespace JooosiIcon {
     final class TestContainer
     {
         public function __construct(private Services\IconService $service)
@@ -75,15 +75,15 @@ namespace OmniIcon {
     }
 }
 
-namespace JooosiEgami\Tests\Unit {
-    use JooosiEgami\Integration\OmniIcon;
+namespace JooosiSocialImage\Tests\Unit {
+    use JooosiSocialImage\Integration\JooosiIcon;
     use PHPUnit\Framework\TestCase;
 
-    final class OmniIconIntegrationTest extends TestCase
+    final class JooosiIconIntegrationTest extends TestCase
     {
         public function testPublicServiceResultIsAlreadyHtmlAndPresentationIsNormalized(): void
         {
-            $integration = new OmniIcon();
+            $integration = new JooosiIcon();
             $svg = $integration->get('lucide:star', [
                 'width' => 96,
                 'height' => 64,
@@ -99,7 +99,7 @@ namespace JooosiEgami\Tests\Unit {
                 'width' => '96',
                 'height' => '64',
                 'color' => '#FF0000',
-            ], \OmniIcon\Plugin::get_instance()->service()->calls[0]);
+            ], \JooosiIcon\Plugin::get_instance()->service()->calls[0]);
         }
     }
 }

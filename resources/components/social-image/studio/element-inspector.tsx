@@ -14,15 +14,15 @@ import IconTrash from "~icons/lucide/trash-2";
 import IconUnlock from "~icons/lucide/unlock";
 import IconX from "~icons/lucide/x";
 
-import { BackgroundEditor } from "@/components/egami/studio/background-editor";
+import { BackgroundEditor } from "@/components/social-image/studio/background-editor";
 import {
   PlaceholderPicker,
   placeholderAutocompleteRange,
   type PlaceholderPickerHandle,
-} from "@/components/egami/studio/placeholder-picker";
+} from "@/components/social-image/studio/placeholder-picker";
 import { Button } from "@/components/ui/button";
 import { ColorPicker } from "@/components/ui/color-picker";
-import { IconPickerDialog } from "@/components/egami/studio/icon-picker-dialog";
+import { IconPickerDialog } from "@/components/social-image/studio/icon-picker-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -187,7 +187,7 @@ export function ElementInspector({
 
   if (!element) {
     return (
-      <aside className="egami-element-inspector" aria-label="Element inspector">
+      <aside className="social-image-element-inspector" aria-label="Element inspector">
         <div className="grid min-h-0 flex-1 place-items-center px-6 text-center">
           <div>
             <p className="text-xs font-semibold">No element selected</p>
@@ -247,14 +247,14 @@ export function ElementInspector({
 
   return (
     <>
-      <aside className="egami-element-inspector" aria-label="Element inspector">
+      <aside className="social-image-element-inspector" aria-label="Element inspector">
       <header className="flex h-11 shrink-0 items-center gap-2 border-b px-3">
         <span className="text-muted-foreground"><InspectorIcon element={element} /></span>
         <span className="text-xs font-semibold">{label}</span>
         <div className="ml-auto"><InspectorMenu element={element} onDuplicate={onDuplicate} onMove={onMove} onDelete={onDelete} /></div>
       </header>
 
-      <div className="egami-component-form min-h-0 flex-1 overflow-y-auto">
+      <div className="social-image-component-form min-h-0 flex-1 overflow-y-auto">
         {element.type === "text" && (
           <section className="space-y-2 border-b px-3 py-3">
             <div className="flex items-center justify-between">
@@ -337,11 +337,11 @@ export function ElementInspector({
           <section className="space-y-3 border-b px-3 py-3">
             <div className="grid min-h-24 place-items-center rounded-md border bg-muted/30 p-3">
               {element.icon
-                ? <omni-icon name={element.icon} width="56" height="56" color={element.color} aria-hidden="true" />
+                ? <jooosi-icon name={element.icon} width="56" height="56" color={element.color} aria-hidden="true" />
                 : <span className="text-xs text-muted-foreground">No icon selected</span>}
             </div>
             <Button size="sm" className="w-full" disabled={!svgStatus.available} title={svgStatus.available ? undefined : svgStatus.reason} onClick={() => setIconPickerOpen(true)}>
-              <IconFileCode /> Choose from Omni Icon
+              <IconFileCode /> Choose from Jooosi Icon
             </Button>
             {!svgStatus.available && <p className="text-[10px] leading-4 text-amber-700">{svgStatus.reason}</p>}
             {svgStatus.notice && <p className="text-[10px] leading-4 text-amber-700">{svgStatus.notice}</p>}
@@ -394,7 +394,7 @@ export function ElementInspector({
                   <option value="Verdana">Verdana</option>
                 </optgroup>
                 {webfontStatus.fonts.length > 0 && (
-                  <optgroup label="Yabe Webfont">
+                  <optgroup label="Jooosi Fon">
                     {webfontStatus.fonts.map((font) => (
                       <option key={`${font.family}-${font.type}`} value={font.family} disabled={!font.renderable}>
                         {font.title}{font.renderable ? "" : " — server renderer unavailable"}

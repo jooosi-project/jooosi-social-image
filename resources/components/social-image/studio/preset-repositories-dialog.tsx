@@ -71,18 +71,18 @@ export function PresetRepositoriesDialog({
       <DialogContent className="flex h-[min(84vh,44rem)] max-w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
         <DialogHeader className="shrink-0 gap-1 px-5 pb-4 pt-5 text-left">
           <DialogTitle>Template repositories</DialogTitle>
-          <DialogDescription>Add public Egami repository manifests. Remote data is validated and cached before it appears in Templates.</DialogDescription>
+          <DialogDescription>Add public Social Image design repositories. Their manifests are validated and cached before the designs appear in Templates.</DialogDescription>
         </DialogHeader>
 
         {canManage && (
           <div className="shrink-0 border-y bg-muted/30 px-5 py-4">
-            <label className="mb-1.5 block text-xs font-medium" htmlFor="egami-repository-url">Repository manifest URL</label>
+            <label className="mb-1.5 block text-xs font-medium" htmlFor="social-image-repository-url">Repository manifest URL</label>
             <div className="flex gap-2">
               <Input
-                id="egami-repository-url"
+                id="social-image-repository-url"
                 value={url}
                 onChange={(event) => setUrl(event.target.value)}
-                placeholder="https://example.com/egami/repository.json"
+                placeholder="https://example.com/social-image/repository.json"
                 inputMode="url"
                 autoComplete="url"
                 onKeyDown={(event) => {

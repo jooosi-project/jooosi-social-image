@@ -51,5 +51,5 @@ if (markerIndex === -1) {
 }
 
 const entries = formatEntries(parseEntries(readFileSync(changelogPath, "utf8")));
-const changelog = `${marker}\n\n${entries}\n\n[See changelog for all versions.](https://github.com/jooosi-project/jooosi-egami/blob/main/CHANGELOG.md)\n`;
+const changelog = `${marker}\n\n${entries}\n\n[See changelog for all versions.](https://github.com/jooosi-project/jooosi-social-image/blob/main/CHANGELOG.md)\n`;
 writeFileSync(readmePath, readme.slice(0, markerIndex) + changelog, "utf8");

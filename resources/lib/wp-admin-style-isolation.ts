@@ -1,6 +1,6 @@
 import * as csstree from "css-tree";
 
-const ISOLATION_CLASS = "egami-style";
+const ISOLATION_CLASS = "social-image-style";
 const PORTAL_ATTRIBUTE = "data-base-ui-portal";
 const LEGACY_PSEUDO_ELEMENTS = new Set(["before", "after", "first-letter", "first-line"]);
 const WORDPRESS_STYLESHEET_SELECTOR = [
@@ -8,14 +8,14 @@ const WORDPRESS_STYLESHEET_SELECTOR = [
   'link[rel="stylesheet"][href*="wp-admin/css/colors/"]',
 ].join(", ");
 
-type EgamiDocumentBody = HTMLElement & { egamiPortalObserver?: MutationObserver };
+type SocialImageDocumentBody = HTMLElement & { socialImagePortalObserver?: MutationObserver };
 
 function exclusionNode(): csstree.CssNode {
   const selector = csstree.parse(`:not(.${ISOLATION_CLASS} *)`, { context: "selector" }) as csstree.Selector;
   const node = selector.children.first;
 
   if (! node) {
-    throw new Error("Could not create the Egami WordPress style exclusion selector.");
+    throw new Error("Could not create the Social Image WordPress style exclusion selector.");
   }
 
   return node;
@@ -23,7 +23,7 @@ function exclusionNode(): csstree.CssNode {
 
 /**
  * Make every WordPress selector explicitly ignore descendants of an isolated
- * Egami root. Pseudo-elements must remain last in their compound selector.
+ * Social Image root. Pseudo-elements must remain last in their compound selector.
  */
 export function isolateWordPressCss(css: string): string {
   const ast = csstree.parse(css);
@@ -62,11 +62,11 @@ function protectPortal(node: Node): void {
   if (! (node instanceof HTMLElement)) return;
 
   if (node.hasAttribute(PORTAL_ATTRIBUTE)) {
-    node.classList.add(ISOLATION_CLASS, "egami-portal");
+    node.classList.add(ISOLATION_CLASS, "social-image-portal");
   }
 
   node.querySelectorAll<HTMLElement>(`[${PORTAL_ATTRIBUTE}]`).forEach((portal) => {
-    portal.classList.add(ISOLATION_CLASS, "egami-portal");
+    portal.classList.add(ISOLATION_CLASS, "social-image-portal");
   });
 }
 
@@ -76,7 +76,7 @@ async function isolateStylesheet(link: HTMLLinkElement): Promise<void> {
     if (! response.ok) return;
 
     const style = document.createElement("style");
-    style.dataset.egamiWpAdminIsolation = link.href;
+    style.dataset.socialImageWpAdminIsolation = link.href;
     style.media = link.media;
     style.nonce = link.nonce;
     style.textContent = isolateWordPressCss(await response.text());
@@ -87,19 +87,19 @@ async function isolateStylesheet(link: HTMLLinkElement): Promise<void> {
 }
 
 /**
- * Isolate Egami from WordPress admin CSS while leaving the admin menu,
+ * Isolate Social Image from WordPress admin CSS while leaving the admin menu,
  * toolbar, media library, and other WordPress-owned surfaces untouched.
  */
 export async function isolateWordPressAdminStyles(): Promise<void> {
   document.querySelector("#wpbody")?.classList.add(ISOLATION_CLASS);
   document.querySelectorAll<HTMLElement>(`[${PORTAL_ATTRIBUTE}]`).forEach(protectPortal);
 
-  const body = document.body as EgamiDocumentBody;
-  if (! body.egamiPortalObserver) {
-    body.egamiPortalObserver = new MutationObserver((mutations) => {
+  const body = document.body as SocialImageDocumentBody;
+  if (! body.socialImagePortalObserver) {
+    body.socialImagePortalObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => mutation.addedNodes.forEach(protectPortal));
     });
-    body.egamiPortalObserver.observe(body, { childList: true });
+    body.socialImagePortalObserver.observe(body, { childList: true });
   }
 
   const links = Array.from(document.querySelectorAll<HTMLLinkElement>(WORDPRESS_STYLESHEET_SELECTOR));

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Preset;
+namespace JooosiSocialImage\Preset;
 
-use JooosiEgami\Template\TemplateSchema;
+use JooosiSocialImage\Template\TemplateSchema;
 use WP_Error;
 
 defined('ABSPATH') || exit;
@@ -28,11 +28,11 @@ final class PresetSchema
     public static function repository(mixed $input): array|WP_Error
     {
         if (! is_array($input)) {
-            return self::error('repository', __('The preset repository must be a JSON object.', 'jooosi-egami'));
+            return self::error('repository', __('The preset repository must be a JSON object.', 'jooosi-social-image'));
         }
 
         if ((int) ($input['schemaVersion'] ?? 0) !== self::VERSION) {
-            return self::error('schema_version', __('The preset repository uses an unsupported schema version.', 'jooosi-egami'));
+            return self::error('schema_version', __('The preset repository uses an unsupported schema version.', 'jooosi-social-image'));
         }
 
         $id = self::slug($input['id'] ?? '');
@@ -42,14 +42,14 @@ final class PresetSchema
         $presets = $input['presets'] ?? null;
 
         if ($id === '' || $title === '' || $description === '' || $version === '') {
-            return self::error('metadata', __('The preset repository is missing valid id, version, title, or description metadata.', 'jooosi-egami'));
+            return self::error('metadata', __('The preset repository is missing valid id, version, title, or description metadata.', 'jooosi-social-image'));
         }
 
         if (! is_array($presets) || $presets === [] || count($presets) > self::MAX_PRESETS || ! self::isList($presets)) {
             return self::error(
                 'presets',
                 /* translators: %d: Maximum number of presets in a repository. */
-                sprintf(__('A preset repository must contain between 1 and %d presets.', 'jooosi-egami'), self::MAX_PRESETS),
+                sprintf(__('A preset repository must contain between 1 and %d presets.', 'jooosi-social-image'), self::MAX_PRESETS),
             );
         }
 
@@ -63,13 +63,13 @@ final class PresetSchema
                 return self::error(
                     'preset',
                     /* translators: 1: Preset position, 2: Validation error message. */
-                    sprintf(__('Preset %1$d is invalid: %2$s', 'jooosi-egami'), $index + 1, $clean->get_error_message()),
+                    sprintf(__('Preset %1$d is invalid: %2$s', 'jooosi-social-image'), $index + 1, $clean->get_error_message()),
                 );
             }
 
             if (isset($ids[$clean['id']])) {
                 /* translators: %s: Duplicated preset identifier. */
-                return self::error('duplicate_preset', sprintf(__('The preset id “%s” is duplicated.', 'jooosi-egami'), $clean['id']));
+                return self::error('duplicate_preset', sprintf(__('The preset id “%s” is duplicated.', 'jooosi-social-image'), $clean['id']));
             }
 
             $ids[$clean['id']] = true;
@@ -98,7 +98,7 @@ final class PresetSchema
     public static function preset(mixed $input): array|WP_Error
     {
         if (! is_array($input) || (int) ($input['schemaVersion'] ?? 0) !== self::VERSION) {
-            return self::error('schema_version', __('The preset uses an unsupported schema version.', 'jooosi-egami'));
+            return self::error('schema_version', __('The preset uses an unsupported schema version.', 'jooosi-social-image'));
         }
 
         $id = self::slug($input['id'] ?? '');
@@ -107,7 +107,7 @@ final class PresetSchema
         $category = self::text($input['category'] ?? '', 80);
 
         if ($id === '' || $title === '' || $description === '' || $category === '') {
-            return self::error('metadata', __('The preset is missing valid id, title, description, or category metadata.', 'jooosi-egami'));
+            return self::error('metadata', __('The preset is missing valid id, title, description, or category metadata.', 'jooosi-social-image'));
         }
 
         $document = $input['document'] ?? null;
@@ -145,31 +145,31 @@ final class PresetSchema
     private static function documentError(mixed $document): string
     {
         if (! is_array($document) || (int) ($document['version'] ?? 0) !== TemplateSchema::DOCUMENT_VERSION) {
-            return __('The preset document uses an unsupported Egami document schema version.', 'jooosi-egami');
+            return __('The preset document uses an unsupported Social Image document schema version.', 'jooosi-social-image');
         }
 
         $width = $document['width'] ?? null;
         $height = $document['height'] ?? null;
 
         if (! is_int($width) || ! is_int($height) || $width < 200 || $width > 2400 || $height < 200 || $height > 2400) {
-            return __('The preset canvas dimensions must be integers between 200 and 2400 pixels.', 'jooosi-egami');
+            return __('The preset canvas dimensions must be integers between 200 and 2400 pixels.', 'jooosi-social-image');
         }
 
         if (! is_array($document['background'] ?? null)) {
-            return __('The preset document requires a background object.', 'jooosi-egami');
+            return __('The preset document requires a background object.', 'jooosi-social-image');
         }
 
         $elements = $document['elements'] ?? null;
 
         if (! is_array($elements) || $elements === [] || count($elements) > 100 || ! self::isList($elements)) {
-            return __('The preset document must contain between 1 and 100 elements.', 'jooosi-egami');
+            return __('The preset document must contain between 1 and 100 elements.', 'jooosi-social-image');
         }
 
         $ids = [];
         foreach ($elements as $index => $element) {
             if (! is_array($element)) {
                 /* translators: %d: Element position in the preset document. */
-                return sprintf(__('Element %d must be an object.', 'jooosi-egami'), $index + 1);
+                return sprintf(__('Element %d must be an object.', 'jooosi-social-image'), $index + 1);
             }
 
             $id = self::slug($element['id'] ?? '');
@@ -177,12 +177,12 @@ final class PresetSchema
 
             if ($id === '' || ! in_array($type, ['text', 'image', 'svg', 'shape'], true)) {
                 /* translators: %d: Element position in the preset document. */
-                return sprintf(__('Element %d has an invalid id or type.', 'jooosi-egami'), $index + 1);
+                return sprintf(__('Element %d has an invalid id or type.', 'jooosi-social-image'), $index + 1);
             }
 
             if (isset($ids[$id])) {
                 /* translators: %s: Duplicated element identifier. */
-                return sprintf(__('Element id “%s” is duplicated.', 'jooosi-egami'), $id);
+                return sprintf(__('Element id “%s” is duplicated.', 'jooosi-social-image'), $id);
             }
 
             $ids[$id] = true;
@@ -229,6 +229,6 @@ final class PresetSchema
 
     private static function error(string $code, string $message): WP_Error
     {
-        return new WP_Error('egami_preset_' . $code, $message, ['status' => 422]);
+        return new WP_Error('social_image_preset_' . $code, $message, ['status' => 422]);
     }
 }

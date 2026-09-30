@@ -1,7 +1,7 @@
-import type { EgamiConfig } from "@/types/admin";
+import type { SocialImageConfig } from "@/types/admin";
 
 export class AdminApi {
-  public constructor(private readonly config: EgamiConfig) {}
+  public constructor(private readonly config: SocialImageConfig) {}
 
   public async request<T>(path: string, init: RequestInit = {}): Promise<T> {
     const endpoint = `${this.config.restUrl.replace(/\/$/, "")}${path}`;

@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 
-import { DesignCanvas } from "@/components/egami/studio/design-canvas";
-import { ElementInspector } from "@/components/egami/studio/element-inspector";
-import { StructurePanel } from "@/components/egami/studio/structure-panel";
+import { DesignCanvas } from "@/components/social-image/studio/design-canvas";
+import { ElementInspector } from "@/components/social-image/studio/element-inspector";
+import { StructurePanel } from "@/components/social-image/studio/structure-panel";
 import type {
   DesignElement,
   ElementType,
@@ -214,7 +214,7 @@ export function DesignWorkspace({
   });
 
   return (
-    <div className="egami-design-workspace">
+    <div className="social-image-design-workspace">
       <StructurePanel
         document={design.document}
         selectedId={selectedId}

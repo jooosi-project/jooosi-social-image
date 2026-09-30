@@ -1,25 +1,25 @@
-.wp-admin.toplevel_page_jooosi-egami #wpcontent {
+.wp-admin.toplevel_page_jooosi-social-image #wpcontent {
   padding-left: 0 !important;
 }
 
-.wp-admin.toplevel_page_jooosi-egami #wpbody-content {
+.wp-admin.toplevel_page_jooosi-social-image #wpbody-content {
   padding-bottom: 0;
 }
 
-.wp-admin.toplevel_page_jooosi-egami #wpfooter {
+.wp-admin.toplevel_page_jooosi-social-image #wpfooter {
   display: none;
 }
 
-.wp-admin.toplevel_page_jooosi-egami:has(.egami-studio) #wpbody-content {
+.wp-admin.toplevel_page_jooosi-social-image:has(.social-image-studio) #wpbody-content {
   height: calc(100vh - 32px);
   overflow: hidden;
 }
 
-.wp-admin.toplevel_page_jooosi-egami .wrap {
+.wp-admin.toplevel_page_jooosi-social-image .wrap {
   margin: 0;
 }
 
-.wp-admin.toplevel_page_jooosi-egami .notice:not(.egami-notice),
-.wp-admin.toplevel_page_jooosi-egami .update-nag {
+.wp-admin.toplevel_page_jooosi-social-image .notice:not(.social-image-notice),
+.wp-admin.toplevel_page_jooosi-social-image .update-nag {
   display: none;
 }

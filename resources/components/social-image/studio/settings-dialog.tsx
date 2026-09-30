@@ -19,6 +19,7 @@ type SettingsDialogProps = {
   open: boolean;
   settings: PluginSettings;
   status: SystemStatus;
+  statusLoadState: "loading" | "ready" | "error";
   canManage: boolean;
   busy: boolean;
   onOpenChange: (open: boolean) => void;
@@ -49,7 +50,7 @@ function StatusItem({ label, ready }: { label: string; ready: boolean }) {
   );
 }
 
-export function SettingsDialog({ open, settings, status, canManage, busy, onOpenChange, onChange, onSave, onWarm, onFlush }: SettingsDialogProps) {
+export function SettingsDialog({ open, settings, status, statusLoadState, canManage, busy, onOpenChange, onChange, onSave, onWarm, onFlush }: SettingsDialogProps) {
   const driver = status.renderer?.active_driver || "none";
   const diagnostics = [
     ...(status.renderer.diagnostics || []),
@@ -91,20 +92,28 @@ export function SettingsDialog({ open, settings, status, canManage, busy, onOpen
 
           <section>
             <h3 className="mb-2 text-xs font-semibold">System status</h3>
-            <div className="rounded-md border px-3">
-              <StatusItem label={`Imagine (${driver})`} ready={Boolean(status.renderer?.available)} />
-              <StatusItem label="Imagick" ready={Boolean(status.renderer.extensions.imagick)} />
-              <StatusItem label="Omni Icon" ready={status.svg.omni_icon} />
-              <StatusItem label={`SVG rasterizer (${status.svg.engine})`} ready={status.svg.available} />
-              <StatusItem label={`Yabe Webfont (${status.webfont.renderable_count}/${status.webfont.fonts.length} server-ready)`} ready={status.webfont.available && status.webfont.unrenderable_count === 0} />
-              <StatusItem label="Server fallback fonts" ready={status.fonts.available} />
-              <StatusItem label="Generated-image storage" ready={status.filesystem.ready} />
-              <StatusItem label="Background generation" ready={status.cron.ready} />
-            </div>
-            {diagnostics.length > 0 && (
-              <ul aria-label="System diagnostics" className="mt-2 list-disc space-y-1 pl-4 text-[10px] leading-4 text-amber-700">
-                {diagnostics.map((message) => <li key={message}>{message}</li>)}
-              </ul>
+            {statusLoadState === "loading" ? (
+              <p className="rounded-md border px-3 py-2 text-xs text-muted-foreground">Checking system status…</p>
+            ) : statusLoadState === "error" ? (
+              <p className="rounded-md border px-3 py-2 text-xs text-muted-foreground">System status could not be loaded. Reload the page to retry.</p>
+            ) : (
+              <>
+                <div className="rounded-md border px-3">
+                  <StatusItem label={`Imagine (${driver})`} ready={Boolean(status.renderer?.available)} />
+                  <StatusItem label="Imagick" ready={Boolean(status.renderer.extensions.imagick)} />
+                  <StatusItem label="Jooosi Icon" ready={status.svg.jooosi_icon} />
+                  <StatusItem label={`SVG rasterizer (${status.svg.engine})`} ready={status.svg.available} />
+                  <StatusItem label={`Jooosi Fon (${status.webfont.renderable_count}/${status.webfont.fonts.length} server-ready)`} ready={status.webfont.available && status.webfont.unrenderable_count === 0} />
+                  <StatusItem label="Server fallback fonts" ready={status.fonts.available} />
+                  <StatusItem label="Generated-image storage" ready={status.filesystem.ready} />
+                  <StatusItem label="Background generation" ready={status.cron.ready} />
+                </div>
+                {diagnostics.length > 0 && (
+                  <ul aria-label="System diagnostics" className="mt-2 list-disc space-y-1 pl-4 text-[10px] leading-4 text-amber-700">
+                    {diagnostics.map((message) => <li key={message}>{message}</li>)}
+                  </ul>
+                )}
+              </>
             )}
             {canManage && (
               <div className="mt-3 grid grid-cols-2 gap-2">

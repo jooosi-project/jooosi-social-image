@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
 use Throwable;
 use WP_Error;
@@ -55,15 +55,15 @@ final class SvgRasterizer
         $limited = $available && $engine === 'msvg';
 
         if (! $imagick) {
-            $reason = __('Enable the PHP Imagick extension to render SVG elements.', 'jooosi-egami');
+            $reason = __('Enable the PHP Imagick extension to render SVG elements.', 'jooosi-social-image');
         } elseif ($engine === 'none') {
-            $reason = __('The installed ImageMagick build does not expose its SVG format.', 'jooosi-egami');
+            $reason = __('The installed ImageMagick build does not expose its SVG format.', 'jooosi-social-image');
         } else {
             $reason = '';
         }
 
         $notice = $limited
-            ? __('SVG uses ImageMagick MSVG with limited SVG compatibility. Ask the host to install the ImageMagick librsvg delegate for full support.', 'jooosi-egami')
+            ? __('SVG uses ImageMagick MSVG with limited SVG compatibility. Ask the host to install the ImageMagick librsvg delegate for full support.', 'jooosi-social-image')
             : '';
 
         $this->detected = [
@@ -95,7 +95,7 @@ final class SvgRasterizer
     public function rasterize(string $svg, int $width, int $height): string|WP_Error
     {
         if (! $this->available()) {
-            return new WP_Error('egami_svg_renderer_unavailable', $this->capabilities()['reason']);
+            return new WP_Error('social_image_svg_renderer_unavailable', $this->capabilities()['reason']);
         }
 
         $width = max(1, min(8192, $width));
@@ -113,7 +113,7 @@ final class SvgRasterizer
                     if (is_array($this->detected)) {
                         $this->detected['engine'] = 'msvg';
                         $this->detected['limited'] = true;
-                        $this->detected['notice'] = __('The ImageMagick librsvg delegate failed, so Egami used limited MSVG compatibility. Ask the host to repair the librsvg delegate.', 'jooosi-egami');
+                        $this->detected['notice'] = __('The ImageMagick librsvg delegate failed, so Social Image used limited MSVG compatibility. Ask the host to repair the librsvg delegate.', 'jooosi-social-image');
                     }
 
                     return $blob;
@@ -123,9 +123,9 @@ final class SvgRasterizer
             }
 
             return new WP_Error(
-                'egami_svg_render_failed',
+                'social_image_svg_render_failed',
                 /* translators: %s: SVG rasterizer error message. */
-                sprintf(__('The SVG rasterizer failed: %s', 'jooosi-egami'), $exception->getMessage()),
+                sprintf(__('The SVG rasterizer failed: %s', 'jooosi-social-image'), $exception->getMessage()),
             );
         }
     }
@@ -153,7 +153,7 @@ final class SvgRasterizer
             if ((float) ($alpha['maxima'] ?? 0) <= 0.0) {
                 $image->clear();
                 throw new \RuntimeException(
-                    esc_html__('MSVG produced an empty image for this icon. Ask the host to install the ImageMagick librsvg delegate, or choose a simpler icon.', 'jooosi-egami'),
+                    esc_html__('MSVG produced an empty image for this icon. Ask the host to install the ImageMagick librsvg delegate, or choose a simpler icon.', 'jooosi-social-image'),
                 );
             }
         }
@@ -164,7 +164,7 @@ final class SvgRasterizer
         $image->clear();
 
         if (! is_string($blob) || $blob === '') {
-            throw new \RuntimeException(esc_html__('Imagick returned an empty PNG.', 'jooosi-egami'));
+            throw new \RuntimeException(esc_html__('Imagick returned an empty PNG.', 'jooosi-social-image'));
         }
 
         return $blob;

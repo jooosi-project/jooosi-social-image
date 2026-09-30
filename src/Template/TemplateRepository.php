@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Template;
+namespace JooosiSocialImage\Template;
 
 use WP_Error;
 use WP_Post;
@@ -15,18 +15,18 @@ use WP_Query;
  */
 final class TemplateRepository
 {
-    public const POST_TYPE = 'egami_template';
+    public const POST_TYPE = 'social_image_design';
 
-    public const META_DOCUMENT = '_egami_document';
+    public const META_DOCUMENT = '_social_image_document';
 
-    public const META_RULES = '_egami_rules';
+    public const META_RULES = '_social_image_rules';
 
-    public const META_REVISION = '_egami_revision';
+    public const META_REVISION = '_social_image_revision';
 
     public function registerPostType(bool $translateLabels = true): void
     {
-        $name = $translateLabels ? __('Egami Designs', 'jooosi-egami') : 'Egami Designs';
-        $singularName = $translateLabels ? __('Egami Design', 'jooosi-egami') : 'Egami Design';
+        $name = $translateLabels ? __('Social Image Designs', 'jooosi-social-image') : 'Social Image Designs';
+        $singularName = $translateLabels ? __('Social Image Design', 'jooosi-social-image') : 'Social Image Design';
 
         register_post_type(self::POST_TYPE, [
             'labels' => [
@@ -70,7 +70,7 @@ final class TemplateRepository
         $post = get_post($id);
 
         if (! $post instanceof WP_Post || $post->post_type !== self::POST_TYPE) {
-            return new WP_Error('egami_template_not_found', __('Design not found.', 'jooosi-egami'), ['status' => 404]);
+            return new WP_Error('social_image_template_not_found', __('Design not found.', 'jooosi-social-image'), ['status' => 404]);
         }
 
         return $this->format($post);
@@ -81,7 +81,7 @@ final class TemplateRepository
      */
     public function create(string $title = '', ?array $document = null, ?array $rules = null): array|WP_Error
     {
-        $title = trim($title) !== '' ? sanitize_text_field($title) : __('Untitled design', 'jooosi-egami');
+        $title = trim($title) !== '' ? sanitize_text_field($title) : __('Untitled design', 'jooosi-social-image');
         $id = wp_insert_post([
             'post_type' => self::POST_TYPE,
             'post_status' => 'draft',
@@ -152,7 +152,7 @@ final class TemplateRepository
         }
 
         /* translators: %s: Original design title. */
-        $copy = $this->create(sprintf(__('%s (copy)', 'jooosi-egami'), $template['title']));
+        $copy = $this->create(sprintf(__('%s (copy)', 'jooosi-social-image'), $template['title']));
 
         if (is_wp_error($copy)) {
             return $copy;

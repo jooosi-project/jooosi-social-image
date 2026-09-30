@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration;
+namespace JooosiSocialImage\Integration;
 
 use Throwable;
 
 defined('ABSPATH') || exit;
 
 /**
- * Optional boundary around Omni Icon's public service.
+ * Optional boundary around Jooosi Icon's public service.
  *
- * No Omni Icon object crosses this class, which keeps Egami loadable when the
+ * No Jooosi Icon object crosses this class, which keeps Social Image loadable when the
  * integration plugin is absent and keeps PHP-Scoper release builds stable.
  */
-final class OmniIcon
+final class JooosiIcon
 {
     private bool $resolved = false;
 
@@ -22,7 +22,7 @@ final class OmniIcon
 
     public function available(): bool
     {
-        return $this->service() instanceof \OmniIcon\Services\IconService;
+        return $this->service() instanceof \JooosiIcon\Services\IconService;
     }
 
     public function get(string $name, array $attributes = []): ?string
@@ -43,7 +43,7 @@ final class OmniIcon
 
         $service = $this->service();
 
-        if (! $service instanceof \OmniIcon\Services\IconService) {
+        if (! $service instanceof \JooosiIcon\Services\IconService) {
             return null;
         }
 
@@ -63,7 +63,7 @@ final class OmniIcon
     {
         $service = $this->service();
 
-        if (! $service instanceof \OmniIcon\Services\IconService) {
+        if (! $service instanceof \JooosiIcon\Services\IconService) {
             return [];
         }
 
@@ -111,16 +111,16 @@ final class OmniIcon
 
         $this->resolved = true;
 
-        if (! class_exists(\OmniIcon\Plugin::class) || ! class_exists(\OmniIcon\Services\IconService::class)) {
+        if (! class_exists(\JooosiIcon\Plugin::class) || ! class_exists(\JooosiIcon\Services\IconService::class)) {
             return null;
         }
 
         try {
-            $service = \OmniIcon\Plugin::get_instance()
+            $service = \JooosiIcon\Plugin::get_instance()
                 ->container()
-                ->get(\OmniIcon\Services\IconService::class);
+                ->get(\JooosiIcon\Services\IconService::class);
 
-            if ($service instanceof \OmniIcon\Services\IconService) {
+            if ($service instanceof \JooosiIcon\Services\IconService) {
                 $this->service = $service;
             }
         } catch (Throwable) {

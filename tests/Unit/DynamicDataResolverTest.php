@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Content\DynamicDataResolver;
+use JooosiSocialImage\Content\DynamicDataResolver;
 use PHPUnit\Framework\TestCase;
 
 final class DynamicDataResolverTest extends TestCase

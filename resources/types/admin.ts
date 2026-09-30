@@ -218,7 +218,7 @@ export type RendererStatus = {
 
 export type SvgStatus = {
   available: boolean;
-  omni_icon: boolean;
+  jooosi_icon: boolean;
   imagick: boolean;
   svg_format: boolean;
   librsvg: boolean;
@@ -298,7 +298,7 @@ export type PostTypeOption = {
   label: string;
 };
 
-export type EgamiConfig = {
+export type SocialImageConfig = {
   restUrl: string;
   nonce: string;
   adminUrl: string;
@@ -328,7 +328,7 @@ type MediaFrame = {
 
 declare global {
   interface Window {
-    EgamiConfig?: EgamiConfig;
+    SocialImageConfig?: SocialImageConfig;
     wp?: {
       media: (options: Record<string, unknown>) => MediaFrame;
     };

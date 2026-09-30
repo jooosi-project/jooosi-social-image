@@ -35,4 +35,8 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./resources", import.meta.url)),
     },
   },
+	server: {
+		// WordPress is served by Docker on a different origin during development.
+		cors: true,
+	}
 });

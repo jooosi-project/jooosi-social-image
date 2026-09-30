@@ -1,13 +1,19 @@
+allowBuilds:
+  fs-ext-extra-prebuilt: true
+
 minimumReleaseAgeExclude:
   - shadcn@4.16.2
 
 overrides:
-  vite: npm:@voidzero-dev/vite-plus-core@0.2.8
+  vite@*: 'catalog:'
 
 peerDependencyRules:
   allowAny:
     - vite
     - vite-plus
   allowedVersions:
-    vite: "*"
+    vite: '*'
     vite-plus: "*"
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.3.0
+  vite-plus: 0.3.0

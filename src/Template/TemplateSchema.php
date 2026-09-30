@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Template;
+namespace JooosiSocialImage\Template;
 
 defined( 'ABSPATH' ) || exit;
 

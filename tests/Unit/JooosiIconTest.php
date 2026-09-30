@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Integration\OmniIcon;
+use JooosiSocialImage\Integration\JooosiIcon;
 use PHPUnit\Framework\TestCase;
 
-final class OmniIconTest extends TestCase
+final class JooosiIconTest extends TestCase
 {
     /**
      * @dataProvider iconNameProvider
      */
     public function testIconNameValidationDoesNotAcceptMarkupOrAmbiguousNames(string $name, bool $valid): void
     {
-        self::assertSame($valid, OmniIcon::validName($name));
+        self::assertSame($valid, JooosiIcon::validName($name));
     }
 
     /** @return array<string, array{string, bool}> */

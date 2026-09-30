@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Settings\PluginSettings;
+use JooosiSocialImage\Settings\PluginSettings;
 use PHPUnit\Framework\TestCase;
 
 final class PluginSettingsTest extends TestCase

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Cli;
+namespace JooosiSocialImage\Cli;
 
-use JooosiEgami\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\ImageGenerator;
 use WP_CLI;
 
 /**
@@ -31,7 +31,7 @@ final class CacheCommand
 
     public function flush(array $args, array $assocArgs): void
     {
-        WP_CLI::confirm('Delete generated Egami cache files?', $assocArgs);
+        WP_CLI::confirm('Delete generated Social Image cache files?', $assocArgs);
         $result = $this->imageGenerator->flushCache(absint($assocArgs['design'] ?? 0));
 
         if (is_wp_error($result)) {

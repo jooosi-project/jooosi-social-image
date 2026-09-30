@@ -15,7 +15,7 @@ function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
 }
 
 function DialogPortal({ className, ...props }: DialogPrimitive.Portal.Props) {
-  return <DialogPrimitive.Portal data-slot="dialog-portal" className={cn("egami-style egami-portal", className)} {...props} />
+  return <DialogPrimitive.Portal data-slot="dialog-portal" className={cn("social-image-style social-image-portal", className)} {...props} />
 }
 
 function DialogClose({ ...props }: DialogPrimitive.Close.Props) {

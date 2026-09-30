@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Diagnostics;
+namespace JooosiSocialImage\Diagnostics;
 
-use JooosiEgami\Integration\YabeWebfont;
-use JooosiEgami\Rendering\FontLocator;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Rendering\RendererInterface;
-use JooosiEgami\Rendering\SvgSupport;
+use JooosiSocialImage\Integration\JooosiFon;
+use JooosiSocialImage\Rendering\FontLocator;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\RendererInterface;
+use JooosiSocialImage\Rendering\SvgSupport;
 
 defined('ABSPATH') || exit;
 
@@ -22,7 +22,7 @@ final class SystemDiagnostics
     public function __construct(
         private RendererInterface $renderer,
         private SvgSupport $svgSupport,
-        private YabeWebfont $webfonts,
+        private JooosiFon $fon,
         private FontLocator $fonts,
     ) {
     }
@@ -39,10 +39,10 @@ final class SystemDiagnostics
         $renderer = $this->renderer->capabilities();
 
         return $this->cached = [
-            'version' => JOOOSI_EGAMI_VERSION,
+            'version' => JOOOSI_SOCIAL_IMAGE_VERSION,
             'renderer' => $renderer,
             'svg' => $this->svgSupport->capabilities(),
-            'webfont' => $this->webfonts->capabilities(),
+            'webfont' => $this->fon->capabilities(),
             'fonts' => $this->fonts->capabilities(),
             'filesystem' => $this->filesystem(),
             'cron' => $this->cron(),
@@ -56,7 +56,7 @@ final class SystemDiagnostics
     {
         $uploads = wp_upload_dir();
         $uploadsAvailable = empty($uploads['error']) && ! empty($uploads['basedir']);
-        $directory = $uploadsAvailable ? trailingslashit((string) $uploads['basedir']) . 'egami' : '';
+        $directory = $uploadsAvailable ? trailingslashit((string) $uploads['basedir']) . 'social-image' : '';
         $directoryExists = $directory !== '' && is_dir($directory);
         $writable = $uploadsAvailable && (
             ($directoryExists && wp_is_writable($directory))
@@ -66,11 +66,11 @@ final class SystemDiagnostics
         if (! $uploadsAvailable) {
             $reason = ! empty($uploads['error'])
                 ? sanitize_text_field((string) $uploads['error'])
-                : __('WordPress did not provide an uploads directory.', 'jooosi-egami');
+                : __('WordPress did not provide an uploads directory.', 'jooosi-social-image');
         } elseif (! $writable) {
             $reason = $directoryExists
-                ? __('The wp-content/uploads/egami directory is not writable by PHP. Check filesystem ownership and permissions.', 'jooosi-egami')
-                : __('The WordPress uploads directory is not writable, so Egami cannot create its cache directory. Check filesystem ownership and permissions.', 'jooosi-egami');
+                ? __('The wp-content/uploads/social-image directory is not writable by PHP. Check filesystem ownership and permissions.', 'jooosi-social-image')
+                : __('The WordPress uploads directory is not writable, so Social Image cannot create its cache directory. Check filesystem ownership and permissions.', 'jooosi-social-image');
         } else {
             $reason = '';
         }
@@ -95,12 +95,12 @@ final class SystemDiagnostics
         $lastError = is_array($lastError) && ! empty($lastError['message']) ? $lastError : null;
 
         if ($disabled) {
-            $reason = __('Automatic WP-Cron spawning is disabled. Confirm that the host calls wp-cron.php from a real system cron, otherwise queued images will not be generated.', 'jooosi-egami');
+            $reason = __('Automatic WP-Cron spawning is disabled. Confirm that the host calls wp-cron.php from a real system cron, otherwise queued images will not be generated.', 'jooosi-social-image');
         } elseif (is_array($lastError)) {
             /* translators: %s: Last WordPress cron scheduling error message. */
-            $reason = sprintf(__('The last image-generation event could not be scheduled: %s', 'jooosi-egami'), sanitize_text_field((string) $lastError['message']));
+            $reason = sprintf(__('The last image-generation event could not be scheduled: %s', 'jooosi-social-image'), sanitize_text_field((string) $lastError['message']));
         } elseif ($alternate) {
-            $reason = __('ALTERNATE_WP_CRON is enabled. Verify redirects and loopback requests on this host if queued generation stalls.', 'jooosi-egami');
+            $reason = __('ALTERNATE_WP_CRON is enabled. Verify redirects and loopback requests on this host if queued generation stalls.', 'jooosi-social-image');
         } else {
             $reason = '';
         }

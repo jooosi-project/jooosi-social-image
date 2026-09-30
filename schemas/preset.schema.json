@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jooosi.com/egami/schemas/preset.schema.json",
-  "title": "Egami preset",
-  "description": "A reusable Egami image-design preset.",
+  "$id": "https://jooosi.com/social-image/schemas/preset.schema.json",
+  "title": "Social Image preset",
+  "description": "A reusable Social Image image-design preset.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "id", "title", "description", "category", "document"],

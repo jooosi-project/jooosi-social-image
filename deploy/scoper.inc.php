@@ -29,14 +29,14 @@ $wpFunctions = $loadExcludes('exclude-wordpress-functions.json');
 $wpConstants = $loadExcludes('exclude-wordpress-constants.json');
 
 return [
-    'prefix' => 'JooosiEgamiDeps',
+    'prefix' => 'JooosiSocialImageDeps',
 
-    // Egami and optional cross-plugin APIs remain stable. Composer dependencies
+    // Social Image and optional cross-plugin APIs remain stable. Composer dependencies
     // such as Imagine are absent and are therefore scoped.
     'exclude-namespaces' => [
-        'JooosiEgami',
-        'OmniIcon',
-        'Yabe\\Webfont',
+        'JooosiSocialImage',
+        'JooosiIcon',
+        'JooosiFon',
         'WP_CLI',
     ],
 
@@ -48,7 +48,7 @@ return [
     'exclude-functions' => $wpFunctions,
 
     'exclude-constants' => array_merge($wpConstants, [
-        '/^JOOOSI_EGAMI_[\p{L}\d_]+$/',
+        '/^JOOOSI_SOCIAL_IMAGE_[\p{L}\d_]+$/',
         'ABSPATH',
         'WP_DEBUG',
         'WP_PLUGIN_DIR',
@@ -64,6 +64,6 @@ return [
     'expose-classes' => [],
     'expose-functions' => [],
     'expose-constants' => [
-        '/^JOOOSI_EGAMI_[\p{L}\d_]+$/',
+        '/^JOOOSI_SOCIAL_IMAGE_[\p{L}\d_]+$/',
     ],
 ];

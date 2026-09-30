@@ -77,7 +77,7 @@ function esc_html__(string $text, string $domain = 'default'): string
 function apply_filters(string $hookName, mixed $value, mixed ...$args): mixed
 {
     $callbacks = array_values(array_filter(
-        $GLOBALS['egami_test_hooks']['filters'] ?? [],
+        $GLOBALS['social_image_test_hooks']['filters'] ?? [],
         static fn (array $registered): bool => $registered['hookName'] === $hookName,
     ));
     usort($callbacks, static fn (array $left, array $right): int => $left['priority'] <=> $right['priority']);
@@ -142,7 +142,7 @@ function wp_generate_uuid4(): string
     );
 }
 
-$GLOBALS['egami_test_hooks'] = [
+$GLOBALS['social_image_test_hooks'] = [
     'actions' => [],
     'filters' => [],
     'shortcodes' => [],
@@ -150,33 +150,33 @@ $GLOBALS['egami_test_hooks'] = [
     'deactivation' => [],
 ];
 
-$GLOBALS['egami_test_scheduled_events'] = [];
-$GLOBALS['egami_test_schedule_result'] = true;
+$GLOBALS['social_image_test_scheduled_events'] = [];
+$GLOBALS['social_image_test_schedule_result'] = true;
 
-$GLOBALS['egami_test_options'] = [];
+$GLOBALS['social_image_test_options'] = [];
 
 function get_option(string $option, mixed $default = false): mixed
 {
-    return $GLOBALS['egami_test_options'][$option] ?? $default;
+    return $GLOBALS['social_image_test_options'][$option] ?? $default;
 }
 
 function update_option(string $option, mixed $value, mixed $autoload = null): bool
 {
-    $GLOBALS['egami_test_options'][$option] = $value;
+    $GLOBALS['social_image_test_options'][$option] = $value;
 
     return true;
 }
 
 function delete_option(string $option): bool
 {
-    unset($GLOBALS['egami_test_options'][$option]);
+    unset($GLOBALS['social_image_test_options'][$option]);
 
     return true;
 }
 
 function wp_next_scheduled(string $hook, array $args = []): int|false
 {
-    foreach ($GLOBALS['egami_test_scheduled_events'] as $event) {
+    foreach ($GLOBALS['social_image_test_scheduled_events'] as $event) {
         if ($event['hook'] === $hook && $event['args'] === $args) {
             return $event['timestamp'];
         }
@@ -188,20 +188,20 @@ function wp_next_scheduled(string $hook, array $args = []): int|false
 function wp_schedule_single_event(int $timestamp, string $hook, array $args = [], bool $wpError = false): bool|WP_Error
 {
     unset($wpError);
-    $result = $GLOBALS['egami_test_schedule_result'] ?? true;
+    $result = $GLOBALS['social_image_test_schedule_result'] ?? true;
 
     if ($result instanceof WP_Error || $result === false) {
         return $result;
     }
 
-    $GLOBALS['egami_test_scheduled_events'][] = compact('timestamp', 'hook', 'args');
+    $GLOBALS['social_image_test_scheduled_events'][] = compact('timestamp', 'hook', 'args');
 
     return true;
 }
 
 function wp_upload_dir(): array
 {
-    $basedir = $GLOBALS['egami_test_upload_basedir'] ?? sys_get_temp_dir() . '/jooosi-egami-tests';
+    $basedir = $GLOBALS['social_image_test_upload_basedir'] ?? sys_get_temp_dir() . '/jooosi-social-image-tests';
 
     return [
         'path' => $basedir,
@@ -237,53 +237,53 @@ function wp_delete_file(string $file): void
 
 function add_action(string $hookName, callable $callback, int $priority = 10, int $acceptedArgs = 1): bool
 {
-    $GLOBALS['egami_test_hooks']['actions'][] = compact('hookName', 'callback', 'priority', 'acceptedArgs');
+    $GLOBALS['social_image_test_hooks']['actions'][] = compact('hookName', 'callback', 'priority', 'acceptedArgs');
 
     return true;
 }
 
 function add_filter(string $hookName, callable $callback, int $priority = 10, int $acceptedArgs = 1): bool
 {
-    $GLOBALS['egami_test_hooks']['filters'][] = compact('hookName', 'callback', 'priority', 'acceptedArgs');
+    $GLOBALS['social_image_test_hooks']['filters'][] = compact('hookName', 'callback', 'priority', 'acceptedArgs');
 
     return true;
 }
 
 function remove_all_filters(string $hookName): bool
 {
-    $GLOBALS['egami_test_hooks']['filters'] = array_values(array_filter(
-        $GLOBALS['egami_test_hooks']['filters'],
+    $GLOBALS['social_image_test_hooks']['filters'] = array_values(array_filter(
+        $GLOBALS['social_image_test_hooks']['filters'],
         static fn (array $registered): bool => $registered['hookName'] !== $hookName,
     ));
 
     return true;
 }
 
-$GLOBALS['egami_test_post_meta'] = [];
-$GLOBALS['egami_test_terms'] = [];
-$GLOBALS['egami_test_page_templates'] = [];
+$GLOBALS['social_image_test_post_meta'] = [];
+$GLOBALS['social_image_test_terms'] = [];
+$GLOBALS['social_image_test_page_templates'] = [];
 
 function get_page_template_slug(WP_Post|int|null $post = null): string|false
 {
     $postId = $post instanceof WP_Post ? $post->ID : (int) $post;
-    return $GLOBALS['egami_test_page_templates'][$postId] ?? false;
+    return $GLOBALS['social_image_test_page_templates'][$postId] ?? false;
 }
 
 function has_term(string|int|array $term, string $taxonomy = '', WP_Post|int|null $post = null): bool
 {
     $postId = $post instanceof WP_Post ? $post->ID : (int) $post;
     $expected = array_map('strval', (array) $term);
-    return array_intersect($expected, array_map('strval', $GLOBALS['egami_test_terms'][$postId][$taxonomy] ?? [])) !== [];
+    return array_intersect($expected, array_map('strval', $GLOBALS['social_image_test_terms'][$postId][$taxonomy] ?? [])) !== [];
 }
 
 function metadata_exists(string $metaType, int $objectId, string $metaKey): bool
 {
-    return array_key_exists($metaKey, $GLOBALS['egami_test_post_meta'][$objectId] ?? []);
+    return array_key_exists($metaKey, $GLOBALS['social_image_test_post_meta'][$objectId] ?? []);
 }
 
 function get_post_meta(int $postId, string $key = '', bool $single = false): mixed
 {
-    $metadata = $GLOBALS['egami_test_post_meta'][$postId] ?? [];
+    $metadata = $GLOBALS['social_image_test_post_meta'][$postId] ?? [];
     if ($key === '') return $metadata;
     if (! array_key_exists($key, $metadata)) return $single ? '' : [];
     $values = is_array($metadata[$key]) ? $metadata[$key] : [$metadata[$key]];
@@ -299,17 +299,17 @@ function maybe_unserialize(mixed $value): mixed
 
 function add_shortcode(string $tag, callable $callback): void
 {
-    $GLOBALS['egami_test_hooks']['shortcodes'][] = compact('tag', 'callback');
+    $GLOBALS['social_image_test_hooks']['shortcodes'][] = compact('tag', 'callback');
 }
 
 function register_activation_hook(string $file, callable $callback): void
 {
-    $GLOBALS['egami_test_hooks']['activation'][] = compact('file', 'callback');
+    $GLOBALS['social_image_test_hooks']['activation'][] = compact('file', 'callback');
 }
 
 function register_deactivation_hook(string $file, callable $callback): void
 {
-    $GLOBALS['egami_test_hooks']['deactivation'][] = compact('file', 'callback');
+    $GLOBALS['social_image_test_hooks']['deactivation'][] = compact('file', 'callback');
 }
 
 function load_plugin_textdomain(string $domain, bool $deprecated = false, string $pluginRelativePath = ''): bool

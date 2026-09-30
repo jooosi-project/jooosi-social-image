@@ -2,19 +2,19 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, test, type Admin } from "@wordpress/e2e-test-utils-playwright";
 
-async function visitEgami(admin: Admin, page: Page) {
-  await admin.visitAdminPage("admin.php", "page=jooosi-egami");
+async function visitSocialImage(admin: Admin, page: Page) {
+  await admin.visitAdminPage("admin.php", "page=jooosi-social-image");
   await expect(page.getByRole("heading", { name: "Designs", level: 1 })).toBeVisible();
 }
 
 async function openFirstDesign(page: Page) {
-  const firstCard = page.locator("#egami-admin article").first();
+  const firstCard = page.locator("#social-image-admin article").first();
   await expect(firstCard).toBeVisible();
   await firstCard.getByRole("button").nth(1).click();
   await expect(page.getByRole("textbox", { name: "Design title" })).toBeVisible();
 }
 
-async function expectNoWcagViolations(page: Page, selector = "#egami-admin") {
+async function expectNoWcagViolations(page: Page, selector = "#social-image-admin") {
   const results = await new AxeBuilder({ page })
     .include(selector)
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
@@ -23,9 +23,9 @@ async function expectNoWcagViolations(page: Page, selector = "#egami-admin") {
   expect(results.violations).toEqual([]);
 }
 
-test.describe("Egami admin", () => {
+test.describe("Social Image admin", () => {
   test("opens the design editor with an accessible workspace", async ({ admin, page }) => {
-    await visitEgami(admin, page);
+    await visitSocialImage(admin, page);
     await openFirstDesign(page);
 
     await expect(page.getByRole("complementary", { name: "Structure" })).toBeVisible();
@@ -35,7 +35,7 @@ test.describe("Egami admin", () => {
   });
 
   test("opens the WordPress Media Library from an image element", async ({ admin, page }) => {
-    await visitEgami(admin, page);
+    await visitSocialImage(admin, page);
     await openFirstDesign(page);
 
     await page.getByRole("button", { name: "Add element" }).click();
@@ -53,7 +53,7 @@ test.describe("Egami admin", () => {
   });
 
   test("removes a selected Media Library image", async ({ admin, page }) => {
-    await visitEgami(admin, page);
+    await visitSocialImage(admin, page);
     await openFirstDesign(page);
 
     await page.getByRole("button", { name: "Add element" }).click();
@@ -92,7 +92,7 @@ test.describe("Egami admin", () => {
   });
 
   test("exposes actionable rendering diagnostics", async ({ admin, page }) => {
-    await visitEgami(admin, page);
+    await visitSocialImage(admin, page);
     await openFirstDesign(page);
 
     await page.getByRole("button", { name: "More actions" }).click();
@@ -106,12 +106,12 @@ test.describe("Egami admin", () => {
   });
 
   test("shows the About page and project sponsors", async ({ admin, page }) => {
-    await visitEgami(admin, page);
+    await visitSocialImage(admin, page);
 
     await page.getByRole("tab", { name: "About" }).click();
 
     const panel = page.getByRole("tabpanel", { name: "About" });
-    await expect(panel.getByRole("heading", { name: "Jooosi Egami", level: 1 })).toBeVisible();
+    await expect(panel.getByRole("heading", { name: "Jooosi Social Image", level: 1 })).toBeVisible();
     await expect(panel.getByRole("heading", { name: "Open-source sponsorship", level: 2 })).toBeVisible();
     await expect(panel.getByRole("link", { name: "GitHub Sponsors" })).toHaveAttribute("href", "https://github.com/sponsors/suasgn");
     await expect(panel.getByRole("link", { name: "Ko-fi" })).toHaveAttribute("href", "https://ko-fi.com/Q5Q75XSF7");
@@ -123,6 +123,6 @@ test.describe("Egami admin", () => {
     await expect(jooosiSponsor.locator("svg").first()).toBeVisible();
     await expect(liveCanvasSponsor).toHaveAttribute("href", "https://livecanvas.com");
     await expect(liveCanvasSponsor.locator("svg").first()).toBeVisible();
-    await expectNoWcagViolations(page, "#egami-about-panel");
+    await expectNoWcagViolations(page, "#social-image-about-panel");
   });
 });

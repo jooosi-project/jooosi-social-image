@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
 use FilesystemIterator;
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Content\DynamicDataResolver;
-use JooosiEgami\Integration\OmniIcon;
-use JooosiEgami\Settings\PluginSettings;
-use JooosiEgami\Template\TemplateRepository;
-use JooosiEgami\Template\TemplateSchema;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Content\DynamicDataResolver;
+use JooosiSocialImage\Integration\JooosiIcon;
+use JooosiSocialImage\Settings\PluginSettings;
+use JooosiSocialImage\Template\TemplateRepository;
+use JooosiSocialImage\Template\TemplateSchema;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use WP_Error;
@@ -19,12 +19,12 @@ defined( 'ABSPATH' ) || exit;
 
 final class ImageGenerator
 {
-	public const META_OG = '_egami_og_image_url';
-	public const META_TWITTER = '_egami_twitter_image_url';
-	public const META_FEATURED = '_egami_featured_image_url';
-	public const META_MAP = '_egami_render_map';
-	public const META_ERROR = '_egami_last_error';
-	public const OPTION_CRON_ERROR = 'egami_last_cron_error';
+	public const META_OG = '_social_image_og_image_url';
+	public const META_TWITTER = '_social_image_twitter_image_url';
+	public const META_FEATURED = '_social_image_featured_image_url';
+	public const META_MAP = '_social_image_render_map';
+	public const META_ERROR = '_social_image_last_error';
+	public const OPTION_CRON_ERROR = 'social_image_last_cron_error';
 
 	private bool $rendering = false;
 
@@ -35,25 +35,25 @@ final class ImageGenerator
 		private RendererInterface $renderer,
 		private FontLocator $fonts,
 		private RemoteImageFetcher $remoteImages,
-		private ?OmniIcon $icons = null,
+		private ?JooosiIcon $icons = null,
 	) {
 	}
 
 	public function registerHooks(): void {
-		add_action( 'jooosi-egami/rendering:render_post', array( $this, 'runScheduled' ), 10, 2 );
+		add_action( 'jooosi-social-image/rendering:render_post', array( $this, 'runScheduled' ), 10, 2 );
 	}
 
 	public function schedulePost(int $post_id, bool $force = false, int $delay = 0): bool|WP_Error {
 		$args = array( absint( $post_id ), (bool) $force );
-		if ( wp_next_scheduled( 'jooosi-egami/rendering:render_post', $args ) ) {
+		if ( wp_next_scheduled( 'jooosi-social-image/rendering:render_post', $args ) ) {
 			delete_option( self::OPTION_CRON_ERROR );
 			return true;
 		}
 
-		$result = wp_schedule_single_event( time() + max( 0, (int) $delay ), 'jooosi-egami/rendering:render_post', $args, true );
+		$result = wp_schedule_single_event( time() + max( 0, (int) $delay ), 'jooosi-social-image/rendering:render_post', $args, true );
 
 		if ( false === $result ) {
-			$result = new WP_Error( 'egami_cron_schedule_failed', __( 'WordPress did not accept the background image-generation event.', 'jooosi-egami' ) );
+			$result = new WP_Error( 'social_image_cron_schedule_failed', __( 'WordPress did not accept the background image-generation event.', 'jooosi-social-image' ) );
 		}
 
 		if ( is_wp_error( $result ) ) {
@@ -87,7 +87,7 @@ final class ImageGenerator
 	public function generateForPost(int $post_id, bool $force = false): array|WP_Error {
 		$matches = $this->matcher->forPost( $post_id );
 		if ( ! $matches ) {
-			return new WP_Error( 'egami_no_match', __( 'No published design matches this post.', 'jooosi-egami' ) );
+			return new WP_Error( 'social_image_no_match', __( 'No published design matches this post.', 'jooosi-social-image' ) );
 		}
 		$results = array();
 		foreach ( $this->generationPlan( $matches ) as $target ) {
@@ -118,7 +118,7 @@ final class ImageGenerator
 			return $template;
 		}
 		if ( $post_id && ! get_post( $post_id ) ) {
-			return new WP_Error( 'egami_post_not_found', __( 'The render post was not found.', 'jooosi-egami' ) );
+			return new WP_Error( 'social_image_post_not_found', __( 'The render post was not found.', 'jooosi-social-image' ) );
 		}
 
 		$data     = $this->resolver->resolve( $post_id, $overrides );
@@ -154,7 +154,7 @@ final class ImageGenerator
 		if ( ! $cached ) {
 			$tmp = TemporaryFile::create( $locations['path'] );
 			if ( ! $tmp ) {
-				return new WP_Error( 'egami_temp_failed', __( 'A temporary render file could not be created.', 'jooosi-egami' ) );
+				return new WP_Error( 'social_image_temp_failed', __( 'A temporary render file could not be created.', 'jooosi-social-image' ) );
 			}
 			$result = $this->renderer->render( $document, $tmp, $format, $quality );
 			if ( is_wp_error( $result ) ) {
@@ -163,7 +163,7 @@ final class ImageGenerator
 			}
 			if ( ! copy( $tmp, $path ) ) {
 				wp_delete_file( $tmp );
-				return new WP_Error( 'egami_move_failed', __( 'The completed render could not be moved into uploads.', 'jooosi-egami' ) );
+				return new WP_Error( 'social_image_move_failed', __( 'The completed render could not be moved into uploads.', 'jooosi-social-image' ) );
 			}
 			wp_delete_file( $tmp );
 		}
@@ -189,7 +189,7 @@ final class ImageGenerator
 			}
 			$result = array_merge( $result, $updated );
 		}
-		do_action( 'jooosi-egami/rendering:rendered', $result, $template, $data );
+		do_action( 'jooosi-social-image/rendering:rendered', $result, $template, $data );
 		return $result;
 	}
 
@@ -405,7 +405,7 @@ final class ImageGenerator
 
 	private function mediaAttachment(int $post_id, array $template, array $result, int $existing_id = 0): int|WP_Error {
 		$mime = array( 'png' => 'image/png', 'jpeg' => 'image/jpeg', 'webp' => 'image/webp' );
-		if ( $existing_id && '1' === (string) get_post_meta( $existing_id, '_egami_generated', true ) ) {
+		if ( $existing_id && '1' === (string) get_post_meta( $existing_id, '_social_image_generated', true ) ) {
 			$attachment_id = $existing_id;
 			update_attached_file( $attachment_id, $result['path'] );
 			wp_update_post( array( 'ID' => $attachment_id, 'post_mime_type' => $mime[ $result['format'] ], 'post_title' => sprintf( '%s — %s', $template['title'], get_the_title( $post_id ) ) ) );
@@ -428,10 +428,10 @@ final class ImageGenerator
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		$metadata = wp_generate_attachment_metadata( $attachment_id, $result['path'] );
 		wp_update_attachment_metadata( $attachment_id, $metadata );
-		update_post_meta( $attachment_id, '_egami_generated', 1 );
-		update_post_meta( $attachment_id, '_egami_source_post', $post_id );
-		update_post_meta( $attachment_id, '_egami_template_id', $template['id'] );
-		update_post_meta( $attachment_id, '_egami_hash', $result['hash'] );
+		update_post_meta( $attachment_id, '_social_image_generated', 1 );
+		update_post_meta( $attachment_id, '_social_image_source_post', $post_id );
+		update_post_meta( $attachment_id, '_social_image_template_id', $template['id'] );
+		update_post_meta( $attachment_id, '_social_image_hash', $result['hash'] );
 		return $attachment_id;
 	}
 
@@ -440,7 +440,7 @@ final class ImageGenerator
 			return;
 		}
 		$uploads = wp_upload_dir();
-		$base = trailingslashit( wp_normalize_path( $uploads['basedir'] ) ) . 'egami/';
+		$base = trailingslashit( wp_normalize_path( $uploads['basedir'] ) ) . 'social-image/';
 		$old = wp_normalize_path( $previous['file'] );
 		if ( 0 === strpos( $old, $base ) && is_file( $old ) ) {
 			wp_delete_file( $old );
@@ -450,16 +450,16 @@ final class ImageGenerator
 	private function locations(string $suffix = ''): array|WP_Error {
 		$uploads = wp_upload_dir();
 		if ( ! empty( $uploads['error'] ) ) {
-			return new WP_Error( 'egami_upload_error', $uploads['error'] );
+			return new WP_Error( 'social_image_upload_error', $uploads['error'] );
 		}
-		$path = trailingslashit( $uploads['basedir'] ) . 'egami';
-		$url  = trailingslashit( $uploads['baseurl'] ) . 'egami';
+		$path = trailingslashit( $uploads['basedir'] ) . 'social-image';
+		$url  = trailingslashit( $uploads['baseurl'] ) . 'social-image';
 		if ( $suffix ) {
 			$path .= '/' . sanitize_key( $suffix );
 			$url  .= '/' . sanitize_key( $suffix );
 		}
 		if ( ! wp_mkdir_p( $path ) || ! wp_is_writable( $path ) ) {
-			return new WP_Error( 'egami_upload_unwritable', __( 'The Egami uploads directory is not writable.', 'jooosi-egami' ) );
+			return new WP_Error( 'social_image_upload_unwritable', __( 'The Social Image uploads directory is not writable.', 'jooosi-social-image' ) );
 		}
 		return array( 'path' => $path, 'url' => $url );
 	}

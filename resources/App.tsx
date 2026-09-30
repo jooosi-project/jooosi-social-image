@@ -2,18 +2,17 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { toast, Toaster } from "sonner";
 
-import IconLoader from "~icons/lucide/loader-circle";
 import IconX from "~icons/lucide/x";
 
-import { CommandBar, type StudioWorkspace } from "@/components/egami/studio/command-bar";
-import { AboutWorkspace } from "@/components/egami/studio/about-workspace";
-import { CanvasSettingsDialog } from "@/components/egami/studio/canvas-settings-dialog";
-import { DesignWorkspace } from "@/components/egami/studio/design-workspace";
-import { DesignsWorkspace } from "@/components/egami/studio/designs-workspace";
-import { LocationsDialog } from "@/components/egami/studio/locations-workspace";
-import { PresetRepositoriesDialog } from "@/components/egami/studio/preset-repositories-dialog";
-import { SettingsDialog } from "@/components/egami/studio/settings-dialog";
-import { TemplatesDialog } from "@/components/egami/studio/templates-workspace";
+import { CommandBar, type StudioWorkspace } from "@/components/social-image/studio/command-bar";
+import { AboutWorkspace } from "@/components/social-image/studio/about-workspace";
+import { CanvasSettingsDialog } from "@/components/social-image/studio/canvas-settings-dialog";
+import { DesignWorkspace } from "@/components/social-image/studio/design-workspace";
+import { DesignsWorkspace } from "@/components/social-image/studio/designs-workspace";
+import { LocationsDialog } from "@/components/social-image/studio/locations-workspace";
+import { PresetRepositoriesDialog } from "@/components/social-image/studio/preset-repositories-dialog";
+import { SettingsDialog } from "@/components/social-image/studio/settings-dialog";
+import { TemplatesDialog } from "@/components/social-image/studio/templates-workspace";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AdminApi } from "@/lib/admin-api";
@@ -22,7 +21,7 @@ import { isolateWordPressAdminStyles } from "@/lib/wp-admin-style-isolation";
 import type {
   Design,
   DesignPreset,
-  EgamiConfig,
+  SocialImageConfig,
   IconSearchResult,
   MatchingPostCatalog,
   PluginSettings,
@@ -36,7 +35,9 @@ import type {
 
 import "@/styles/app.css";
 
-const wpAdminStylesReady = isolateWordPressAdminStyles();
+void isolateWordPressAdminStyles().catch(() => {
+  // Keep the studio usable if WordPress admin stylesheet isolation fails.
+});
 
 const EMPTY_PRESET_CATALOG: PresetCatalog = {
   schemaVersion: 1,
@@ -69,15 +70,7 @@ function PreviewModal({ result, onClose }: { result: PreviewResult; onClose: () 
   );
 }
 
-function LoadingState() {
-  return (
-    <div className="grid min-h-[calc(100vh-32px)] place-items-center bg-background">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground"><IconLoader className="size-4 animate-spin" /> Loading Egami…</div>
-    </div>
-  );
-}
-
-function AdminApp({ config }: { config: EgamiConfig }) {
+function AdminApp({ config }: { config: SocialImageConfig }) {
   const api = useMemo(() => new AdminApi(config), [config]);
   const [workspace, setWorkspace] = useState<StudioWorkspace>("designs");
   const [designs, setDesigns] = useState<Design[]>([]);
@@ -85,8 +78,8 @@ function AdminApp({ config }: { config: EgamiConfig }) {
   const [status, setStatus] = useState<SystemStatus>({
     version: config.version,
     renderer: { available: false, active_driver: "none", extensions: {}, diagnostics: [] },
-    svg: { available: false, omni_icon: false, imagick: false, svg_format: false, librsvg: false, limited: false, engine: "none", reason: "Checking SVG support…", notice: "" },
-    webfont: { available: false, stylesheet_url: "", reason: "Checking Yabe Webfont…", notice: "", renderable_count: 0, unrenderable_count: 0, fonts: [] },
+    svg: { available: false, jooosi_icon: false, imagick: false, svg_format: false, librsvg: false, limited: false, engine: "none", reason: "Checking SVG support…", notice: "" },
+    webfont: { available: false, stylesheet_url: "", reason: "Checking Jooosi Fon…", notice: "", renderable_count: 0, unrenderable_count: 0, fonts: [] },
     fonts: { available: false, families: [], reason: "Checking server fonts…", notice: "" },
     filesystem: { ready: false, uploads_available: false, directory_exists: false, writable: false, reason: "Checking generated-image storage…" },
     cron: { ready: false, disabled: false, alternate: false, last_error: null, reason: "Checking background generation…" },
@@ -103,7 +96,10 @@ function AdminApp({ config }: { config: EgamiConfig }) {
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [matchingPostsLoading, setMatchingPostsLoading] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [designsLoading, setDesignsLoading] = useState(true);
+  const [settingsLoadState, setSettingsLoadState] = useState<"loading" | "ready" | "error">("loading");
+  const [statusLoadState, setStatusLoadState] = useState<"loading" | "ready" | "error">("loading");
+  const [presetCatalogLoadState, setPresetCatalogLoadState] = useState<"loading" | "ready" | "error">("loading");
   const [startupError, setStartupError] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [canvasSettingsOpen, setCanvasSettingsOpen] = useState(false);
@@ -113,23 +109,52 @@ function AdminApp({ config }: { config: EgamiConfig }) {
 
   useEffect(() => {
     let active = true;
-    Promise.all([
-      api.request<Design[]>("/designs"),
-      api.request<PluginSettings>("/settings"),
-      api.request<SystemStatus>("/status"),
-      api.request<PresetCatalog>("/presets"),
-      api.request<PlaceholderCatalog>("/placeholders"),
-    ])
-      .then(([nextDesigns, nextSettings, nextStatus, nextPresetCatalog, nextPlaceholders]) => {
-        if (!active) return;
-        setDesigns(nextDesigns.map(withoutProcessing));
-        setSettings(nextSettings);
-        setStatus(nextStatus);
-        setPresetCatalog(nextPresetCatalog);
-        setPlaceholders(nextPlaceholders);
+
+    api.request<Design[]>("/designs")
+      .then((nextDesigns) => {
+        if (active) setDesigns(nextDesigns.map(withoutProcessing));
       })
-      .catch((error: unknown) => setStartupError(error instanceof Error ? error.message : "Egami could not start."))
-      .finally(() => { if (active) setLoading(false); });
+      .catch((error: unknown) => {
+        if (active) setStartupError(error instanceof Error ? error.message : "Social Image could not start.");
+      })
+      .finally(() => { if (active) setDesignsLoading(false); });
+
+    api.request<PluginSettings>("/settings")
+      .then((nextSettings) => {
+        if (!active) return;
+        setSettings(nextSettings);
+        setSettingsLoadState("ready");
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setSettingsLoadState("error");
+        toast.error(`Rendering settings could not be loaded. Reload the page before saving settings. ${error instanceof Error ? error.message : ""}`.trim());
+      });
+
+    api.request<SystemStatus>("/status")
+      .then((nextStatus) => {
+        if (!active) return;
+        setStatus(nextStatus);
+        setStatusLoadState("ready");
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setStatusLoadState("error");
+        toast.error(`System status could not be loaded. ${error instanceof Error ? error.message : ""}`.trim());
+      });
+
+    api.request<PresetCatalog>("/presets")
+      .then((nextPresetCatalog) => {
+        if (!active) return;
+        setPresetCatalog(nextPresetCatalog);
+        setPresetCatalogLoadState("ready");
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setPresetCatalogLoadState("error");
+        toast.error(`Templates could not be loaded. ${error instanceof Error ? error.message : "Reload the page to retry."}`);
+      });
+
     return () => { active = false; };
   }, [api]);
 
@@ -362,26 +387,31 @@ function AdminApp({ config }: { config: EgamiConfig }) {
     toast.success("Settings saved.");
   });
 
+  const applyPresetCatalog = (catalog: PresetCatalog) => {
+    setPresetCatalog(catalog);
+    setPresetCatalogLoadState("ready");
+  };
+
   const addPresetRepository = (url: string) => run(async () => {
     const catalog = await api.request<PresetCatalog>("/preset-repositories", { method: "POST", body: JSON.stringify({ url }) });
-    setPresetCatalog(catalog);
+    applyPresetCatalog(catalog);
     toast.success("Template repository added.");
   });
 
   const togglePresetRepository = (repository: PresetRepositorySummary, enabled: boolean) => run(async () => {
     const catalog = await api.request<PresetCatalog>(`/preset-repositories/${repository.id}`, { method: "PUT", body: JSON.stringify({ enabled }) });
-    setPresetCatalog(catalog);
+    applyPresetCatalog(catalog);
     toast.success(`${repository.title} ${enabled ? "enabled" : "disabled"}.`);
   });
 
   const refreshPresetRepository = (repository: PresetRepositorySummary) => run(async () => {
     try {
       const catalog = await api.request<PresetCatalog>(`/preset-repositories/${repository.id}/refresh`, { method: "POST", body: "{}" });
-      setPresetCatalog(catalog);
+      applyPresetCatalog(catalog);
       toast.success(`${repository.title} refreshed.`);
     } catch (error) {
       try {
-        setPresetCatalog(await api.request<PresetCatalog>("/presets"));
+        applyPresetCatalog(await api.request<PresetCatalog>("/presets"));
       } catch {
         // Preserve the original refresh error when the follow-up catalog read also fails.
       }
@@ -393,7 +423,7 @@ function AdminApp({ config }: { config: EgamiConfig }) {
     if (!window.confirm(`Delete the “${repository.title}” template repository and its cached manifest?`)) return;
     void run(async () => {
       const catalog = await api.request<PresetCatalog>(`/preset-repositories/${repository.id}`, { method: "DELETE" });
-      setPresetCatalog(catalog);
+      applyPresetCatalog(catalog);
       toast.success("Template repository deleted.");
     });
   };
@@ -404,25 +434,23 @@ function AdminApp({ config }: { config: EgamiConfig }) {
   });
 
   const flushAll = () => {
-    if (!window.confirm("Delete all generated Egami cache files?")) return;
+    if (!window.confirm("Delete all generated Social Image cache files?")) return;
     void run(async () => {
       const result = await api.request<{ deleted: number }>("/cache/flush", { method: "POST", body: "{}" });
       toast.success(`${result.deleted} generated file(s) deleted.`);
     });
   };
 
-  if (loading) return <LoadingState />;
-
   if (startupError) {
     return (
       <div className="grid min-h-[calc(100vh-32px)] place-items-center bg-background p-6">
-        <div className="max-w-md rounded-xl border bg-card p-6 shadow-sm"><h1 className="font-semibold">Egami could not start</h1><p className="mt-2 text-sm text-muted-foreground">{startupError}</p></div>
+        <div className="max-w-md rounded-xl border bg-card p-6 shadow-sm"><h1 className="font-semibold">Social Image could not start</h1><p className="mt-2 text-sm text-muted-foreground">{startupError}</p></div>
       </div>
     );
   }
 
   return (
-    <div className="egami-studio">
+    <div className="social-image-studio">
       <CommandBar
         workspace={workspace}
         version={config.version}
@@ -431,6 +459,7 @@ function AdminApp({ config }: { config: EgamiConfig }) {
         previewPostId={previewPostId}
         matchingPostsLoading={matchingPostsLoading}
         canManage={config.canManage}
+        settingsLoadState={settingsLoadState}
         busy={busy}
         dirty={dirty}
         onOpenDesigns={() => setWorkspace("designs")}
@@ -454,9 +483,10 @@ function AdminApp({ config }: { config: EgamiConfig }) {
 
       <div className="min-h-0 flex-1">
         {workspace === "designs" && (
-          <div id="egami-designs-panel" role="tabpanel" aria-labelledby="egami-designs-tab" className="h-full">
+          <div id="social-image-designs-panel" role="tabpanel" aria-labelledby="social-image-designs-tab" className="h-full">
             <DesignsWorkspace
               designs={designs}
+              loading={designsLoading}
               canManage={config.canManage}
               busy={busy}
               onStartNew={startNewDesign}
@@ -469,7 +499,7 @@ function AdminApp({ config }: { config: EgamiConfig }) {
           </div>
         )}
         {workspace === "about" && (
-          <div id="egami-about-panel" role="tabpanel" aria-labelledby="egami-about-tab" className="h-full overflow-auto">
+          <div id="social-image-about-panel" role="tabpanel" aria-labelledby="social-image-about-tab" className="h-full overflow-auto">
             <AboutWorkspace version={config.version} />
           </div>
         )}
@@ -499,6 +529,7 @@ function AdminApp({ config }: { config: EgamiConfig }) {
       <TemplatesDialog
         open={templatesOpen}
         hasDesign={current !== null}
+        loadState={presetCatalogLoadState}
         canManage={config.canManage}
         busy={busy}
         presets={presetCatalog.presets}
@@ -549,6 +580,7 @@ function AdminApp({ config }: { config: EgamiConfig }) {
         open={settingsOpen}
         settings={settings}
         status={status}
+        statusLoadState={statusLoadState}
         canManage={config.canManage}
         busy={busy}
         onOpenChange={setSettingsOpen}
@@ -562,22 +594,20 @@ function AdminApp({ config }: { config: EgamiConfig }) {
   );
 }
 
-type EgamiRootElement = HTMLElement & { egamiReactRoot?: Root };
+type SocialImageRootElement = HTMLElement & { socialImageReactRoot?: Root };
 
-const root = document.getElementById("egami-admin") as EgamiRootElement | null;
-const config = window.EgamiConfig;
+const root = document.getElementById("social-image-admin") as SocialImageRootElement | null;
+const config = window.SocialImageConfig;
 
 if (root && config) {
-  void wpAdminStylesReady.then(() => {
-    const reactRoot = root.egamiReactRoot ?? createRoot(root);
-    root.egamiReactRoot = reactRoot;
-    reactRoot.render(
-      <TooltipProvider>
-        <div className="egami-ui">
-          <AdminApp config={config} />
-          <Toaster richColors position="bottom-right" />
-        </div>
-      </TooltipProvider>,
-    );
-  });
+  const reactRoot = root.socialImageReactRoot ?? createRoot(root);
+  root.socialImageReactRoot = reactRoot;
+  reactRoot.render(
+    <TooltipProvider>
+      <div className="social-image-ui">
+        <AdminApp config={config} />
+        <Toaster richColors position="bottom-right" />
+      </div>
+    </TooltipProvider>,
+  );
 }

@@ -29,8 +29,8 @@ function update(relativePath, replacements) {
 }
 
 update("readme.txt", [[/Stable tag: \d+\.\d+\.\d+/, `Stable tag: ${version}`]]);
-update("constant.php", [[/define\('JOOOSI_EGAMI_VERSION', '\d+\.\d+\.\d+'\);/, `define('JOOOSI_EGAMI_VERSION', '${version}');`]]);
-update("jooosi-egami.php", [[/( \* Version:\s+)\d+\.\d+\.\d+/, `$1${version}`]]);
+update("constant.php", [[/define\('JOOOSI_SOCIAL_IMAGE_VERSION', '\d+\.\d+\.\d+'\);/, `define('JOOOSI_SOCIAL_IMAGE_VERSION', '${version}');`]]);
+update("jooosi-social-image.php", [[/( \* Version:\s+)\d+\.\d+\.\d+/, `$1${version}`]]);
 update("composer.json", [[/("version": ")\d+\.\d+\.\d+("\s*,)/, `$1${version}$2`]]);
 update("package.json", [[/("version": ")\d+\.\d+\.\d+("\s*,)/, `$1${version}$2`]]);
 
@@ -40,8 +40,8 @@ if (changelog.includes(`## [${version}]`)) throw new Error(`CHANGELOG.md already
 
 const date = new Date().toISOString().slice(0, 10);
 changelog = changelog.replace("## [Unreleased]", `## [Unreleased]\n\n## [${version}] - ${date}`);
-const repositoryUrl = "https://github.com/jooosi-project/jooosi-egami";
-const comparisonLink = changelog.match(/^\[unreleased]: https:\/\/github\.com\/jooosi-project\/jooosi-egami\/compare\/(.+)\.\.\.HEAD$/m);
+const repositoryUrl = "https://github.com/jooosi-project/jooosi-social-image";
+const comparisonLink = changelog.match(/^\[unreleased]: https:\/\/github\.com\/jooosi-project\/jooosi-social-image\/compare\/(.+)\.\.\.HEAD$/m);
 const initialLink = `[unreleased]: ${repositoryUrl}/commits/main`;
 
 if (comparisonLink) {
@@ -61,7 +61,7 @@ writeFileSync(changelogPath, changelog, "utf8");
 
 execFileSync("node", ["deploy/update-readme-changelog.mjs"], { cwd: root, stdio: "inherit" });
 
-const releaseFiles = ["CHANGELOG.md", "composer.json", "constant.php", "jooosi-egami.php", "package.json", "readme.txt"];
+const releaseFiles = ["CHANGELOG.md", "composer.json", "constant.php", "jooosi-social-image.php", "package.json", "readme.txt"];
 execFileSync("git", ["add", "--", ...releaseFiles], { cwd: root, stdio: "inherit" });
 execFileSync("git", ["commit", "-m", `Prepare ${version}`], { cwd: root, stdio: "inherit" });
 execFileSync("git", ["tag", version], { cwd: root, stdio: "inherit" });

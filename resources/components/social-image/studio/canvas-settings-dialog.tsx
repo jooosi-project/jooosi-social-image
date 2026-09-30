@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 
-import { BackgroundEditor } from "@/components/egami/studio/background-editor";
+import { BackgroundEditor } from "@/components/social-image/studio/background-editor";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

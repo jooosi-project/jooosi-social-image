@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import IconFilePlus from "~icons/lucide/file-plus-2";
 import IconSettings from "~icons/lucide/settings-2";
 
-import { DesignPreview } from "@/components/egami/studio/design-preview";
+import { DesignPreview } from "@/components/social-image/studio/design-preview";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,6 +24,7 @@ type TemplatesDialogProps = {
   hasDesign: boolean;
   canManage: boolean;
   busy: boolean;
+  loadState: "loading" | "ready" | "error";
   presets: DesignPreset[];
   repositories: PresetRepositorySummary[];
   onOpenChange: (open: boolean) => void;
@@ -32,7 +33,7 @@ type TemplatesDialogProps = {
   onManageRepositories: () => void;
 };
 
-export function TemplatesDialog({ open, hasDesign, canManage, busy, presets, repositories, onOpenChange, onUse, onBlank, onManageRepositories }: TemplatesDialogProps) {
+export function TemplatesDialog({ open, hasDesign, canManage, busy, loadState, presets, repositories, onOpenChange, onUse, onBlank, onManageRepositories }: TemplatesDialogProps) {
   const categories = useMemo(() => ["All", ...new Set(presets.map((preset) => preset.category))], [presets]);
   const [category, setCategory] = useState("All");
   const [repositoryId, setRepositoryId] = useState("all");
@@ -126,7 +127,11 @@ export function TemplatesDialog({ open, hasDesign, canManage, busy, presets, rep
               <div className="grid grid-cols-1 gap-3 px-5 pb-5 md:grid-cols-2">
                 {visiblePresets.length === 0 && (
                   <div className="grid min-h-64 place-items-center text-center md:col-span-2">
-                    <div><p className="text-sm font-semibold">No templates match</p><p className="mt-1 text-xs text-muted-foreground">Try another search or collection.</p></div>
+                    <div>
+                      <p className="text-sm font-semibold">{loadState === "loading" ? "Loading templates…" : loadState === "error" ? "Templates could not be loaded" : "No templates match"}</p>
+                      {loadState === "ready" && <p className="mt-1 text-xs text-muted-foreground">Try another search or collection.</p>}
+                      {loadState === "error" && <p className="mt-1 text-xs text-muted-foreground">Reload the page to try again.</p>}
+                    </div>
                   </div>
                 )}
                 {visiblePresets.map((preset) => (
@@ -150,7 +155,7 @@ export function TemplatesDialog({ open, hasDesign, canManage, busy, presets, rep
         </div>
 
         <DialogFooter className="shrink-0 flex-row items-center justify-between border-t px-5 py-4">
-          <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{visiblePresets.length} ready{selected ? ` · ${selected.title}` : ""}</span>
+          <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{loadState === "loading" ? "Loading templates…" : `${visiblePresets.length} ready${selected ? ` · ${selected.title}` : ""}`}</span>
           <div className="flex items-center gap-2">
             <Button type="button" variant="outline" onClick={onBlank} disabled={!canManage || busy}><IconFilePlus /> Blank design</Button>
             <Button type="button" onClick={() => selected && onUse(selected)} disabled={!selected || !canManage || busy}>{hasDesign ? "Apply template" : "Use template"}</Button>

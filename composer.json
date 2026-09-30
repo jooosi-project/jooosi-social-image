@@ -1,5 +1,5 @@
 {
-    "name": "jooosi/egami",
+    "name": "jooosi/social-image",
     "description": "Dynamic featured, Open Graph, and social image generation for WordPress.",
     "type": "wordpress-plugin",
     "license": "GPL-3.0-or-later",
@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JooosiEgami\\": "src/"
+            "JooosiSocialImage\\": "src/"
         }
     },
     "autoload-dev": {
@@ -18,7 +18,7 @@
             "/tests/bootstrap.php"
         ],
         "psr-4": {
-            "JooosiEgami\\Tests\\": "tests/"
+            "JooosiSocialImage\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -30,7 +30,7 @@
     },
     "extra": {
         "wordpress-plugin": {
-            "name": "Jooosi Egami",
+            "name": "Jooosi Social Image",
             "version": "1.0.0",
             "requires-wp": "7.0",
             "tested-wp": "7.0",

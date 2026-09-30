@@ -37,7 +37,7 @@ function TooltipContent({
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
   return (
-    <TooltipPrimitive.Portal className="egami-style egami-portal">
+    <TooltipPrimitive.Portal className="social-image-style social-image-portal">
       <TooltipPrimitive.Positioner
         align={align}
         alignOffset={alignOffset}

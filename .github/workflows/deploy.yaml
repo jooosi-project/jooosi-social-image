@@ -13,7 +13,7 @@ env:
 
 jobs:
   release:
-    if: github.repository == 'jooosi-project/jooosi-egami'
+    if: github.repository == 'jooosi-project/jooosi-social-image'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -60,32 +60,32 @@ jobs:
 
       - name: Prepare production source
         run: |
-          mkdir -p jooosi-egami-deploy
-          rsync -a --exclude jooosi-egami-deploy --exclude .git ./ jooosi-egami-deploy/
-          composer install --working-dir=jooosi-egami-deploy --no-dev --classmap-authoritative --no-interaction --prefer-dist --ansi
+          mkdir -p jooosi-social-image-deploy
+          rsync -a --exclude jooosi-social-image-deploy --exclude .git ./ jooosi-social-image-deploy/
+          composer install --working-dir=jooosi-social-image-deploy --no-dev --classmap-authoritative --no-interaction --prefer-dist --ansi
 
       - name: Scope production dependencies
-        run: bash deploy/deploy-scoped.sh jooosi-egami-deploy jooosi-egami-prefixed
+        run: bash deploy/deploy-scoped.sh jooosi-social-image-deploy jooosi-social-image-prefixed
 
       - name: Apply distribution filter
         run: |
-          mkdir -p jooosi-egami-final
-          rsync -a --exclude='.*' --exclude-from=.distignore jooosi-egami-prefixed/ jooosi-egami-final/
-          rm -rf jooosi-egami-prefixed
-          mv jooosi-egami-final jooosi-egami-prefixed
+          mkdir -p jooosi-social-image-final
+          rsync -a --exclude='.*' --exclude-from=.distignore jooosi-social-image-prefixed/ jooosi-social-image-final/
+          rm -rf jooosi-social-image-prefixed
+          mv jooosi-social-image-final jooosi-social-image-prefixed
 
       - name: Create plugin archive
         run: |
-          mkdir -p jooosi-egami-zip/jooosi-egami
-          cp -a jooosi-egami-prefixed/* jooosi-egami-zip/jooosi-egami/
-          cd jooosi-egami-zip
-          zip -qr "../jooosi-egami-${GITHUB_REF_NAME}.zip" . -x "*.git*" "*.DS_Store*"
+          mkdir -p jooosi-social-image-zip/jooosi-social-image
+          cp -a jooosi-social-image-prefixed/* jooosi-social-image-zip/jooosi-social-image/
+          cd jooosi-social-image-zip
+          zip -qr "../jooosi-social-image-${GITHUB_REF_NAME}.zip" . -x "*.git*" "*.DS_Store*"
 
       - name: Upload plugin artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jooosi-egami-${{ github.ref_name }}
-          path: jooosi-egami-${{ github.ref_name }}.zip
+          name: jooosi-social-image-${{ github.ref_name }}
+          path: jooosi-social-image-${{ github.ref_name }}.zip
 
       - name: Publish scoped build to dist branch
         env:
@@ -97,7 +97,7 @@ jobs:
           git checkout dist 2>/dev/null || git checkout --orphan dist
           git rm -rf . 2>/dev/null || true
           git clean -fxd
-          cp -a ../jooosi-egami-prefixed/* .
+          cp -a ../jooosi-social-image-prefixed/* .
           git add --all
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -115,8 +115,8 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: jooosi-egami
-          BUILD_DIR: jooosi-egami-prefixed
+          SLUG: jooosi-social-image
+          BUILD_DIR: jooosi-social-image-prefixed
           VERSION: ${{ github.ref_name }}
           ASSETS_DIR: .wordpress-org
 
@@ -125,6 +125,6 @@ jobs:
         with:
           name: ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.content }}
-          files: jooosi-egami-${{ github.ref_name }}.zip
+          files: jooosi-social-image-${{ github.ref_name }}.zip
           draft: false
           prerelease: false

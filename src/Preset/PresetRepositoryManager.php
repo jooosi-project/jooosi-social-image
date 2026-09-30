@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Preset;
+namespace JooosiSocialImage\Preset;
 
 use JsonException;
 use WP_Error;
@@ -14,11 +14,11 @@ defined('ABSPATH') || exit;
  */
 final class PresetRepositoryManager
 {
-    public const OPTION_REPOSITORIES = 'egami_preset_repositories';
+    public const OPTION_REPOSITORIES = 'social_image_preset_repositories';
 
-    public const OPTION_CACHE = 'egami_preset_repository_cache';
+    public const OPTION_CACHE = 'social_image_preset_repository_cache';
 
-    public const OPTION_BUNDLED_ENABLED = 'egami_bundled_preset_repository_enabled';
+    public const OPTION_BUNDLED_ENABLED = 'social_image_bundled_preset_repository_enabled';
 
     private const MAX_RESPONSE_BYTES = 2_097_152;
 
@@ -53,7 +53,7 @@ final class PresetRepositoryManager
             $lastError = (string) ($configuration['lastError'] ?? '');
 
             if (! is_array($stored)) {
-                $repositories[] = $this->missingSummary($configuration, $lastError ?: __('The repository has no cached manifest.', 'jooosi-egami'));
+                $repositories[] = $this->missingSummary($configuration, $lastError ?: __('The repository has no cached manifest.', 'jooosi-social-image'));
                 continue;
             }
 
@@ -97,7 +97,7 @@ final class PresetRepositoryManager
 
         foreach ($this->configured() as $configuration) {
             if ($configuration['url'] === $url) {
-                return new WP_Error('egami_repository_url_exists', __('That preset repository URL is already configured.', 'jooosi-egami'), ['status' => 409]);
+                return new WP_Error('social_image_repository_url_exists', __('That preset repository URL is already configured.', 'jooosi-social-image'), ['status' => 409]);
             }
         }
 
@@ -113,7 +113,7 @@ final class PresetRepositoryManager
         $configured = $this->configured();
 
         if ((! is_wp_error($bundled) && $bundled['id'] === $id) || isset($configured[$id])) {
-            return new WP_Error('egami_repository_id_exists', __('A preset repository with that id is already configured.', 'jooosi-egami'), ['status' => 409]);
+            return new WP_Error('social_image_repository_id_exists', __('A preset repository with that id is already configured.', 'jooosi-social-image'), ['status' => 409]);
         }
 
         $configured[$id] = [
@@ -152,11 +152,11 @@ final class PresetRepositoryManager
         }
 
         if ($fetched['repository']['id'] !== $id) {
-            $error = __('The refreshed manifest changed its repository id. Remove it and add it again to accept that identity change.', 'jooosi-egami');
+            $error = __('The refreshed manifest changed its repository id. Remove it and add it again to accept that identity change.', 'jooosi-social-image');
             $configured[$id]['lastError'] = $error;
             update_option(self::OPTION_REPOSITORIES, $configured, false);
 
-            return new WP_Error('egami_repository_identity_changed', $error, ['status' => 409]);
+            return new WP_Error('social_image_repository_identity_changed', $error, ['status' => 409]);
         }
 
         $configured[$id]['lastError'] = '';
@@ -200,8 +200,8 @@ final class PresetRepositoryManager
 
         if (! is_wp_error($bundled) && $bundled['id'] === $id) {
             return new WP_Error(
-                'egami_bundled_repository_protected',
-                __('The bundled preset repository cannot be deleted. Disable it to hide its templates.', 'jooosi-egami'),
+                'social_image_bundled_repository_protected',
+                __('The bundled preset repository cannot be deleted. Disable it to hide its templates.', 'jooosi-social-image'),
                 ['status' => 409],
             );
         }
@@ -229,7 +229,7 @@ final class PresetRepositoryManager
         }
 
         if (! is_readable($this->bundledFile)) {
-            return new WP_Error('egami_bundled_repository_missing', __('The bundled preset repository is missing or unreadable.', 'jooosi-egami'));
+            return new WP_Error('social_image_bundled_repository_missing', __('The bundled preset repository is missing or unreadable.', 'jooosi-social-image'));
         }
 
         $decoded = $this->decode((string) file_get_contents($this->bundledFile));
@@ -267,7 +267,7 @@ final class PresetRepositoryManager
             'redirection' => 3,
             'limit_response_size' => self::MAX_RESPONSE_BYTES,
             'headers' => $headers,
-            'user-agent' => 'Jooosi-Egami/' . JOOOSI_EGAMI_VERSION . '; ' . home_url('/'),
+            'user-agent' => 'Jooosi-Social-Image/' . JOOOSI_SOCIAL_IMAGE_VERSION . '; ' . home_url('/'),
         ];
         $isLocalHttp = wp_parse_url($url, PHP_URL_SCHEME) === 'http' && $this->isTrustedLocalUrl($url);
 
@@ -281,7 +281,7 @@ final class PresetRepositoryManager
             : wp_safe_remote_get($url, $arguments);
 
         if (is_wp_error($response)) {
-            return new WP_Error('egami_repository_fetch_failed', $response->get_error_message(), ['status' => 502]);
+            return new WP_Error('social_image_repository_fetch_failed', $response->get_error_message(), ['status' => 502]);
         }
 
         $code = wp_remote_retrieve_response_code($response);
@@ -294,9 +294,9 @@ final class PresetRepositoryManager
 
         if ($code !== 200) {
             return new WP_Error(
-                'egami_repository_http_error',
+                'social_image_repository_http_error',
                 /* translators: %d: HTTP response status code. */
-                sprintf(__('The preset repository returned HTTP %d.', 'jooosi-egami'), $code),
+                sprintf(__('The preset repository returned HTTP %d.', 'jooosi-social-image'), $code),
                 ['status' => 502],
             );
         }
@@ -304,7 +304,7 @@ final class PresetRepositoryManager
         $body = wp_remote_retrieve_body($response);
 
         if (strlen($body) > self::MAX_RESPONSE_BYTES) {
-            return new WP_Error('egami_repository_too_large', __('The preset repository exceeds the 2 MB response limit.', 'jooosi-egami'), ['status' => 413]);
+            return new WP_Error('social_image_repository_too_large', __('The preset repository exceeds the 2 MB response limit.', 'jooosi-social-image'), ['status' => 413]);
         }
 
         $decoded = $this->decode($body);
@@ -336,12 +336,12 @@ final class PresetRepositoryManager
             $decoded = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
             /* translators: %s: JSON parser error message. */
-            return new WP_Error('egami_repository_invalid_json', sprintf(__('The preset repository is not valid JSON: %s', 'jooosi-egami'), $exception->getMessage()), ['status' => 422]);
+            return new WP_Error('social_image_repository_invalid_json', sprintf(__('The preset repository is not valid JSON: %s', 'jooosi-social-image'), $exception->getMessage()), ['status' => 422]);
         }
 
         return is_array($decoded)
             ? $decoded
-            : new WP_Error('egami_repository_invalid_json', __('The preset repository JSON root must be an object.', 'jooosi-egami'), ['status' => 422]);
+            : new WP_Error('social_image_repository_invalid_json', __('The preset repository JSON root must be an object.', 'jooosi-social-image'), ['status' => 422]);
     }
 
     /**
@@ -353,11 +353,11 @@ final class PresetRepositoryManager
         $parts = $url === '' ? false : wp_parse_url($url);
 
         if (! is_array($parts) || empty($parts['host']) || empty($parts['scheme'])) {
-            return new WP_Error('egami_repository_url_invalid', __('Enter a valid preset repository URL.', 'jooosi-egami'), ['status' => 422]);
+            return new WP_Error('social_image_repository_url_invalid', __('Enter a valid preset repository URL.', 'jooosi-social-image'), ['status' => 422]);
         }
 
         if ($parts['scheme'] !== 'https' && ! $this->isTrustedLocalUrl($url)) {
-            return new WP_Error('egami_repository_https_required', __('Preset repositories on external hosts must use HTTPS.', 'jooosi-egami'), ['status' => 422]);
+            return new WP_Error('social_image_repository_https_required', __('Preset repositories on external hosts must use HTTPS.', 'jooosi-social-image'), ['status' => 422]);
         }
 
         return $url;
@@ -452,7 +452,7 @@ final class PresetRepositoryManager
         return [
             'id' => (string) ($configuration['id'] ?? ''),
             'version' => '',
-            'title' => (string) ($configuration['id'] ?? __('External repository', 'jooosi-egami')),
+            'title' => (string) ($configuration['id'] ?? __('External repository', 'jooosi-social-image')),
             'description' => '',
             'homepage' => '',
             'url' => (string) ($configuration['url'] ?? ''),
@@ -473,6 +473,6 @@ final class PresetRepositoryManager
 
     private function notFound(): WP_Error
     {
-        return new WP_Error('egami_repository_not_found', __('Preset repository not found.', 'jooosi-egami'), ['status' => 404]);
+        return new WP_Error('social_image_repository_not_found', __('Preset repository not found.', 'jooosi-social-image'), ['status' => 404]);
     }
 }

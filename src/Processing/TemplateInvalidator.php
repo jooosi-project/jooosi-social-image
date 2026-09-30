@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Processing;
+namespace JooosiSocialImage\Processing;
 
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Template\TemplateRepository;
 use WP_Error;
 
 /**
@@ -30,7 +30,7 @@ final class TemplateInvalidator
         $templateId = absint($templateId);
 
         if ($templateId === 0) {
-            return new WP_Error('egami_invalid_template', __('A design ID is required.', 'jooosi-egami'));
+            return new WP_Error('social_image_invalid_template', __('A design ID is required.', 'jooosi-social-image'));
         }
 
         $postTypes = get_post_types(['show_ui' => true], 'names');
@@ -108,8 +108,8 @@ final class TemplateInvalidator
 
         if (
             $attachmentId === 0
-            || (string) get_post_meta($attachmentId, '_egami_generated', true) !== '1'
-            || (int) get_post_meta($attachmentId, '_egami_template_id', true) !== (int) ($entry['template_id'] ?? 0)
+            || (string) get_post_meta($attachmentId, '_social_image_generated', true) !== '1'
+            || (int) get_post_meta($attachmentId, '_social_image_template_id', true) !== (int) ($entry['template_id'] ?? 0)
         ) {
             return 0;
         }

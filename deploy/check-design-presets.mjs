@@ -8,7 +8,7 @@ const complexCategories = new Set(["Culture", "Sports", "Luxury"]);
 const issues = [];
 
 if (repository.schemaVersion !== 1) issues.push("Repository schemaVersion must be 1.");
-if (repository.id !== "egami-essentials") issues.push("Bundled repository id must remain egami-essentials.");
+if (repository.id !== "social-image-essentials") issues.push("Bundled repository id must remain social-image-essentials.");
 if (!Array.isArray(repository.presets) || repository.presets.length !== 65) issues.push(`Expected 65 presets, received ${repository.presets?.length ?? 0}.`);
 if (presetSchema.$schema !== "https://json-schema.org/draft/2020-12/schema") issues.push("Preset schema must use JSON Schema Draft 2020-12.");
 if (repositorySchema.$schema !== "https://json-schema.org/draft/2020-12/schema") issues.push("Repository schema must use JSON Schema Draft 2020-12.");
@@ -49,6 +49,6 @@ for (const url of uniqueUnsplashUrls) {
   }
 }
 
-if (issues.length > 0) throw new Error(`Invalid Egami preset repository:\n${issues.join("\n")}`);
+if (issues.length > 0) throw new Error(`Invalid Social Image preset repository:\n${issues.join("\n")}`);
 
 process.stdout.write("Preset repository valid: 65 presets, 13 collections, 18 curated Unsplash images.\n");

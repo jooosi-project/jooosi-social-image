@@ -17,11 +17,11 @@ if ($contents === false) {
 }
 
 $loadScopedRegistry = <<<'PHP'
-    $GLOBALS['__composer_autoload_files'] = $GLOBALS['__composer_autoload_files_jooosi_egami_deps'] ?? [];
+    $GLOBALS['__composer_autoload_files'] = $GLOBALS['__composer_autoload_files_jooosi_social_image_deps'] ?? [];
 PHP;
 
 $saveScopedRegistry = <<<'PHP'
-    $GLOBALS['__composer_autoload_files_jooosi_egami_deps'] = $GLOBALS['__composer_autoload_files'];
+    $GLOBALS['__composer_autoload_files_jooosi_social_image_deps'] = $GLOBALS['__composer_autoload_files'];
 PHP;
 
 $hasLoadPatch = str_contains($contents, $loadScopedRegistry);

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Rendering;
+namespace JooosiSocialImage\Tests\Rendering;
 
-use JooosiEgami\Rendering\SvgRasterizer;
+use JooosiSocialImage\Rendering\SvgRasterizer;
 use PHPUnit\Framework\TestCase;
 use WP_Error;
 
@@ -39,7 +39,7 @@ final class SvgRasterizerTest extends TestCase
 
         if (! $rasterizer->available()) {
             self::assertInstanceOf(WP_Error::class, $result);
-            self::assertSame('egami_svg_renderer_unavailable', $result->get_error_code());
+            self::assertSame('social_image_svg_renderer_unavailable', $result->get_error_code());
 
             return;
         }
@@ -68,7 +68,7 @@ final class SvgRasterizerTest extends TestCase
         );
 
         self::assertInstanceOf(WP_Error::class, $result);
-        self::assertSame('egami_svg_render_failed', $result->get_error_code());
+        self::assertSame('social_image_svg_render_failed', $result->get_error_code());
         self::assertStringContainsString('MSVG produced an empty image', $result->get_error_message());
     }
 }

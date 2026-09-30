@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Processing;
+namespace JooosiSocialImage\Tests\Processing;
 
 use FilesystemIterator;
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Content\DynamicDataResolver;
-use JooosiEgami\Integration\YabeWebfont;
-use JooosiEgami\Rendering\FontLocator;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Rendering\RemoteImageFetcher;
-use JooosiEgami\Rendering\RendererFactory;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Content\DynamicDataResolver;
+use JooosiSocialImage\Integration\JooosiFon;
+use JooosiSocialImage\Rendering\FontLocator;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\RemoteImageFetcher;
+use JooosiSocialImage\Rendering\RendererFactory;
+use JooosiSocialImage\Template\TemplateRepository;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -23,9 +23,9 @@ final class ImageGeneratorCacheInvalidationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uploads = sys_get_temp_dir() . '/jooosi-egami-cache-' . bin2hex(random_bytes(6));
-        self::assertTrue(mkdir($this->uploads . '/egami/previews', 0777, true));
-        $GLOBALS['egami_test_upload_basedir'] = $this->uploads;
+        $this->uploads = sys_get_temp_dir() . '/jooosi-social-image-cache-' . bin2hex(random_bytes(6));
+        self::assertTrue(mkdir($this->uploads . '/social-image/previews', 0777, true));
+        $GLOBALS['social_image_test_upload_basedir'] = $this->uploads;
     }
 
     protected function tearDown(): void
@@ -43,12 +43,12 @@ final class ImageGeneratorCacheInvalidationTest extends TestCase
             rmdir($this->uploads);
         }
 
-        unset($GLOBALS['egami_test_upload_basedir']);
+        unset($GLOBALS['social_image_test_upload_basedir']);
     }
 
     public function testSelectiveFlushInvalidatesOnlyTheRequestedDesign(): void
     {
-        $directory = $this->uploads . '/egami';
+        $directory = $this->uploads . '/social-image';
         file_put_contents($directory . '/12-4-social-a.png', 'design-12');
         file_put_contents($directory . '/13-4-social-b.png', 'design-13');
         file_put_contents($directory . '/previews/preview.png', 'preview');
@@ -63,7 +63,7 @@ final class ImageGeneratorCacheInvalidationTest extends TestCase
 
     public function testFullFlushInvalidatesNestedPreviewAndGeneratedFiles(): void
     {
-        $directory = $this->uploads . '/egami';
+        $directory = $this->uploads . '/social-image';
         file_put_contents($directory . '/12-4-social-a.png', 'render');
         file_put_contents($directory . '/previews/preview.png', 'preview');
 
@@ -83,7 +83,7 @@ final class ImageGeneratorCacheInvalidationTest extends TestCase
             new TemplateMatcher($repository),
             new DynamicDataResolver(),
             RendererFactory::create(),
-            new FontLocator(new YabeWebfont()),
+            new FontLocator(new JooosiFon()),
             new RemoteImageFetcher(),
         );
     }

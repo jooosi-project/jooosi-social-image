@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Bootstrap;
+namespace JooosiSocialImage\Bootstrap;
 
 /**
  * Runtime filesystem paths.

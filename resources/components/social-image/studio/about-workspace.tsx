@@ -11,7 +11,7 @@ import IconLayers from "~icons/lucide/layers-3";
 import IconPackage from "~icons/lucide/package";
 import IconRefresh from "~icons/lucide/refresh-cw";
 import IconUsers from "~icons/lucide/users";
-import EgamiLogo from "~/jooosi-egami.svg?react";
+import SocialImageLogo from "~/jooosi-social-image.svg?react";
 
 import { Frame, FrameFooter, FrameHeader, FramePanel } from "@/components/reui/frame";
 import { buttonVariants } from "@/components/ui/button";
@@ -96,25 +96,25 @@ const sponsorshipBenefits: Capability[] = [
 export function AboutWorkspace({ version }: { version: string }) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-5 py-6 lg:px-8 lg:py-8">
-      <section className="overflow-hidden rounded-2xl border bg-card shadow-sm" aria-labelledby="egami-about-heading">
+      <section className="overflow-hidden rounded-2xl border bg-card shadow-sm" aria-labelledby="social-image-about-heading">
         <div className="flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between lg:p-8">
           <div className="flex min-w-0 items-center gap-5">
             <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-foreground text-background shadow-sm">
-              <EgamiLogo className="size-16 rounded-2xl bg-background text-foreground" aria-hidden="true" />
+              <SocialImageLogo className="size-16 rounded-2xl bg-background text-foreground" aria-hidden="true" />
             </span>
             <div className="min-w-0">
               <div className="mb-2 flex flex-wrap items-center gap-2">
-                <h1 id="egami-about-heading" className="text-2xl font-semibold tracking-tight">Jooosi Egami</h1>
+                <h1 id="social-image-about-heading" className="text-2xl font-semibold tracking-tight">Jooosi Social Image</h1>
                 <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-foreground">Version {version}</span>
               </div>
               <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-                Design dynamic Open Graph and featured images directly in WordPress. Connect layouts to live content, assign them with flexible rules, and let Egami regenerate cached images when content changes.
+                Design dynamic Open Graph and featured images directly in WordPress. Connect layouts to live content, assign them with flexible rules, and let Social Image regenerate cached images when content changes.
               </p>
             </div>
           </div>
           <a
             className={cn(buttonVariants({ variant: "outline", size: "sm" }), "shrink-0")}
-            href="https://github.com/jooosi-project/jooosi-egami"
+            href="https://github.com/jooosi-project/jooosi-social-image"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -150,9 +150,9 @@ export function AboutWorkspace({ version }: { version: string }) {
       </section>
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)]">
-        <Frame aria-labelledby="egami-sponsorship-heading">
+        <Frame aria-labelledby="social-image-sponsorship-heading">
           <FrameHeader>
-            <h2 id="egami-sponsorship-heading" className="text-base font-semibold">Open-source sponsorship</h2>
+            <h2 id="social-image-sponsorship-heading" className="text-base font-semibold">Open-source sponsorship</h2>
             <p className="mt-1 text-sm text-foreground/70">
               Every contribution supports maintenance across the complete WordPress plugin portfolio.
             </p>
@@ -203,10 +203,10 @@ export function AboutWorkspace({ version }: { version: string }) {
           </FrameFooter>
         </Frame>
 
-        <Frame aria-labelledby="egami-sponsors-heading">
+        <Frame aria-labelledby="social-image-sponsors-heading">
           <FrameHeader>
-            <h2 id="egami-sponsors-heading" className="text-base font-semibold">Proudly sponsored by</h2>
-            <p className="mt-1 text-sm text-foreground/70">Partners supporting Jooosi Egami and its open-source development.</p>
+            <h2 id="social-image-sponsors-heading" className="text-base font-semibold">Proudly sponsored by</h2>
+            <p className="mt-1 text-sm text-foreground/70">Partners supporting Jooosi Social Image and its open-source development.</p>
           </FrameHeader>
           <FramePanel>
             {sponsors.map((sponsor, index) => {

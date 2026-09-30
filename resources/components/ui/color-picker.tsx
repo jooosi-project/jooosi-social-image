@@ -174,7 +174,7 @@ export function ColorPicker({ value, label, className, onChange }: ColorPickerPr
           </div>
 
           <input
-            className="egami-color-hue block h-4 w-full cursor-pointer appearance-none bg-transparent"
+            className="social-image-color-hue block h-4 w-full cursor-pointer appearance-none bg-transparent"
             type="range"
             min={0}
             max={359}

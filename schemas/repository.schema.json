@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://jooosi.com/egami/schemas/repository.schema.json",
-  "title": "Egami preset repository",
-  "description": "A versioned repository of reusable Egami image-design presets.",
+  "$id": "https://jooosi.com/social-image/schemas/repository.schema.json",
+  "title": "Social Image preset repository",
+  "description": "A versioned repository of reusable Social Image image-design presets.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "id", "version", "title", "description", "presets"],

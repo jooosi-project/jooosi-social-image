@@ -9,7 +9,7 @@ import IconSave from "~icons/lucide/save";
 import IconPanelRight from "~icons/lucide/panel-right";
 import IconSettings from "~icons/lucide/settings-2";
 import IconTrash from "~icons/lucide/trash-2";
-import EgamiLogo from "~/jooosi-egami.svg?react";
+import SocialImageLogo from "~/jooosi-social-image.svg?react";
 
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -33,6 +33,7 @@ type CommandBarProps = {
   previewPostId: number;
   matchingPostsLoading: boolean;
   canManage: boolean;
+  settingsLoadState: "loading" | "ready" | "error";
   busy: boolean;
   dirty: boolean;
   onOpenDesigns: () => void;
@@ -58,6 +59,7 @@ export function CommandBar({
   previewPostId,
   matchingPostsLoading,
   canManage,
+  settingsLoadState,
   busy,
   dirty,
   onOpenDesigns,
@@ -77,10 +79,10 @@ export function CommandBar({
   const editorWorkspace = workspace === "design";
 
   return (
-    <header className="egami-command-bar">
+    <header className="social-image-command-bar">
       <div className="flex h-full shrink-0 items-center border-r px-2">
         <button type="button" className="grid size-8 shrink-0 place-items-center rounded-md bg-foreground text-background" title="All designs" aria-label="All designs" onClick={onOpenDesigns}>
-          <EgamiLogo className="size-8 rounded-md text-foreground bg-background" aria-hidden="true" />
+          <SocialImageLogo className="size-8 rounded-md text-foreground bg-background" aria-hidden="true" />
         </button>
       </div>
 
@@ -97,17 +99,17 @@ export function CommandBar({
 
       {!editorWorkspace && (
         <div className="flex h-full items-center gap-2 px-4 pr-2">
-          <span className="text-sm font-semibold">Jooosi Egami</span>
+          <span className="text-sm font-semibold">Jooosi Social Image</span>
           <span className="rounded-full bg-muted px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground">v{version}</span>
         </div>
       )}
 
       {!editorWorkspace && (
-        <div className="flex h-full items-center gap-1 border-l px-2" role="tablist" aria-label="Egami pages">
+        <div className="flex h-full items-center gap-1 border-l px-2" role="tablist" aria-label="Social Image pages">
           <Button
-            id="egami-designs-tab"
+            id="social-image-designs-tab"
             role="tab"
-            aria-controls="egami-designs-panel"
+            aria-controls="social-image-designs-panel"
             aria-selected={workspace === "designs"}
             size="sm"
             variant={workspace === "designs" ? "secondary" : "ghost"}
@@ -116,9 +118,9 @@ export function CommandBar({
             Designs
           </Button>
           <Button
-            id="egami-about-tab"
+            id="social-image-about-tab"
             role="tab"
-            aria-controls="egami-about-panel"
+            aria-controls="social-image-about-panel"
             aria-selected={workspace === "about"}
             size="sm"
             variant={workspace === "about" ? "secondary" : "ghost"}
@@ -154,8 +156,14 @@ export function CommandBar({
               <IconEllipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuItem onClick={onOpenSettings}><IconSettings /> Rendering settings</DropdownMenuItem>
-              <DropdownMenuItem onClick={onOpenAbout}><IconInfo /> About Egami</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={onOpenSettings}
+                disabled={settingsLoadState !== "ready"}
+                title={settingsLoadState === "loading" ? "Settings are still loading" : settingsLoadState === "error" ? "Reload the page to retry loading settings" : undefined}
+              >
+                <IconSettings /> Rendering settings{settingsLoadState === "loading" ? " (loading…)" : settingsLoadState === "error" ? " (unavailable)" : ""}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onOpenAbout}><IconInfo /> About Social Image</DropdownMenuItem>
               {design && (
                 <>
                   <DropdownMenuItem onClick={onOpenCanvasSettings}><IconPanelRight /> Canvas settings</DropdownMenuItem>

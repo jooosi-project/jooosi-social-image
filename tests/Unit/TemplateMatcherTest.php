@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Unit;
+namespace JooosiSocialImage\Tests\Unit;
 
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Template\TemplateRepository;
 use PHPUnit\Framework\TestCase;
 use WP_Post;
 
@@ -14,16 +14,16 @@ final class TemplateMatcherTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['egami_test_post_meta'] = [];
-        $GLOBALS['egami_test_terms'] = [];
-        $GLOBALS['egami_test_page_templates'] = [];
+        $GLOBALS['social_image_test_post_meta'] = [];
+        $GLOBALS['social_image_test_terms'] = [];
+        $GLOBALS['social_image_test_page_templates'] = [];
     }
 
     public function testAllConditionsMustMatchForAndQueries(): void
     {
         $post = $this->post();
-        $GLOBALS['egami_test_post_meta'][42]['price'] = ['29.00'];
-        $GLOBALS['egami_test_terms'][42]['category'] = ['news', '7'];
+        $GLOBALS['social_image_test_post_meta'][42]['price'] = ['29.00'];
+        $GLOBALS['social_image_test_terms'][42]['category'] = ['news', '7'];
 
         self::assertTrue($this->matcher()->matches([
             'query' => [
@@ -61,7 +61,7 @@ final class TemplateMatcherTest extends TestCase
 
     public function testNestedGroupsComposeIndependentBooleanRelations(): void
     {
-        $GLOBALS['egami_test_terms'][42]['category'] = ['news'];
+        $GLOBALS['social_image_test_terms'][42]['category'] = ['news'];
 
         self::assertTrue($this->matcher()->matches([
             'query' => [

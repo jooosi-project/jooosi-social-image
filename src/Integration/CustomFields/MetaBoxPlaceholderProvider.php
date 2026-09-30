@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration\CustomFields;
+namespace JooosiSocialImage\Integration\CustomFields;
 
-use JooosiEgami\Content\PlaceholderProviderInterface;
+use JooosiSocialImage\Content\PlaceholderProviderInterface;
 
 defined('ABSPATH') || exit;
 
@@ -21,7 +21,7 @@ final class MetaBoxPlaceholderProvider implements PlaceholderProviderInterface
         foreach ($this->fields($postId) as $key => $field) {
             $result[$key] = [
                 'label' => (string) ($field['name'] ?? $key),
-                'group' => __('Meta Box', 'jooosi-egami'),
+                'group' => __('Meta Box', 'jooosi-social-image'),
                 'type' => $this->type((string) ($field['type'] ?? '')),
             ];
         }

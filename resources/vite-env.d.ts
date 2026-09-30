@@ -9,7 +9,7 @@ declare module "*.css";
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
-      "omni-icon": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+      "jooosi-icon": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
         name: string;
         width?: string | number;
         height?: string | number;

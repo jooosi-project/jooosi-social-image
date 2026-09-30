@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Cli;
+namespace JooosiSocialImage\Cli;
 
-use JooosiEgami\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\ImageGenerator;
 use WP_CLI;
 
 use function WP_CLI\Utils\get_flag_value;

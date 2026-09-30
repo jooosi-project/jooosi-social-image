@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Rendering;
+namespace JooosiSocialImage\Tests\Rendering;
 
 use GdImage;
-use JooosiEgami\Rendering\ImagineRenderer;
-use JooosiEgami\Rendering\RendererFactory;
-use JooosiEgami\Rendering\RendererInterface;
-use JooosiEgami\Rendering\SvgRasterizer;
+use JooosiSocialImage\Rendering\ImagineRenderer;
+use JooosiSocialImage\Rendering\RendererFactory;
+use JooosiSocialImage\Rendering\RendererInterface;
+use JooosiSocialImage\Rendering\SvgRasterizer;
 use PHPUnit\Framework\TestCase;
 use WP_Error;
 
@@ -756,7 +756,7 @@ final class ImagineRendererTest extends TestCase
 
     private function temporaryPath(string $extension): string
     {
-        $path = sys_get_temp_dir() . '/egami-imagine-' . bin2hex(random_bytes(8)) . '.' . $extension;
+        $path = sys_get_temp_dir() . '/social-image-imagine-' . bin2hex(random_bytes(8)) . '.' . $extension;
         $this->temporaryFiles[] = $path;
 
         return $path;

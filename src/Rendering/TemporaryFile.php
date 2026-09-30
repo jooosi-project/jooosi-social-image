@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Rendering;
+namespace JooosiSocialImage\Rendering;
 
 defined('ABSPATH') || exit;
 
@@ -19,7 +19,7 @@ final class TemporaryFile
             return null;
         }
 
-        $path = @tempnam($directory, 'egami-');
+        $path = @tempnam($directory, 'social-image-');
 
         if (! is_string($path)) {
             return null;

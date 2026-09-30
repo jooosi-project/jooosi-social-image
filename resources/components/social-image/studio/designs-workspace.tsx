@@ -1,12 +1,13 @@
 import IconCopy from "~icons/lucide/copy";
 import IconEllipsis from "~icons/lucide/ellipsis";
 import IconImagePlus from "~icons/lucide/image-plus";
+import IconLoader from "~icons/lucide/loader-circle";
 import IconPencil from "~icons/lucide/pencil";
 import IconPlus from "~icons/lucide/plus";
 import IconRefresh from "~icons/lucide/refresh-cw";
 import IconTrash from "~icons/lucide/trash-2";
 
-import { DesignPreview } from "@/components/egami/studio/design-preview";
+import { DesignPreview } from "@/components/social-image/studio/design-preview";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import type { Design } from "@/types/admin";
 
 type DesignsWorkspaceProps = {
   designs: Design[];
+  loading: boolean;
   canManage: boolean;
   busy: boolean;
   onStartNew: () => void;
@@ -30,28 +32,32 @@ type DesignsWorkspaceProps = {
   onDelete: (design: Design) => void;
 };
 
-export function DesignsWorkspace({ designs, canManage, busy, onStartNew, onOpen, onStatusChange, onDuplicate, onRegenerate, onDelete }: DesignsWorkspaceProps) {
+export function DesignsWorkspace({ designs, loading, canManage, busy, onStartNew, onOpen, onStatusChange, onDuplicate, onRegenerate, onDelete }: DesignsWorkspaceProps) {
   return (
-    <main className="egami-designs-workspace">
+    <main className="social-image-designs-workspace">
       <div className="mx-auto w-full max-w-[1120px] px-6 py-10">
         <div className="flex items-end justify-between gap-5 border-b pb-4">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-semibold">Designs</h1>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{designs.length}</span>
+              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{loading ? "…" : designs.length}</span>
             </div>
             <p className="mt-1 text-xs text-muted-foreground">Saved image designs and their publishing locations.</p>
           </div>
-          {canManage && <Button size="sm" onClick={onStartNew} disabled={busy}><IconPlus /> New design</Button>}
+          {canManage && <Button size="sm" onClick={onStartNew} disabled={busy || loading}><IconPlus /> New design</Button>}
         </div>
 
-        {designs.length === 0 ? (
+        {loading ? (
+          <div className="grid min-h-80 place-items-center text-sm text-muted-foreground" role="status">
+            <span className="flex items-center gap-2"><IconLoader className="size-4 animate-spin" /> Loading designs…</span>
+          </div>
+        ) : designs.length === 0 ? (
           <div className="grid min-h-80 place-items-center text-center">
             <div>
               <span className="mx-auto grid size-10 place-items-center rounded-lg border bg-card text-muted-foreground"><IconImagePlus /></span>
               <h2 className="mt-3 text-sm font-semibold">No designs yet</h2>
               <p className="mt-1 text-xs text-muted-foreground">Choose a template to create your first dynamic image.</p>
-              {canManage && <Button size="sm" className="mt-4" onClick={onStartNew}>Browse templates</Button>}
+              {canManage && <Button size="sm" className="mt-4" onClick={onStartNew} disabled={busy}>Browse templates</Button>}
             </div>
           </div>
         ) : (

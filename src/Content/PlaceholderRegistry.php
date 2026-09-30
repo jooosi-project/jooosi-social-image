@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Content;
+namespace JooosiSocialImage\Content;
 
-use JooosiEgami\Integration\CustomFields\AcfPlaceholderProvider;
-use JooosiEgami\Integration\CustomFields\JetEnginePlaceholderProvider;
-use JooosiEgami\Integration\CustomFields\MetaBoxPlaceholderProvider;
-use JooosiEgami\Integration\CustomFields\ToolsetPlaceholderProvider;
+use JooosiSocialImage\Integration\CustomFields\AcfPlaceholderProvider;
+use JooosiSocialImage\Integration\CustomFields\JetEnginePlaceholderProvider;
+use JooosiSocialImage\Integration\CustomFields\MetaBoxPlaceholderProvider;
+use JooosiSocialImage\Integration\CustomFields\ToolsetPlaceholderProvider;
 use Throwable;
 
 defined('ABSPATH') || exit;
@@ -60,7 +60,7 @@ final class PlaceholderRegistry
          * @param array{post_id: int}                  $context
          */
         $definitions = apply_filters(
-            'jooosi-egami/content:placeholder_definitions',
+            'jooosi-social-image/content:placeholder_definitions',
             $definitions,
             ['post_id' => $postId],
         );
@@ -84,7 +84,7 @@ final class PlaceholderRegistry
             $normalized[] = [
                 'key' => $key,
                 'label' => sanitize_text_field((string) ($definition['label'] ?? self::labelFromKey($key))),
-                'group' => sanitize_text_field((string) ($definition['group'] ?? __('Other', 'jooosi-egami'))),
+                'group' => sanitize_text_field((string) ($definition['group'] ?? __('Other', 'jooosi-social-image'))),
                 'type' => $type,
                 'description' => sanitize_text_field((string) ($definition['description'] ?? '')),
             ];
@@ -128,7 +128,7 @@ final class PlaceholderRegistry
          * @param array{post_id: int}  $context
          */
         $values = apply_filters(
-            'jooosi-egami/content:placeholder_values',
+            'jooosi-social-image/content:placeholder_values',
             $values,
             ['post_id' => $postId],
         );
@@ -152,24 +152,24 @@ final class PlaceholderRegistry
     private function builtinDefinitions(int $postId): array
     {
         $definitions = [
-            'site.name' => ['label' => __('Site name', 'jooosi-egami'), 'group' => __('Site', 'jooosi-egami')],
-            'site.tagline' => ['label' => __('Site tagline', 'jooosi-egami'), 'group' => __('Site', 'jooosi-egami')],
-            'site.url' => ['label' => __('Site URL', 'jooosi-egami'), 'group' => __('Site', 'jooosi-egami'), 'type' => 'url'],
-            'post.id' => ['label' => __('Post ID', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'number'],
-            'post.title' => ['label' => __('Title', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami')],
-            'post.excerpt' => ['label' => __('Excerpt', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami')],
-            'post.content' => ['label' => __('Content', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami')],
-            'post.url' => ['label' => __('Permalink', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'url'],
-            'post.date' => ['label' => __('Published date', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'date'],
-            'post.modified' => ['label' => __('Modified date', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'date'],
-            'post.type' => ['label' => __('Post type', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami')],
-            'post.status' => ['label' => __('Post status', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami')],
-            'post.featured_image' => ['label' => __('Featured image', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'image'],
-            'post.featured_image_id' => ['label' => __('Featured image ID', 'jooosi-egami'), 'group' => __('Post', 'jooosi-egami'), 'type' => 'number'],
-            'post.author.id' => ['label' => __('Author ID', 'jooosi-egami'), 'group' => __('Author', 'jooosi-egami'), 'type' => 'number'],
-            'post.author.name' => ['label' => __('Author name', 'jooosi-egami'), 'group' => __('Author', 'jooosi-egami')],
-            'post.author.url' => ['label' => __('Author URL', 'jooosi-egami'), 'group' => __('Author', 'jooosi-egami'), 'type' => 'url'],
-            'post.author.avatar' => ['label' => __('Author avatar', 'jooosi-egami'), 'group' => __('Author', 'jooosi-egami'), 'type' => 'image'],
+            'site.name' => ['label' => __('Site name', 'jooosi-social-image'), 'group' => __('Site', 'jooosi-social-image')],
+            'site.tagline' => ['label' => __('Site tagline', 'jooosi-social-image'), 'group' => __('Site', 'jooosi-social-image')],
+            'site.url' => ['label' => __('Site URL', 'jooosi-social-image'), 'group' => __('Site', 'jooosi-social-image'), 'type' => 'url'],
+            'post.id' => ['label' => __('Post ID', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'number'],
+            'post.title' => ['label' => __('Title', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image')],
+            'post.excerpt' => ['label' => __('Excerpt', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image')],
+            'post.content' => ['label' => __('Content', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image')],
+            'post.url' => ['label' => __('Permalink', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'url'],
+            'post.date' => ['label' => __('Published date', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'date'],
+            'post.modified' => ['label' => __('Modified date', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'date'],
+            'post.type' => ['label' => __('Post type', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image')],
+            'post.status' => ['label' => __('Post status', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image')],
+            'post.featured_image' => ['label' => __('Featured image', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'image'],
+            'post.featured_image_id' => ['label' => __('Featured image ID', 'jooosi-social-image'), 'group' => __('Post', 'jooosi-social-image'), 'type' => 'number'],
+            'post.author.id' => ['label' => __('Author ID', 'jooosi-social-image'), 'group' => __('Author', 'jooosi-social-image'), 'type' => 'number'],
+            'post.author.name' => ['label' => __('Author name', 'jooosi-social-image'), 'group' => __('Author', 'jooosi-social-image')],
+            'post.author.url' => ['label' => __('Author URL', 'jooosi-social-image'), 'group' => __('Author', 'jooosi-social-image'), 'type' => 'url'],
+            'post.author.avatar' => ['label' => __('Author avatar', 'jooosi-social-image'), 'group' => __('Author', 'jooosi-social-image'), 'type' => 'image'],
         ];
 
         $post = $postId > 0 ? get_post($postId) : null;
@@ -183,7 +183,7 @@ final class PlaceholderRegistry
             }
             $definitions['taxonomy.' . $taxonomy->name] = [
                 'label' => (string) ($taxonomy->labels->singular_name ?? $taxonomy->label ?? $taxonomy->name),
-                'group' => __('Taxonomies', 'jooosi-egami'),
+                'group' => __('Taxonomies', 'jooosi-social-image'),
             ];
         }
 
@@ -193,7 +193,7 @@ final class PlaceholderRegistry
             }
             $definitions['meta.' . $metaKey] = [
                 'label' => self::labelFromKey((string) $metaKey),
-                'group' => __('Custom fields', 'jooosi-egami'),
+                'group' => __('Custom fields', 'jooosi-social-image'),
             ];
         }
 

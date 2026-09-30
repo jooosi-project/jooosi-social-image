@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Api;
+namespace JooosiSocialImage\Api;
 
-use JooosiEgami\Bootstrap\Plugin;
+use JooosiSocialImage\Bootstrap\Plugin;
 use WP_Error;
 
 /**
@@ -57,7 +57,7 @@ final class Image
         $alt = isset($arguments['alt'])
             ? (string) $arguments['alt']
             : get_the_title($postId ?: get_the_ID());
-        $class = isset($arguments['class']) ? (string) $arguments['class'] : 'egami-image';
+        $class = isset($arguments['class']) ? (string) $arguments['class'] : 'social-image-image';
 
         return sprintf(
             '<img src="%s" alt="%s" class="%s" loading="lazy" decoding="async" />',

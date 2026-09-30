@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Bootstrap;
+namespace JooosiSocialImage\Bootstrap;
 
-use JooosiEgami\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\ImageGenerator;
 
 /**
  * Main plugin entrypoint.
@@ -40,7 +40,7 @@ final class Plugin
     public static function instance(): self
     {
         if (! self::$instance instanceof self) {
-            self::boot(JOOOSI_EGAMI_PLUGIN_FILE);
+            self::boot(JOOOSI_SOCIAL_IMAGE_PLUGIN_FILE);
         }
 
         return self::$instance;

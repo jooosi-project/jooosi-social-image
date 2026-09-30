@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Cli;
+namespace JooosiSocialImage\Cli;
 
-use JooosiEgami\Processing\TemplateInvalidator;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Processing\TemplateInvalidator;
+use JooosiSocialImage\Template\TemplateRepository;
 use WP_CLI;
 
 use function WP_CLI\Utils\format_items;

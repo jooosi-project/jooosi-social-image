@@ -12,7 +12,7 @@ function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
 }
 
 function DropdownMenuPortal({ className, ...props }: MenuPrimitive.Portal.Props) {
-  return <MenuPrimitive.Portal data-slot="dropdown-menu-portal" className={cn("egami-style egami-portal", className)} {...props} />
+  return <MenuPrimitive.Portal data-slot="dropdown-menu-portal" className={cn("social-image-style social-image-portal", className)} {...props} />
 }
 
 function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
@@ -32,7 +32,7 @@ function DropdownMenuContent({
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
   return (
-    <MenuPrimitive.Portal className="egami-style egami-portal">
+    <MenuPrimitive.Portal className="social-image-style social-image-portal">
       <MenuPrimitive.Positioner
         className="isolate z-[100010] outline-none"
         align={align}

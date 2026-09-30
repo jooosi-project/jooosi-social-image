@@ -6,5 +6,5 @@
 
 - 🐣 Initial release
 
-[unreleased]: https://github.com/jooosi-project/jooosi-egami/compare/1.0.0...HEAD
-[1.0.0]: https://github.com/jooosi-project/jooosi-egami/releases/tag/1.0.0
+[unreleased]: https://github.com/jooosi-project/jooosi-social-image/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/jooosi-project/jooosi-social-image/releases/tag/1.0.0

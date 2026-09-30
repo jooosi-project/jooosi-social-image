@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Bootstrap;
+namespace JooosiSocialImage\Bootstrap;
 
-use JooosiEgami\Settings\PluginSettings;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Settings\PluginSettings;
+use JooosiSocialImage\Template\TemplateRepository;
 
 /**
  * Activation and deactivation lifecycle.
@@ -42,6 +42,6 @@ final class LifecycleManager
 
     public function deactivate(): void
     {
-        wp_clear_scheduled_hook('jooosi-egami/rendering:render_post');
+        wp_clear_scheduled_hook('jooosi-social-image/rendering:render_post');
     }
 }

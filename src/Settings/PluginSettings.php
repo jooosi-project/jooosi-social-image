@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Settings;
+namespace JooosiSocialImage\Settings;
 
 /**
  * Typed access to plugin-wide rendering settings.
@@ -11,7 +11,7 @@ namespace JooosiEgami\Settings;
  */
 final class PluginSettings
 {
-    public const OPTION = 'egami_settings';
+    public const OPTION = 'social_image_settings';
 
     /**
      * @return array{format: string, quality: int, replace_featured: bool, delete_on_uninstall: bool}

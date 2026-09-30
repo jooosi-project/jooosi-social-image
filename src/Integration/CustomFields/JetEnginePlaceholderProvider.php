@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration\CustomFields;
+namespace JooosiSocialImage\Integration\CustomFields;
 
-use JooosiEgami\Content\PlaceholderProviderInterface;
+use JooosiSocialImage\Content\PlaceholderProviderInterface;
 
 defined('ABSPATH') || exit;
 
@@ -24,7 +24,7 @@ final class JetEnginePlaceholderProvider implements PlaceholderProviderInterface
         foreach (array_keys($this->metadata($postId)) as $key) {
             $fields[$key] = [
                 'label' => ucwords(str_replace(['_', '-'], ' ', $key)),
-                'group' => __('JetEngine', 'jooosi-egami'),
+                'group' => __('JetEngine', 'jooosi-social-image'),
             ];
         }
         return $fields;

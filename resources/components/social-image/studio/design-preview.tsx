@@ -11,7 +11,7 @@ type DesignPreviewProps = {
 };
 
 const PREVIEW_CONTENT: Record<string, string> = {
-  "site.name": "EGAMI JOURNAL",
+  "site.name": "SOCIAL IMAGE JOURNAL",
   "site.tagline": "Ideas worth sharing",
   "post.title": "The future is built one bold idea at a time",
   "post.excerpt": "A practical field guide for turning thoughtful ideas into work that matters.",
@@ -76,7 +76,7 @@ function PreviewElement({ element, parentWidth, parentHeight }: { element: Desig
   if (element.type === "svg") {
     return (
       <span key={element.id} className="grid place-items-center" style={position}>
-        <omni-icon name={element.icon} width="100%" height="100%" color={element.color} aria-hidden="true" />
+        <jooosi-icon name={element.icon} width="100%" height="100%" color={element.color} aria-hidden="true" />
       </span>
     );
   }

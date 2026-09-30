@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Assignment;
+namespace JooosiSocialImage\Assignment;
 
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Template\TemplateRepository;
 use WP_Post;
 
 defined( 'ABSPATH' ) || exit;
@@ -51,7 +51,7 @@ final class TemplateMatcher
 		$query = is_array( $rules['query'] ?? null ) ? $rules['query'] : array();
 		$matched = $this->matchesGroup( $query, $post, true );
 
-		return (bool) apply_filters( 'jooosi-egami/template:match', $matched, $rules, $post );
+		return (bool) apply_filters( 'jooosi-social-image/template:match', $matched, $rules, $post );
 	}
 
 	private function matchesGroup(array $group, WP_Post $post, bool $root = false): bool {

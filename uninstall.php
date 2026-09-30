@@ -6,14 +6,14 @@ defined('WP_UNINSTALL_PLUGIN') || exit;
 
 (static function (): void {
 
-$settings = get_option('egami_settings', []);
+$settings = get_option('social_image_settings', []);
 
 if (empty($settings['delete_on_uninstall'])) {
     return;
 }
 
 $templateIds = get_posts([
-    'post_type' => 'egami_template',
+    'post_type' => 'social_image_design',
     'post_status' => 'any',
     'posts_per_page' => -1,
     'fields' => 'ids',
@@ -28,7 +28,7 @@ $attachmentIds = get_posts([
     'post_status' => 'any',
     'posts_per_page' => -1,
     'fields' => 'ids',
-    'meta_key' => '_egami_generated', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One-time uninstall cleanup.
+    'meta_key' => '_social_image_generated', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One-time uninstall cleanup.
     'meta_value' => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- One-time uninstall cleanup.
 ]);
 
@@ -37,23 +37,23 @@ foreach ($attachmentIds as $attachmentId) {
 }
 
 foreach ([
-    '_egami_og_image_url',
-    '_egami_twitter_image_url',
-    '_egami_featured_image_url',
-    '_egami_render_map',
-    '_egami_last_error',
+    '_social_image_og_image_url',
+    '_social_image_twitter_image_url',
+    '_social_image_featured_image_url',
+    '_social_image_render_map',
+    '_social_image_last_error',
 ] as $metaKey) {
     delete_post_meta_by_key($metaKey);
 }
 
-delete_option('egami_settings');
-delete_option('egami_preset_repositories');
-delete_option('egami_preset_repository_cache');
-delete_option('egami_bundled_preset_repository_enabled');
-delete_option('egami_last_cron_error');
+delete_option('social_image_settings');
+delete_option('social_image_preset_repositories');
+delete_option('social_image_preset_repository_cache');
+delete_option('social_image_bundled_preset_repository_enabled');
+delete_option('social_image_last_cron_error');
 
 $uploads = wp_upload_dir();
-$directory = trailingslashit($uploads['basedir']) . 'egami';
+$directory = trailingslashit($uploads['basedir']) . 'social-image';
 
 if (is_dir($directory)) {
     require_once ABSPATH . 'wp-admin/includes/file.php';

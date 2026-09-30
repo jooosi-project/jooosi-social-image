@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Admin\Controller;
+namespace JooosiSocialImage\Admin\Controller;
 
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Content\DynamicDataResolver;
-use JooosiEgami\Diagnostics\SystemDiagnostics;
-use JooosiEgami\Integration\OmniIcon;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Rendering\SvgSupport;
-use JooosiEgami\Processing\TemplateInvalidator;
-use JooosiEgami\Preset\PresetRepositoryManager;
-use JooosiEgami\Settings\PluginSettings;
-use JooosiEgami\Template\TemplateRepository;
-use JooosiEgami\Template\TemplateSchema;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Content\DynamicDataResolver;
+use JooosiSocialImage\Diagnostics\SystemDiagnostics;
+use JooosiSocialImage\Integration\JooosiIcon;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\SvgSupport;
+use JooosiSocialImage\Processing\TemplateInvalidator;
+use JooosiSocialImage\Preset\PresetRepositoryManager;
+use JooosiSocialImage\Settings\PluginSettings;
+use JooosiSocialImage\Template\TemplateRepository;
+use JooosiSocialImage\Template\TemplateSchema;
 use WP_Error;
 use WP_Query;
 use WP_REST_Request;
@@ -22,20 +22,20 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * REST API for the Egami administration app.
+ * REST API for the Social Image administration app.
  *
  * @since 0.1.0
  */
-final class EgamiController
+final class SocialImageController
 {
-    public const NAMESPACE = 'egami/v1';
+    public const NAMESPACE = 'social-image/v1';
 
     public function __construct(
         private TemplateRepository $templateRepository,
         private ImageGenerator $imageGenerator,
         private TemplateInvalidator $templateInvalidator,
         private PresetRepositoryManager $presetRepositories,
-        private OmniIcon $icons,
+        private JooosiIcon $icons,
         private SvgSupport $svgSupport,
         private SystemDiagnostics $diagnostics,
         private DynamicDataResolver $dynamicData,
@@ -336,8 +336,8 @@ final class EgamiController
         $payload = (array) $request->get_json_params();
         $rules = TemplateSchema::normalizeRules($payload['rules'] ?? []);
         $search = sanitize_text_field((string) ($payload['search'] ?? ''));
-        $resultLimit = max(10, min(200, (int) apply_filters('jooosi-egami/admin:preview_post_limit', 100)));
-        $scanLimit = max($resultLimit, min(20_000, (int) apply_filters('jooosi-egami/admin:preview_post_scan_limit', 5_000)));
+        $resultLimit = max(10, min(200, (int) apply_filters('jooosi-social-image/admin:preview_post_limit', 100)));
+        $scanLimit = max($resultLimit, min(20_000, (int) apply_filters('jooosi-social-image/admin:preview_post_scan_limit', 5_000)));
         $postTypes = array_values(array_diff(
             get_post_types(['show_ui' => true], 'names'),
             [TemplateRepository::POST_TYPE],
@@ -364,7 +364,7 @@ final class EgamiController
                 if (current_user_can('edit_post', $post->ID) && $this->templateMatcher->matches($rules, $post)) {
                     $items[] = [
                         'id' => (int) $post->ID,
-                        'title' => get_the_title($post) ?: __('(no title)', 'jooosi-egami'),
+                        'title' => get_the_title($post) ?: __('(no title)', 'jooosi-social-image'),
                         'type' => $post->post_type,
                         'status' => $post->post_status,
                     ];
@@ -409,7 +409,7 @@ final class EgamiController
     {
         if (! $this->svgSupport->available()) {
             return new WP_Error(
-                'egami_svg_unavailable',
+                'social_image_svg_unavailable',
                 $this->svgSupport->capabilities()['reason'],
                 ['status' => 503],
             );

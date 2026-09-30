@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration;
+namespace JooosiSocialImage\Integration;
 
-use Yabe\Webfont\Core\Cache;
-use Yabe\Webfont\Utils\Font;
+use JooosiFon\Core\Cache;
+use JooosiFon\Utils\Font;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Optional adapter for Yabe Webfont's public font catalogue and CSS cache.
+ * Optional adapter for Jooosi Fon's public font catalogue and CSS cache.
  */
-final class YabeWebfont
+final class JooosiFon
 {
 	/** @var list<array{family: string, weight: string, style: string, sources: list<array{url: string, format: string}>}>|null */
 	private ?array $parsedFaces = null;
@@ -67,7 +67,7 @@ final class YabeWebfont
 				'type'       => sanitize_key( (string) ( $font['type'] ?? 'custom' ) ),
 				'variants'   => array_values( array_unique( $variants ) ),
 				'renderable' => $renderable,
-				'reason'     => $renderable ? '' : __( 'This family does not provide a local TTF or OTF face for server image rendering.', 'jooosi-egami' ),
+				'reason'     => $renderable ? '' : __( 'This family does not provide a local TTF or OTF face for server image rendering.', 'jooosi-social-image' ),
 			);
 		}
 
@@ -82,7 +82,7 @@ final class YabeWebfont
 		try {
 			$path = Cache::get_cache_path( Cache::CSS_CACHE_FILE );
 
-			return is_readable( $path ) ? esc_url_raw( Cache::get_cache_url( Cache::CSS_CACHE_FILE ) ) : '';
+			return is_readable( $path ) ? esc_url_raw( Cache::get_versioned_cache_url( Cache::CSS_CACHE_FILE ) ) : '';
 		} catch ( \Throwable ) {
 			return '';
 		}
@@ -99,16 +99,16 @@ final class YabeWebfont
 		$notice = '';
 
 		if ( $available && $fonts && 0 === $renderable_count ) {
-			$notice = __( 'Yabe Webfont is active, but none of its enabled families provides a local TTF or OTF file for server rendering.', 'jooosi-egami' );
+			$notice = __( 'Jooosi Fon is active, but none of its enabled families provides a local TTF or OTF file for server rendering.', 'jooosi-social-image' );
 		} elseif ( $available && $unrenderable_count > 0 ) {
-			/* translators: %d: Number of enabled Yabe Webfont families unavailable to the server renderer. */
-			$notice = sprintf( _n( '%d enabled Yabe Webfont family cannot be rendered on the server because it has no local TTF or OTF file.', '%d enabled Yabe Webfont families cannot be rendered on the server because they have no local TTF or OTF file.', $unrenderable_count, 'jooosi-egami' ), $unrenderable_count );
+			/* translators: %d: Number of enabled Jooosi Fon families unavailable to the server renderer. */
+			$notice = sprintf( _n( '%d enabled Jooosi Fon family cannot be rendered on the server because it has no local TTF or OTF file.', '%d enabled Jooosi Fon families cannot be rendered on the server because they have no local TTF or OTF file.', $unrenderable_count, 'jooosi-social-image' ), $unrenderable_count );
 		}
 
 		return array(
 			'available'      => $available,
 			'stylesheet_url' => $this->stylesheetUrl(),
-			'reason'         => $available ? '' : __( 'Install and activate Yabe Webfont to use its font library.', 'jooosi-egami' ),
+			'reason'         => $available ? '' : __( 'Install and activate Jooosi Fon to use its font library.', 'jooosi-social-image' ),
 			'notice'         => $notice,
 			'renderable_count' => $renderable_count,
 			'unrenderable_count' => $unrenderable_count,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Tests\Rendering;
+namespace JooosiSocialImage\Tests\Rendering;
 
-use JooosiEgami\Rendering\TemporaryFile;
+use JooosiSocialImage\Rendering\TemporaryFile;
 use PHPUnit\Framework\TestCase;
 
 final class TemporaryFileTest extends TestCase
@@ -23,7 +23,7 @@ final class TemporaryFileTest extends TestCase
 
     public function testItRejectsAnUnavailableDirectory(): void
     {
-        $directory = sys_get_temp_dir() . '/egami-missing-' . bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . '/social-image-missing-' . bin2hex(random_bytes(8));
 
         self::assertNull(TemporaryFile::create($directory));
     }

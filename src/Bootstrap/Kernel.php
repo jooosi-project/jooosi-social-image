@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Bootstrap;
+namespace JooosiSocialImage\Bootstrap;
 
-use JooosiEgami\Admin\Controller\EgamiController;
-use JooosiEgami\Admin\Menu\AdminMenu;
-use JooosiEgami\Assignment\TemplateMatcher;
-use JooosiEgami\Cli\CommandRegistrar;
-use JooosiEgami\Content\DynamicDataResolver;
-use JooosiEgami\Diagnostics\SystemDiagnostics;
-use JooosiEgami\Integration\SocialImageIntegration;
-use JooosiEgami\Integration\OmniIcon;
-use JooosiEgami\Integration\YabeWebfont;
-use JooosiEgami\Processing\GenerationLifecycle;
-use JooosiEgami\Processing\TemplateInvalidator;
-use JooosiEgami\Preset\PresetRepositoryManager;
-use JooosiEgami\Rendering\FontLocator;
-use JooosiEgami\Rendering\ImageGenerator;
-use JooosiEgami\Rendering\RendererFactory;
-use JooosiEgami\Rendering\RendererInterface;
-use JooosiEgami\Rendering\RemoteImageFetcher;
-use JooosiEgami\Rendering\SvgRasterizer;
-use JooosiEgami\Rendering\SvgSupport;
-use JooosiEgami\Template\TemplateRepository;
+use JooosiSocialImage\Admin\Controller\SocialImageController;
+use JooosiSocialImage\Admin\Menu\AdminMenu;
+use JooosiSocialImage\Assignment\TemplateMatcher;
+use JooosiSocialImage\Cli\CommandRegistrar;
+use JooosiSocialImage\Content\DynamicDataResolver;
+use JooosiSocialImage\Diagnostics\SystemDiagnostics;
+use JooosiSocialImage\Integration\SocialImageIntegration;
+use JooosiSocialImage\Integration\JooosiIcon;
+use JooosiSocialImage\Integration\JooosiFon;
+use JooosiSocialImage\Processing\GenerationLifecycle;
+use JooosiSocialImage\Processing\TemplateInvalidator;
+use JooosiSocialImage\Preset\PresetRepositoryManager;
+use JooosiSocialImage\Rendering\FontLocator;
+use JooosiSocialImage\Rendering\ImageGenerator;
+use JooosiSocialImage\Rendering\RendererFactory;
+use JooosiSocialImage\Rendering\RendererInterface;
+use JooosiSocialImage\Rendering\RemoteImageFetcher;
+use JooosiSocialImage\Rendering\SvgRasterizer;
+use JooosiSocialImage\Rendering\SvgSupport;
+use JooosiSocialImage\Template\TemplateRepository;
 
 /**
  * Composes services and boots their WordPress adapters.
@@ -46,11 +46,11 @@ final class Kernel
 
     private TemplateInvalidator $templateInvalidator;
 
-    private OmniIcon $icons;
+    private JooosiIcon $icons;
 
     private SvgSupport $svgSupport;
 
-    private YabeWebfont $webfonts;
+    private JooosiFon $fon;
 
     private PresetRepositoryManager $presetRepositories;
 
@@ -63,8 +63,8 @@ final class Kernel
     public function __construct(private Paths $paths)
     {
         $this->templateRepository = new TemplateRepository();
-        $this->icons = new OmniIcon();
-        $this->webfonts = new YabeWebfont();
+        $this->icons = new JooosiIcon();
+        $this->fon = new JooosiFon();
         $this->presetRepositories = new PresetRepositoryManager(
             $this->paths->rootDir . '/presets/repository.json',
             plugin_dir_url($this->paths->pluginFile) . 'schemas/',
@@ -72,8 +72,8 @@ final class Kernel
         $svgRasterizer = new SvgRasterizer();
         $this->svgSupport = new SvgSupport($this->icons, $svgRasterizer);
         $this->renderer = RendererFactory::create($svgRasterizer);
-        $fontLocator = new FontLocator($this->webfonts);
-        $this->diagnostics = new SystemDiagnostics($this->renderer, $this->svgSupport, $this->webfonts, $fontLocator);
+        $fontLocator = new FontLocator($this->fon);
+        $this->diagnostics = new SystemDiagnostics($this->renderer, $this->svgSupport, $this->fon, $fontLocator);
         $this->templateMatcher = new TemplateMatcher($this->templateRepository);
         $this->dynamicData = new DynamicDataResolver();
         $this->imageGenerator = new ImageGenerator($this->templateRepository, $this->templateMatcher, $this->dynamicData, $this->renderer, $fontLocator, new RemoteImageFetcher(), $this->icons);
@@ -94,7 +94,7 @@ final class Kernel
         $this->generationLifecycle->registerHooks();
         (new SocialImageIntegration())->registerHooks();
 
-        $controller = new EgamiController(
+        $controller = new SocialImageController(
             $this->templateRepository,
             $this->imageGenerator,
             $this->templateInvalidator,
@@ -107,7 +107,7 @@ final class Kernel
         );
         add_action('rest_api_init', [$controller, 'registerRoutes']);
 
-        (new AdminMenu($this->paths, $this->diagnostics, $this->webfonts))->registerHooks();
+        (new AdminMenu($this->paths, $this->diagnostics, $this->fon))->registerHooks();
 
         if (defined('WP_CLI') && WP_CLI) {
             add_action(

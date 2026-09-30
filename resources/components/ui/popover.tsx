@@ -20,7 +20,7 @@ function PopoverContent({
   ...props
 }: PopoverPrimitive.Popup.Props & Pick<PopoverPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset">) {
   return (
-    <PopoverPrimitive.Portal className="egami-style egami-portal">
+    <PopoverPrimitive.Portal className="social-image-style social-image-portal">
       <PopoverPrimitive.Positioner
         className="isolate z-[100010] outline-none"
         align={align}

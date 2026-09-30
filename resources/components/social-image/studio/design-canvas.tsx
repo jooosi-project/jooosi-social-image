@@ -168,7 +168,7 @@ function ElementContent({ element, previewPost, placeholderValues }: { element: 
       return <div className="grid size-full place-items-center rounded border border-dashed border-white/45 bg-black/15 text-sm text-white/80">Choose an SVG icon</div>;
     }
 
-    return <omni-icon className="block size-full" name={element.icon} width="100%" height="100%" color={element.color} aria-hidden="true" />;
+    return <jooosi-icon className="block size-full" name={element.icon} width="100%" height="100%" color={element.color} aria-hidden="true" />;
   }
 
   if (element.type === "shape") {
@@ -265,17 +265,17 @@ function CanvasSelectionControls({ element, onBeginPointer }: { element: DesignE
       {!element.locked && HANDLES.map((handle) => (
         <span
           key={handle}
-          className={`egami-resize-handle egami-resize-${handle}`}
+          className={`social-image-resize-handle social-image-resize-${handle}`}
           style={{ cursor: resizeCursor(handle, element.rotation) }}
           onPointerDown={(event) => onBeginPointer(event, element, handle)}
         />
       ))}
       {!element.locked && (
         <>
-          <span className="egami-rotation-line" aria-hidden="true" />
+          <span className="social-image-rotation-line" aria-hidden="true" />
           <button
             type="button"
-            className="egami-rotation-handle"
+            className="social-image-rotation-handle"
             aria-label="Rotate element"
             title="Drag to rotate. Hold Shift to snap to 15° increments."
             onPointerDown={(event) => onBeginPointer(event, element, "rotate")}
@@ -372,7 +372,7 @@ export function DesignCanvas({
   };
 
   return (
-    <main ref={viewportRef} className="egami-canvas-viewport" onPointerDown={() => onSelect(null)}>
+    <main ref={viewportRef} className="social-image-canvas-viewport" onPointerDown={() => onSelect(null)}>
       <div className="absolute bottom-3 left-3 z-10 flex items-center gap-1 rounded-md border bg-background/90 px-1.5 py-1 text-[10px] text-muted-foreground shadow-sm backdrop-blur">
         <span>{document.width} × {document.height}</span>
         <span>·</span>

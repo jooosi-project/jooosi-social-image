@@ -6,7 +6,7 @@
          failOnWarning="true"
          failOnRisky="true">
     <testsuites>
-        <testsuite name="Jooosi Egami">
+        <testsuite name="Jooosi Social Image">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

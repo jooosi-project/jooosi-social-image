@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Integration\CustomFields;
+namespace JooosiSocialImage\Integration\CustomFields;
 
-use JooosiEgami\Content\PlaceholderProviderInterface;
+use JooosiSocialImage\Content\PlaceholderProviderInterface;
 
 defined('ABSPATH') || exit;
 
@@ -56,7 +56,7 @@ final class AcfPlaceholderProvider implements PlaceholderProviderInterface
             }
             $result[$key] = [
                 'label' => (string) ($field['label'] ?? $field['name']),
-                'group' => __('ACF', 'jooosi-egami'),
+                'group' => __('ACF', 'jooosi-social-image'),
                 'type' => $this->type((string) ($field['type'] ?? '')),
             ];
         }

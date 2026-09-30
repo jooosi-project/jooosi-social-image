@@ -168,7 +168,7 @@ export function StructurePanel({
   };
 
   return (
-    <aside className="egami-structure-panel" aria-label="Structure">
+    <aside className="social-image-structure-panel" aria-label="Structure">
       <div className="flex h-11 shrink-0 items-center gap-0.5 border-b px-3">
         <h2 className="mr-auto text-xs font-semibold">Structure</h2>
         <DropdownMenu>
@@ -179,7 +179,7 @@ export function StructurePanel({
             <DropdownMenuItem onClick={() => onAdd("text")}><IconText /> Text</DropdownMenuItem>
             <DropdownMenuItem onClick={() => onAdd("image")}><IconImage /> Image</DropdownMenuItem>
             <DropdownMenuItem onClick={() => onAdd("shape")}><IconShapes /> Shape</DropdownMenuItem>
-            <DropdownMenuItem disabled={!svgStatus.available} title={svgStatus.available ? (svgStatus.notice || "Add an Omni Icon SVG") : svgStatus.reason} onClick={() => onAdd("svg")}>
+            <DropdownMenuItem disabled={!svgStatus.available} title={svgStatus.available ? (svgStatus.notice || "Add a Jooosi Icon SVG") : svgStatus.reason} onClick={() => onAdd("svg")}>
               <IconFileCode /> SVG
               {!svgStatus.available && <span className="ml-auto text-[9px] text-muted-foreground">Unavailable</span>}
               {svgStatus.limited && <span className="ml-auto text-[9px] text-amber-700">MSVG</span>}

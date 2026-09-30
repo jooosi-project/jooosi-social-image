@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JooosiEgami\Cli;
+namespace JooosiSocialImage\Cli;
 
-use JooosiEgami\Settings\PluginSettings;
+use JooosiSocialImage\Settings\PluginSettings;
 use WP_CLI;
 
 /**

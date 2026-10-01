@@ -85,4 +85,13 @@ Data is preserved by default. Enable **Delete plugin data on uninstall** in Soci
 
 Open a Design, choose **More actions → Rendering settings**, and review System status. Administrators can also open **Tools → Site Health → Status** for separate renderer, SVG, font, filesystem, and background-generation checks. Social Image records the last WP-Cron scheduling error and the last per-post generation error so host-specific failures are not silent.
 
+== Screenshots ==
+
+1. Manage saved image Designs and their publishing status.
+2. Edit a Design with its layer structure, canvas, and element inspector.
+3. Browse design templates by collection, search presets, and choose a ready-to-use layout.
+4. Manage template repositories and review enabled template collections.
+5. Configure image format and quality, featured-image replacement, uninstall cleanup, and rendering status.
+6. Publish a Design, select generated outputs, and define content rules for automatic matching.
+
 == Changelog ==

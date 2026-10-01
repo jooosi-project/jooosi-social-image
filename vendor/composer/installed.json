@@ -1,0 +1,114 @@
+{
+    "packages": [
+        {
+            "name": "imagine\/imagine",
+            "version": "1.5.4",
+            "version_normalized": "1.5.4.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/php-imagine\/Imagine.git",
+                "reference": "dd57a4c290ff4d223d17bcd219dac9ac8bf1cc16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/php-imagine\/Imagine\/zipball\/dd57a4c290ff4d223d17bcd219dac9ac8bf1cc16",
+                "reference": "dd57a4c290ff4d223d17bcd219dac9ac8bf1cc16",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit\/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4 || ^9.3"
+            },
+            "suggest": {
+                "ext-exif": "to read EXIF metadata",
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "time": "2026-06-04T10:05:48+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "1.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "JooosiSocialImageDeps\\Imagine\\": "src\/"
+                }
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http:\/\/avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP",
+            "homepage": "http:\/\/imagine.readthedocs.org\/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "support": {
+                "issues": "https:\/\/github.com\/php-imagine\/Imagine\/issues",
+                "source": "https:\/\/github.com\/php-imagine\/Imagine\/tree\/1.5.4"
+            },
+            "install-path": "..\/imagine\/imagine"
+        },
+        {
+            "name": "nabasa\/vp-wp",
+            "version": "v0.3.2",
+            "version_normalized": "0.3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/nabasa-dev\/vp-wp.git",
+                "reference": "6bac3a284c43206075c0c833e35f35d2aeda3e92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/nabasa-dev\/vp-wp\/zipball\/6bac3a284c43206075c0c833e35f35d2aeda3e92",
+                "reference": "6bac3a284c43206075c0c833e35f35d2aeda3e92",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "time": "2026-06-05T16:36:35+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "vp-wp.php"
+                ]
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "MIT"
+            ],
+            "description": "WordPress integration for Vite+.",
+            "homepage": "https:\/\/github.com\/nabasa-dev\/vp-wp",
+            "keywords": [
+                "vite",
+                "vite-plus",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https:\/\/github.com\/nabasa-dev\/vp-wp\/issues",
+                "source": "https:\/\/github.com\/nabasa-dev\/vp-wp"
+            },
+            "install-path": "..\/nabasa\/vp-wp"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

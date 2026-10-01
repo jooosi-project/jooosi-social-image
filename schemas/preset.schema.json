@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jooosi.com/social-image/schemas/preset.schema.json",
+  "title": "Social Image preset",
+  "description": "A reusable Social Image image-design preset.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "description", "category", "document"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/slug" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "category": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "tags": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 40 }
+    },
+    "document": { "$ref": "#/$defs/document" }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "color": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 64,
+      "pattern": "^(#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?|rgba?\\(.+\\))$"
+    },
+    "gradientStop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["color", "position"],
+      "properties": {
+        "color": { "$ref": "#/$defs/color" },
+        "position": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "background": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "color", "stops", "direction"],
+      "properties": {
+        "type": { "enum": ["solid", "gradient"] },
+        "color": { "$ref": "#/$defs/color" },
+        "stops": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/gradientStop" }
+        },
+        "direction": { "enum": ["horizontal", "vertical"] }
+      }
+    },
+    "baseElement": {
+      "type": "object",
+      "required": ["id", "type", "x", "y", "width", "height", "opacity", "rotation", "locked", "hidden"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "type": { "enum": ["text", "image", "svg", "shape"] },
+        "x": { "type": "number", "minimum": -2400, "maximum": 4800 },
+        "y": { "type": "number", "minimum": -2400, "maximum": 4800 },
+        "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 4800 },
+        "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 4800 },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rotation": { "type": "number", "minimum": -360, "maximum": 360 },
+        "locked": { "type": "boolean" },
+        "hidden": { "type": "boolean" }
+      }
+    },
+    "textElement": {
+      "allOf": [
+        { "$ref": "#/$defs/baseElement" },
+        {
+          "type": "object",
+          "required": ["content", "fontSize", "minFontSize", "fontFamily", "fontAttachmentId", "fontWeight", "color", "align", "verticalAlign", "lineHeight"],
+          "properties": {
+            "type": { "const": "text" },
+            "content": { "type": "string", "maxLength": 10000 },
+            "fontSize": { "type": "number", "minimum": 6, "maximum": 400 },
+            "minFontSize": { "type": "number", "minimum": 6, "maximum": 400 },
+            "fontFamily": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "fontAttachmentId": { "type": "integer", "minimum": 0 },
+            "fontWeight": { "type": "integer", "minimum": 100, "maximum": 900 },
+            "color": { "$ref": "#/$defs/color" },
+            "align": { "enum": ["left", "center", "right"] },
+            "verticalAlign": { "enum": ["top", "middle", "bottom"] },
+            "lineHeight": { "type": "number", "minimum": 0.7, "maximum": 3 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "imageElement": {
+      "allOf": [
+        { "$ref": "#/$defs/baseElement" },
+        {
+          "type": "object",
+          "required": ["attachmentId", "source", "previewUrl", "fit", "radius", "mask"],
+          "properties": {
+            "type": { "const": "image" },
+            "attachmentId": { "type": "integer", "minimum": 0 },
+            "source": { "type": "string", "maxLength": 2048 },
+            "previewUrl": { "type": "string", "maxLength": 2048 },
+            "fit": { "enum": ["cover", "contain", "fill", "none"] },
+            "radius": { "type": "number", "minimum": 0, "maximum": 1000 },
+            "mask": { "enum": ["none", "ellipse", "triangle", "diamond", "hexagon"] }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "svgElement": {
+      "allOf": [
+        { "$ref": "#/$defs/baseElement" },
+        {
+          "type": "object",
+          "required": ["icon", "color"],
+          "properties": {
+            "type": { "const": "svg" },
+            "icon": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "color": { "$ref": "#/$defs/color" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "shapeElement": {
+      "allOf": [
+        { "$ref": "#/$defs/baseElement" },
+        {
+          "type": "object",
+          "required": ["shape", "background", "strokeColor", "strokeWidth", "radius"],
+          "properties": {
+            "type": { "const": "shape" },
+            "shape": { "enum": ["rectangle", "ellipse", "triangle", "diamond", "hexagon", "star", "line", "arrow"] },
+            "background": { "$ref": "#/$defs/background" },
+            "strokeColor": { "$ref": "#/$defs/color" },
+            "strokeWidth": { "type": "number", "minimum": 0, "maximum": 100 },
+            "radius": { "type": "number", "minimum": 0, "maximum": 1000 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "element": {
+      "oneOf": [
+        { "$ref": "#/$defs/textElement" },
+        { "$ref": "#/$defs/imageElement" },
+        { "$ref": "#/$defs/svgElement" },
+        { "$ref": "#/$defs/shapeElement" }
+      ]
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "width", "height", "background", "elements"],
+      "properties": {
+        "version": { "const": 6 },
+        "width": { "type": "integer", "minimum": 200, "maximum": 2400 },
+        "height": { "type": "integer", "minimum": 200, "maximum": 2400 },
+        "background": { "$ref": "#/$defs/background" },
+        "elements": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": { "$ref": "#/$defs/element" }
+        }
+      }
+    }
+  }
+}

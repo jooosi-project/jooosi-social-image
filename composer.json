@@ -1,0 +1,58 @@
+{
+    "name": "jooosi\/social-image",
+    "description": "Dynamic featured, Open Graph, and social image generation for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "php": ">=8.0",
+        "imagine\/imagine": "^1.5",
+        "nabasa\/vp-wp": "^0.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JooosiSocialImage\\": "src\/"
+        }
+    },
+    "autoload-dev": {
+        "exclude-from-classmap": [
+            "\/tests\/bootstrap.php"
+        ],
+        "psr-4": {
+            "JooosiSocialImage\\Tests\\": "tests\/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "8.0.0"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "wordpress-plugin": {
+            "name": "Jooosi Social Image",
+            "version": "1.0.1",
+            "requires-wp": "7.0",
+            "tested-wp": "7.0",
+            "requires-php": "8.0"
+        }
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "php-stubs\/wordpress-stubs": "^7.0",
+        "php-stubs\/wordpress-tests-stubs": "^7.0",
+        "php-stubs\/wp-cli-stubs": "dev-master",
+        "phpunit\/phpunit": "^9.6",
+        "wp-cli\/wp-cli-bundle": "^2.12",
+        "wp-phpunit\/wp-phpunit": "^7.0",
+        "yoast\/phpunit-polyfills": "^4.0"
+    },
+    "scripts": {
+        "test:php": "vendor\/bin\/phpunit -c phpunit.xml.dist",
+        "test:syntax": "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "test": [
+            "@test:syntax",
+            "@test:php"
+        ]
+    }
+}

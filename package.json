@@ -1,7 +1,7 @@
 {
   "name": "jooosi-social-image",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "vp dev",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.e2e.json",

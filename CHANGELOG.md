@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-01
+
 ### Changed
 - Rebrand the Jooosi Egami plugin to Jooosi Social Image.
 
@@ -15,5 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - 🐣 Initial release.
 
-[unreleased]: https://github.com/jooosi-project/jooosi-social-image/compare/1.0.0...HEAD
+[unreleased]: https://github.com/jooosi-project/jooosi-social-image/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/jooosi-project/jooosi-social-image/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/jooosi-project/jooosi-social-image/compare/main...1.0.0

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3248e0421592c541a4411d558d1780d8",
+    "content-hash": "1165c5c68742b1564f7cc22ffec37e9c",
     "packages": [
         {
             "name": "imagine/imagine",

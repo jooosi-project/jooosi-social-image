@@ -74,6 +74,7 @@ final class Image
      */
     public static function render(int $designId, int $postId = 0, array $arguments = []): void
     {
-        echo self::html($designId, $postId, $arguments); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by self::html().
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by self::html().
+        echo self::html($designId, $postId, $arguments);
     }
 }

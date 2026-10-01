@@ -28,8 +28,10 @@ $attachmentIds = get_posts([
     'post_status' => 'any',
     'posts_per_page' => -1,
     'fields' => 'ids',
-    'meta_key' => '_social_image_generated', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One-time uninstall cleanup.
-    'meta_value' => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- One-time uninstall cleanup.
+    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One-time uninstall cleanup.
+    'meta_key' => '_social_image_generated',
+    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- One-time uninstall cleanup.
+    'meta_value' => '1',
 ]);
 
 foreach ($attachmentIds as $attachmentId) {

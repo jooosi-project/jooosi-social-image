@@ -102,7 +102,8 @@ final class AdminMenu
             return;
         }
 
-        $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
 
         if ($page !== self::PAGE_SLUG) {
             return;
@@ -166,8 +167,11 @@ final class AdminMenu
                 '<p>%s</p>',
                 esc_html(
                     $available
-                        /* translators: %s: Active Imagine image driver, such as Imagick or GD. */
-                        ? sprintf(__('The PHP Imagine %s driver is active.', 'jooosi-social-image'), $activeDriver) . ($diagnostic !== '' ? ' ' . $diagnostic : '')
+                        ? sprintf(
+                            /* translators: %s: Active Imagine image driver, such as Imagick or GD. */
+                            __('The PHP Imagine %s driver is active.', 'jooosi-social-image'),
+                            $activeDriver,
+                        ) . ($diagnostic !== '' ? ' ' . $diagnostic : '')
                         : __('Enable the PHP Imagick extension or PHP GD with FreeType support on this server.', 'jooosi-social-image'),
                 ),
             ),
@@ -194,8 +198,11 @@ final class AdminMenu
                     $limited
                         ? $capabilities['notice']
                         : ($available
-                        /* translators: %s: Active SVG rasterization engine. */
-                        ? sprintf(__('Jooosi Icon is active and SVG rasterization uses %s.', 'jooosi-social-image'), $capabilities['engine'])
+                        ? sprintf(
+                            /* translators: %s: Active SVG rasterization engine. */
+                            __('Jooosi Icon is active and SVG rasterization uses %s.', 'jooosi-social-image'),
+                            $capabilities['engine'],
+                        )
                         : $capabilities['reason']),
                 ),
             ),

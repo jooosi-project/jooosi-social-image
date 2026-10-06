@@ -4,7 +4,7 @@ Donate link: https://ko-fi.com/Q5Q75XSF7
 Tags: open graph, featured image, social image, image generator, automation
 Requires at least: 7.0
 Tested up to: 7.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -95,6 +95,12 @@ Open a Design, choose **More actions → Rendering settings**, and review System
 6. Publish a Design, select generated outputs, and define content rules for automatic matching.
 
 == Changelog ==
+
+= 1.0.2 - 2026-10-06 =
+
+**Added**
+
+* WordPress 7.1 compatibility.
 
 = 1.0.1 - 2026-10-01 =
 

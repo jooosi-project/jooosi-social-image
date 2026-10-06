@@ -1,9 +1,9 @@
-=== Jooosi Social Image - Visual OG and Featured Image Generator ===
+=== Jooosi Social Image ===
 Contributors: suasgn, suabahasa
 Donate link: https://ko-fi.com/Q5Q75XSF7
 Tags: open graph, featured image, social image, image generator, automation
 Requires at least: 7.0
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 1.0.1
 Requires PHP: 8.0
 License: GPLv3 or later

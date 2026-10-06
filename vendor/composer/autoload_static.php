@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1165c5c68742b1564f7cc22ffec37e9c
+class ComposerStaticInitb3b0c76fe6266dea821e6cbf9473fd0a
 {
     public static $files = array (
         '3c9ebf3d7a29b377eb2a8001857b1f68' => __DIR__ . '/..' . '/nabasa/vp-wp/vp-wp.php',
@@ -182,9 +182,9 @@ class ComposerStaticInit1165c5c68742b1564f7cc22ffec37e9c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1165c5c68742b1564f7cc22ffec37e9c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1165c5c68742b1564f7cc22ffec37e9c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit1165c5c68742b1564f7cc22ffec37e9c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb3b0c76fe6266dea821e6cbf9473fd0a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb3b0c76fe6266dea821e6cbf9473fd0a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb3b0c76fe6266dea821e6cbf9473fd0a::$classMap;
 
         }, null, ClassLoader::class);
     }

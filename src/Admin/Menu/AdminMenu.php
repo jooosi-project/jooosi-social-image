@@ -68,8 +68,8 @@ final class AdminMenu
         if (!current_user_can('manage_options')) {
             return;
         }
-        $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
         if ($page !== self::PAGE_SLUG) {
             return;
         }
@@ -95,14 +95,22 @@ final class AdminMenu
         $available = $capabilities['available'];
         $activeDriver = $capabilities['active_driver'];
         $diagnostic = (string) ($capabilities['diagnostics'][0] ?? '');
-        return ['label' => $available ? __('Social Image can render dynamic images', 'jooosi-social-image') : __('Social Image cannot render dynamic images', 'jooosi-social-image'), 'status' => $available ? 'good' : 'critical', 'badge' => ['label' => __('Social Image', 'jooosi-social-image'), 'color' => 'blue'], 'description' => sprintf('<p>%s</p>', esc_html($available ? sprintf(__('The PHP Imagine %s driver is active.', 'jooosi-social-image'), $activeDriver) . ($diagnostic !== '' ? ' ' . $diagnostic : '') : __('Enable the PHP Imagick extension or PHP GD with FreeType support on this server.', 'jooosi-social-image'))), 'actions' => '', 'test' => 'jooosi_social_image_renderer'];
+        return ['label' => $available ? __('Social Image can render dynamic images', 'jooosi-social-image') : __('Social Image cannot render dynamic images', 'jooosi-social-image'), 'status' => $available ? 'good' : 'critical', 'badge' => ['label' => __('Social Image', 'jooosi-social-image'), 'color' => 'blue'], 'description' => sprintf('<p>%s</p>', esc_html($available ? sprintf(
+            /* translators: %s: Active Imagine image driver, such as Imagick or GD. */
+            __('The PHP Imagine %s driver is active.', 'jooosi-social-image'),
+            $activeDriver
+        ) . ($diagnostic !== '' ? ' ' . $diagnostic : '') : __('Enable the PHP Imagick extension or PHP GD with FreeType support on this server.', 'jooosi-social-image'))), 'actions' => '', 'test' => 'jooosi_social_image_renderer'];
     }
     public function siteHealthSvg(): array
     {
         $capabilities = $this->diagnostics->status()['svg'];
         $available = $capabilities['available'];
         $limited = $available && $capabilities['limited'];
-        return ['label' => $available ? $limited ? __('Social Image renders SVG with limited MSVG compatibility', 'jooosi-social-image') : __('Social Image can render Jooosi Icon SVG elements', 'jooosi-social-image') : __('Social Image SVG elements are unavailable', 'jooosi-social-image'), 'status' => $available && !$limited ? 'good' : 'recommended', 'badge' => ['label' => __('Social Image', 'jooosi-social-image'), 'color' => 'blue'], 'description' => sprintf('<p>%s</p>', esc_html($limited ? $capabilities['notice'] : ($available ? sprintf(__('Jooosi Icon is active and SVG rasterization uses %s.', 'jooosi-social-image'), $capabilities['engine']) : $capabilities['reason']))), 'actions' => '', 'test' => 'jooosi_social_image_svg'];
+        return ['label' => $available ? $limited ? __('Social Image renders SVG with limited MSVG compatibility', 'jooosi-social-image') : __('Social Image can render Jooosi Icon SVG elements', 'jooosi-social-image') : __('Social Image SVG elements are unavailable', 'jooosi-social-image'), 'status' => $available && !$limited ? 'good' : 'recommended', 'badge' => ['label' => __('Social Image', 'jooosi-social-image'), 'color' => 'blue'], 'description' => sprintf('<p>%s</p>', esc_html($limited ? $capabilities['notice'] : ($available ? sprintf(
+            /* translators: %s: Active SVG rasterization engine. */
+            __('Jooosi Icon is active and SVG rasterization uses %s.', 'jooosi-social-image'),
+            $capabilities['engine']
+        ) : $capabilities['reason']))), 'actions' => '', 'test' => 'jooosi_social_image_svg'];
     }
     public function siteHealthFon(): array
     {

@@ -6,7 +6,7 @@
  * Plugin URI:          https://github.com/jooosi-project/jooosi-social-image
  * Description:         Design dynamic Open Graph and featured images visually in WordPress and keep them in sync automatically.
  * Text Domain:         jooosi-social-image
- * Version:             1.0.1
+ * Version:             1.0.2
  * Requires at least:   7.0
  * Requires PHP:        8.0
  * Author:              Jooosi

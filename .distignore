@@ -70,6 +70,8 @@
 /vendor/**/.*
 /vendor/*/src/PHPUnit
 /vendor/*/*/src/PHPUnit
+/vendor/imagine/imagine/src/resources/Adobe/Color Profile Bundling License_10.15.08.md
+/vendor/imagine/imagine/src/resources/Adobe/Trademark Information.md
 /vendor/paragonie/random_compat/build-phar.sh
 /vendor/paragonie/random_compat/dist/random_compat.phar.pubkey
 /vendor/paragonie/random_compat/dist/random_compat.phar.pubkey.asc

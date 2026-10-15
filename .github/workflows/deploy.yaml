@@ -137,6 +137,11 @@ jobs:
             exit 1
           fi
 
+          if [[ -e "$release/vendor/imagine/imagine/src/resources/Adobe/Color Profile Bundling License_10.15.08.md" || -e "$release/vendor/imagine/imagine/src/resources/Adobe/Trademark Information.md" ]]; then
+            echo "The release artifact contains Adobe files with filesystem-incompatible names." >&2
+            exit 1
+          fi
+
           if grep -Fq 'JooosiSocialImageDeps\dbDelta' "$release/vendor/scoper-autoload.php"; then
             echo "The scoped autoloader contains a broken dbDelta() proxy." >&2
             exit 1

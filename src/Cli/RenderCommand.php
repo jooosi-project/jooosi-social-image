@@ -35,7 +35,7 @@ final class RenderCommand
      * : manual, og, twitter, or featured.
      *
      * [--out=<path>]
-     * : Copy the generated image to this path.
+     * : Copy the generated image to a path inside the existing uploads/social-image directory.
      *
      * [--force]
      * : Ignore an existing cached render.
@@ -64,11 +64,10 @@ final class RenderCommand
         }
 
         if (! empty($assocArgs['out'])) {
-            $destination = wp_normalize_path((string) $assocArgs['out']);
-            $directory = dirname($destination);
+            $destination = $this->copyToUploadsDirectory($result['path'], (string) $assocArgs['out']);
 
-            if (! is_dir($directory) || ! wp_is_writable($directory) || ! copy($result['path'], $destination)) {
-                WP_CLI::error('Could not copy the render to --out.');
+            if ($destination === null) {
+                WP_CLI::error('--out must be inside the existing uploads/social-image directory.');
             }
 
             $result['out'] = $destination;
@@ -81,5 +80,49 @@ final class RenderCommand
         }
 
         WP_CLI::success($result['url']);
+    }
+
+    private function copyToUploadsDirectory(string $source, string $destination): ?string
+    {
+        $uploads = wp_upload_dir();
+
+        if (! empty($uploads['error'])) {
+            return null;
+        }
+
+        $uploadsDirectory = realpath(trailingslashit($uploads['basedir']) . 'social-image');
+        $destination = wp_normalize_path($destination);
+        $destinationDirectory = realpath(dirname($destination));
+
+        if ($uploadsDirectory === false || $destinationDirectory === false) {
+            return null;
+        }
+
+        $uploadsDirectory = wp_normalize_path($uploadsDirectory);
+        $destinationDirectory = wp_normalize_path($destinationDirectory);
+        $isInsideUploadsDirectory = $destinationDirectory === $uploadsDirectory
+            || str_starts_with($destinationDirectory, trailingslashit($uploadsDirectory));
+
+        if (! $isInsideUploadsDirectory) {
+            return null;
+        }
+
+        $destination = trailingslashit($destinationDirectory) . basename($destination);
+
+        if (
+            ! wp_is_writable($destinationDirectory)
+            || is_dir($destination)
+            || is_link($destination)
+        ) {
+            return null;
+        }
+
+        $sourcePath = realpath($source);
+
+        if ($sourcePath !== false && wp_normalize_path($sourcePath) === $destination) {
+            return $destination;
+        }
+
+        return copy($source, $destination) ? $destination : null;
     }
 }

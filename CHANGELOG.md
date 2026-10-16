@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Jooosi Social Image is now available on [WordPress.org](https://wordpress.org/plugins/jooosi-social-image/).
+
 ## [1.0.3] - 2026-10-15
 
 ### Changed

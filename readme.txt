@@ -1,4 +1,4 @@
-=== Jooosi Social Image ===
+=== Jooosi Social Image - Visual OG and Featured Image Generator ===
 Contributors: suasgn, suabahasa
 Donate link: https://ko-fi.com/Q5Q75XSF7
 Tags: open graph, featured image, social image, image generator, automation
@@ -37,9 +37,7 @@ Install Jooosi Icon to add sanitized SVG icon layers. SVG rendering also require
 
 Social Image includes Template previews that reference images hosted by Unsplash. Six showcase Templates retain an editable Unsplash image URL when applied. The browser requests an image when an administrator views the relevant Template; the server requests it when rendering a Design that still contains that URL. The request sends standard connection information such as the site server's IP address, browser headers for an admin preview, and the requested image URL. No WordPress post content or account credentials are sent to Unsplash.
 
-Unsplash terms: https://unsplash.com/terms
-Unsplash privacy policy: https://unsplash.com/privacy
-Unsplash license: https://unsplash.com/license
+Check Unplash: [Terms](https://unsplash.com/terms) | [Privacy](https://unsplash.com/privacy) | [License](https://unsplash.com/license)
 
 Administrators may explicitly add a public Template repository URL. Social Image requests that host to download its JSON manifest and sends a user-agent containing the plugin version and the site's public home URL. Administrators may also place a public HTTP(S) image URL in a Design; Social Image requests that host when it needs to render the image. Data handling for those administrator-selected services is governed by each host's terms and privacy policy.
 
